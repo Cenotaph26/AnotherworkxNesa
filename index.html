@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Another Work — Aylık Brief Formu</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a18;
+    --ink-soft: #5a5a55;
+    --ink-muted: #9a9a92;
+    --paper: #f7f5f0;
+    --paper-dark: #edeae2;
+    --accent: #f0a500;
+    --accent-dark: #c88a00;
+    --white: #ffffff;
+    --border: rgba(26,26,24,0.12);
+    --border-strong: rgba(26,26,24,0.22);
+    --success: #4a7c59;
+    --radius: 4px;
+    --radius-lg: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--ink);
+    color: var(--white);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar-brand { font-family: 'DM Serif Display', serif; font-size: 20px; letter-spacing: 0.02em; }
+  .topbar-sub { font-size: 12px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+
+  /* ── PROGRESS ── */
+  .progress-bar {
+    background: var(--paper-dark);
+    height: 3px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* ── HERO ── */
+  .hero { margin-bottom: 48px; }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500; margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .hero p { font-size: 14px; color: var(--ink-soft); max-width: 480px; }
+  .hero-divider { width: 48px; height: 2px; background: var(--accent); margin: 20px 0; }
+
+  /* ── STEP INDICATOR ── */
+  .steps-nav {
+    display: flex; gap: 0; margin-bottom: 40px;
+    border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .step-pill {
+    flex: 1; padding: 10px 8px; text-align: center; cursor: pointer;
+    font-size: 12px; font-weight: 500; color: var(--ink-muted);
+    background: var(--white); border-right: 1px solid var(--border);
+    transition: all 0.2s; user-select: none;
+  }
+  .step-pill:last-child { border-right: none; }
+  .step-pill.active { background: var(--ink); color: var(--white); }
+  .step-pill.done { background: var(--paper-dark); color: var(--ink-soft); }
+  .step-pill .pill-num { display: block; font-size: 18px; font-weight: 300; font-family: 'DM Serif Display', serif; }
+
+  /* ── PANELS ── */
+  .panel { display: none; animation: fadeIn 0.3s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SECTION HEADER ── */
+  .section-header { margin-bottom: 28px; }
+  .section-number {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500; margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--ink); margin-bottom: 6px;
+  }
+  .section-desc { font-size: 13px; color: var(--ink-soft); }
+
+  /* ── FIELD ── */
+  .field { margin-bottom: 22px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label {
+    display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 7px;
+  }
+  label .opt { font-weight: 300; text-transform: none; letter-spacing: 0; color: var(--ink-muted); font-size: 11px; }
+  input[type=text], input[type=tel], input[type=date], input[type=number], select, textarea {
+    width: 100%; padding: 11px 14px;
+    background: var(--white); border: 1px solid var(--border-strong);
+    border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; color: var(--ink); outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,169,110,0.15);
+  }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5a55' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  ::placeholder { color: var(--ink-muted); }
+
+  /* ── CHECKBOX GROUP ── */
+  .check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+  .check-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 9px 12px; background: var(--white);
+    border: 1px solid var(--border-strong); border-radius: var(--radius);
+    cursor: pointer; transition: all 0.15s; user-select: none; font-size: 13px;
+  }
+  .check-item:hover { border-color: var(--accent); }
+  .check-item.checked { background: #fdf8ef; border-color: var(--accent); color: var(--ink); font-weight: 500; }
+  .check-item input { display: none; }
+  .check-box {
+    width: 16px; height: 16px; border: 1.5px solid var(--border-strong);
+    border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .check-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .check-mark { display: none; }
+  .check-item.checked .check-mark { display: block; }
+  .check-mark svg { width: 10px; height: 10px; display: block; }
+
+  /* ── PROJECT TABS ── */
+  .proj-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
+  .proj-tab {
+    padding: 7px 16px; border: 1px solid var(--border-strong);
+    border-radius: 24px; font-size: 13px; font-weight: 500; cursor: pointer;
+    background: var(--white); color: var(--ink-soft); transition: all 0.15s;
+  }
+  .proj-tab.active { background: var(--ink); border-color: var(--ink); color: var(--white); }
+  .proj-tab.filled { border-color: var(--success); color: var(--success); }
+  .proj-tab.active.filled { background: var(--success); border-color: var(--success); color: var(--white); }
+
+  /* ── PROJECT CARD ── */
+  .proj-panel { display: none; }
+  .proj-panel.active { display: block; }
+  .proj-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 28px;
+  }
+  .proj-card-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+    padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .proj-badge {
+    width: 32px; height: 32px; background: var(--ink); color: var(--white);
+    border-radius: 50%; font-family: 'DM Serif Display', serif; font-size: 16px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .proj-card-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--ink); }
+  .proj-card-sub { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+
+  /* ── MEDIA UPLOAD ── */
+  .upload-zone {
+    border: 1.5px dashed var(--border-strong); border-radius: var(--radius-lg);
+    padding: 28px; text-align: center; cursor: pointer; transition: all 0.2s;
+    background: var(--white);
+  }
+  .upload-zone:hover { border-color: var(--accent); background: #fdf8ef; }
+  .upload-zone input { display: none; }
+  .upload-icon { font-size: 28px; margin-bottom: 8px; }
+  .upload-label { font-size: 13px; color: var(--ink-soft); }
+  .upload-label span { color: var(--accent); font-weight: 500; cursor: pointer; }
+  .upload-hint { font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
+  .upload-list { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .upload-chip {
+    padding: 4px 10px; background: var(--paper-dark); border-radius: 20px;
+    font-size: 12px; color: var(--ink-soft); display: flex; align-items: center; gap: 6px;
+  }
+  .upload-chip button { background: none; border: none; cursor: pointer; color: var(--ink-muted); font-size: 14px; line-height: 1; padding: 0; }
+
+  /* ── BUDGET FIELD ── */
+  .budget-row { display: grid; grid-template-columns: 1fr 80px; gap: 8px; }
+
+  /* ── NAV BUTTONS ── */
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 36px; }
+  .btn {
+    padding: 13px 28px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none;
+    letter-spacing: 0.02em;
+  }
+  .btn-ghost {
+    background: transparent; border: 1px solid var(--border-strong); color: var(--ink-soft);
+  }
+  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-primary { background: var(--ink); color: var(--white); }
+  .btn-primary:hover { background: #2d2d2a; }
+  .btn-accent { background: var(--accent); color: var(--white); }
+  .btn-accent:hover { background: var(--accent-dark); }
+  .btn-success { background: var(--success); color: var(--white); padding: 15px 36px; font-size: 15px; }
+  .btn-success:hover { background: #3a6347; }
+
+  /* ── PROJ COUNTER ── */
+  .proj-counter {
+    font-size: 12px; color: var(--ink-muted); padding: 6px 12px;
+    background: var(--paper-dark); border-radius: 20px;
+  }
+
+  /* ── SUMMARY ── */
+  .summary-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px;
+  }
+  .summary-title { font-family: 'DM Serif Display', serif; font-size: 18px; margin-bottom: 16px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .summary-item {}
+  .summary-key { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 2px; }
+  .summary-val { font-size: 14px; color: var(--ink); font-weight: 400; }
+  .summary-divider { height: 1px; background: var(--border); margin: 14px 0; }
+  .proj-summary-badge {
+    display: inline-block; padding: 3px 10px; background: #fdf8ef;
+    border: 1px solid var(--accent); border-radius: 20px;
+    font-size: 12px; color: var(--accent-dark); font-weight: 500; margin: 2px;
+  }
+
+  /* ── SUCCESS ── */
+  .success-screen { text-align: center; padding: 60px 0; }
+  .success-icon { font-size: 48px; margin-bottom: 20px; }
+  .success-title { font-family: 'DM Serif Display', serif; font-size: 32px; margin-bottom: 12px; }
+  .success-sub { font-size: 15px; color: var(--ink-soft); max-width: 360px; margin: 0 auto; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 560px) {
+    .topbar { padding: 12px 16px; }
+    .container { padding: 32px 16px 60px; }
+    .field-row { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .steps-nav { display: none; }
+    .budget-row { grid-template-columns: 1fr 70px; }
+  }
+
+  /* ── INLINE NOTE ── */
+  .inline-note {
+    font-size: 12px; color: var(--ink-muted); margin-top: 5px; padding-left: 2px;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 28px 0; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <!-- Another Work logo (geometric mark + wordmark) -->
+    <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- top-left full semicircle -->
+      <path d="M20 50 A25 25 0 1 1 70 50 Z" fill="#2a2a28"/>
+      <!-- top-right small semicircle -->
+      <path d="M50 50 A20 20 0 0 1 90 50 Z" fill="#2a2a28" transform="rotate(-10 70 50)"/>
+      <!-- bottom half circle -->
+      <path d="M20 50 A25 25 0 0 0 70 50 Z" fill="#1a1a18"/>
+      <!-- orange dot -->
+      <circle cx="72" cy="76" r="7" fill="#f0a500"/>
+    </svg>
+    <div>
+      <div class="topbar-brand">another work</div>
+      <div class="topbar-sub">Sosyal Medya Ajansı</div>
+    </div>
+  </div>
+  <div style="font-size:12px;color:#9a9a92;">Aylık Brief Formu</div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero" id="heroBlock">
+    <div class="hero-eyebrow">Another Work</div>
+    <h1>Aylık İçerik &<br>Reklam Briefingi</h1>
+    <div class="hero-divider"></div>
+    <p>Bu formu doldurarak ajansımızın bu ay için doğru strateji kurmasını sağlayın. Tahmini süre: <strong>3–5 dakika.</strong></p>
+  </div>
+
+  <!-- STEP NAV -->
+  <div class="steps-nav">
+    <div class="step-pill active" id="pill-0" onclick="goTo(0)"><span class="pill-num">1</span>Dönem & Plan</div>
+    <div class="step-pill" id="pill-1" onclick="goTo(1)"><span class="pill-num">2</span>Projeler</div>
+    <div class="step-pill" id="pill-2" onclick="goTo(2)"><span class="pill-num">3</span>Özet & Gönder</div>
+  </div>
+
+  <!-- ═══ PANEL 0 — BRIEF ═══ -->
+  <div class="panel active" id="panel-0">
+
+    <div class="section-header">
+      <div class="section-number">Adım 1 / 3</div>
+      <div class="section-title">Dönem & Genel Plan</div>
+      <div class="section-desc">Bu ayki strateji, bütçe ve kanalları belirleyin.</div>
+    </div>
+
+    <!-- Dönem -->
+    <div class="field field-row">
+      <div>
+        <label>Ay</label>
+        <select id="ay">
+          <option value="">Seçin</option>
+          <option>Ocak</option><option>Şubat</option><option>Mart</option><option>Nisan</option>
+          <option>Mayıs</option><option>Haziran</option><option>Temmuz</option><option>Ağustos</option>
+          <option>Eylül</option><option>Ekim</option><option>Kasım</option><option>Aralık</option>
+        </select>
+      </div>
+      <div>
+        <label>Yıl</label>
+        <select id="yil">
+          <option>2025</option><option>2026</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Ana Mesaj -->
+    <div class="field">
+      <label>Bu ayın ana mesajı / teması</label>
+      <textarea id="anaMesaj" rows="2" placeholder="Örn: Teslim yaklaşıyor, sınırlı daire fırsatı — aciliyet vurgusu yapmak istiyoruz."></textarea>
+      <div class="inline-note">Tek cümle yeterli. Ajans içerik tonunu buna göre belirler.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Bütçe -->
+    <div class="field">
+      <label>Toplam aylık reklam bütçesi</label>
+      <div class="budget-row">
+        <input type="number" id="butce" placeholder="0" min="0">
+        <select id="para">
+          <option>TRY</option><option>USD</option><option>EUR</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Bütçe dağılımı <span class="opt">— opsiyonel</span></label>
+      <textarea id="butceDagilim" rows="2" placeholder="Örn: Proje A'ya %60, Proje B'ye %40. Boş bırakırsanız ajans önerecektir."></textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Kanallar -->
+    <div class="field">
+      <label>Reklam verilecek kanallar</label>
+      <div class="check-grid" id="kanalGrid" style="grid-template-columns:1fr 1fr;">
+        <div class="check-item" onclick="toggle(this)">
+          <input type="checkbox"> <div class="check-box"><span class="check-mark"><svg viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div> Instagram
+        </div>
+        <div class="check-item" onclick="toggle(this)">
+          <input type="checkbox"> <div class="check-box"><span class="check-mark"><svg viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div> Google Ads
+        </div>
+      </div>
+    </div>
+
+    <!-- Kaç proje -->
+    <div class="field">
+      <label>Bu ay kaç proje öne çıkarılacak?</label>
+      <select id="projSayisi" onchange="setProjCount(this.value)">
+        <option value="1">1 proje</option>
+        <option value="2">2 proje</option>
+        <option value="3" selected>3 proje</option>
+        <option value="4">4 proje</option>
+        <option value="5">5 proje</option>
+      </select>
+      <div class="inline-note">Seçiminize göre proje detay formları oluşturulacak.</div>
+    </div>
+
+    <div class="nav">
+      <div></div>
+      <button class="btn btn-primary" onclick="goTo(1)">Proje Detaylarına Geç →</button>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 1 — PROJELER ═══ -->
+  <div class="panel" id="panel-1">
+
+    <div class="section-header">
+      <div class="section-number">Adım 2 / 3</div>
+      <div class="section-title">Proje Detayları</div>
+      <div class="section-desc">Her projeyi sırayla doldurun. Sekmelere tıklayarak geçiş yapabilirsiniz.</div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div class="proj-tabs" id="projTabs"></div>
+      <div class="proj-counter" id="projCounter">0 / 0 dolduruldu</div>
+    </div>
+
+    <div id="projPanels"></div>
+
+    <div class="nav">
+      <button class="btn btn-ghost" onclick="goTo(0)">← Geri</button>
+      <button class="btn btn-accent" onclick="goTo(2)">Özeti Gör →</button>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 2 — SUMMARY ═══ -->
+  <div class="panel" id="panel-2">
+
+    <div class="section-header">
+      <div class="section-number">Adım 3 / 3</div>
+      <div class="section-title">Kontrol & Gönder</div>
+      <div class="section-desc">Bilgilerinizi gözden geçirin, ardından gönderin.</div>
+    </div>
+
+    <div id="summaryContent"></div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <button class="btn btn-success" onclick="submitForm()">Formu Gönder</button>
+      <div style="font-size:12px;color:var(--ink-muted);margin-top:10px;">Gönderdikten sonra ajansınız en geç 24 saat içinde geri dönecektir.</div>
+    </div>
+
+    <div class="nav" style="margin-top:24px;">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Geri Dön</button>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- ═══ SUCCESS ═══ -->
+  <div class="panel" id="panel-success">
+    <div class="success-screen">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Brief'iniz Alındı</div>
+      <div class="success-sub">Teşekkürler! Nesa ekibi en geç 24 saat içinde içerik planını sizinle paylaşacak.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentPanel = 0;
+let projCount = 3;
+const totalPanels = 3;
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  setProjCount(3);
+  updateProgress();
+});
+
+// ── TOGGLE CHECKBOX ──
+function toggle(el) {
+  el.classList.toggle('checked');
+}
+
+// ── NAVIGATION ──
+function goTo(index) {
+  if (index === 2) buildSummary();
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step-pill').forEach((p, i) => {
+    p.classList.remove('active', 'done');
+    if (i < index) p.classList.add('done');
+    if (i === index) p.classList.add('active');
+  });
+  document.getElementById('panel-' + index).classList.add('active');
+  document.getElementById('heroBlock').style.display = index === 0 ? 'block' : 'none';
+  currentPanel = index;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const pct = (currentPanel / totalPanels) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ── PROJECT COUNT ──
+function setProjCount(n) {
+  projCount = parseInt(n);
+  renderProjTabs();
+  renderProjPanels();
+}
+
+function renderProjTabs() {
+  const tabs = document.getElementById('projTabs');
+  tabs.innerHTML = '';
+  for (let i = 0; i < projCount; i++) {
+    const t = document.createElement('div');
+    t.className = 'proj-tab' + (i === 0 ? ' active' : '');
+    t.id = 'ptab-' + i;
+    t.textContent = 'Proje ' + (i + 1);
+    t.onclick = () => switchProj(i);
+    tabs.appendChild(t);
+  }
+}
+
+function renderProjPanels() {
+  const container = document.getElementById('projPanels');
+  container.innerHTML = '';
+  for (let i = 0; i < projCount; i++) {
+    const div = document.createElement('div');
+    div.className = 'proj-panel' + (i === 0 ? ' active' : '');
+    div.id = 'pp-' + i;
+    div.innerHTML = projCardHTML(i);
+    container.appendChild(div);
+  }
+  updateProjCounter();
+}
+
+function switchProj(index) {
+  document.querySelectorAll('.proj-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === index);
+  });
+  document.querySelectorAll('.proj-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === index);
+  });
+}
+
+function projCardHTML(i) {
+  const num = i + 1;
+  return `
+  <div class="proj-card">
+    <div class="proj-card-header">
+      <div class="proj-badge">${num}</div>
+      <div>
+        <div class="proj-card-title" id="ptitle-display-${i}">Proje ${num}</div>
+        <div class="proj-card-sub">Tüm alanları eksiksiz doldurun</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Proje adı</label>
+      <input type="text" id="p${i}_ad" placeholder="Örn: Panorama Kavaklıdere" oninput="updateTabName(${i}, this.value)">
+    </div>
+
+    <div class="field">
+      <label>Proje özeti</label>
+      <textarea id="p${i}_ozet" rows="3" placeholder="Projeyi tüm detaylarıyla açıklayın. Ne tür bir proje? Konsept nedir?"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Lokasyon & çevre özellikleri</label>
+      <textarea id="p${i}_lokasyon" rows="2" placeholder="Örn: Çankaya merkez, metro çıkışına 3 dk, üniversiteye yakın, yüksek kotta panoramik manzara"></textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field field-row">
+      <div>
+        <label>Fiyat aralığı</label>
+        <input type="text" id="p${i}_fiyat" placeholder="Örn: 4.5M — 9M TL">
+      </div>
+      <div>
+        <label>Teslim tarihi</label>
+        <input type="text" id="p${i}_teslim" placeholder="Örn: Aralık 2025">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Daire tipleri & metrekare</label>
+      <textarea id="p${i}_tipler" rows="2" placeholder="Örn: 1+1 (55m²), 2+1 (90m²), 3+1 (140m²)"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Daire özellikleri <span class="opt">— her tip için ayrı belirtin</span></label>
+      <textarea id="p${i}_ozellikler" rows="3" placeholder="Örn:&#10;1+1 — ada mutfak, balkon, yerden ısıtma&#10;2+1 — bahçe katı, özel bahçe, çift banyo&#10;3+1 — çatı katı, teras, jakuzi"></textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field field-row">
+      <div>
+        <label>Proje durumu</label>
+        <select id="p${i}_durum">
+          <option value="">Seçin</option>
+          <option>Tamamlandı</option>
+          <option>Devam Ediyor — %25</option>
+          <option>Devam Ediyor — %50</option>
+          <option>Devam Ediyor — %75</option>
+          <option>Devam Ediyor — %90</option>
+          <option>Proje aşaması</option>
+        </select>
+      </div>
+      <div>
+        <label>İletişim numarası</label>
+        <input type="tel" id="p${i}_tel" placeholder="0500 000 00 00">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Projenin yatırım değeri <span class="opt">— müşteri neden almalı?</span></label>
+      <textarea id="p${i}_deger" rows="2" placeholder="Örn: Bölgenin en hızlı değer kazanan lokasyonu, metro hattı tamamlandığında prim yapacak, kira getiri potansiyeli yüksek."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Finansman seçenekleri</label>
+      <textarea id="p${i}_finansman" rows="2" placeholder="Örn: %0 faiz 12 ay, 36 ay 1.20 vade oranı, banka kredisi ile uygun ödeme planı."></textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Öne çıkarılması gereken konular / aciliyet</label>
+      <textarea id="p${i}_notlar" rows="2" placeholder="Örn: Son 4 daire kaldı, fiyat artışı bekleniyor, bu ay kampanya süresi bitiyor."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Mevcut içerik & görseller <span class="opt">— link ile ekleyin</span></label>
+      <input type="text" id="p${i}_link1" placeholder="Drive, Dropbox veya WeTransfer linki">
+      <div style="margin-top:8px;">
+        <input type="text" id="p${i}_link2" placeholder="Varsa 2. link (opsiyonel)">
+      </div>
+      <div class="inline-note">Google Drive, Dropbox, WeTransfer veya herhangi bir paylaşım linki ekleyebilirsiniz.</div>
+    </div>
+
+  </div>`;
+}
+
+function updateTabName(i, val) {
+  const tab = document.getElementById('ptab-' + i);
+  if (val.trim()) {
+    tab.textContent = val.trim().substring(0, 16);
+    tab.classList.add('filled');
+  } else {
+    tab.textContent = 'Proje ' + (i + 1);
+    tab.classList.remove('filled');
+  }
+  updateProjCounter();
+}
+
+function updateProjCounter() {
+  let filled = 0;
+  for (let i = 0; i < projCount; i++) {
+    const ad = document.getElementById('p' + i + '_ad');
+    if (ad && ad.value.trim()) filled++;
+  }
+  document.getElementById('projCounter').textContent = filled + ' / ' + projCount + ' dolduruldu';
+}
+
+// ── SUMMARY ──
+function buildSummary() {
+  const ay = document.getElementById('ay').value || '—';
+  const yil = document.getElementById('yil').value;
+  const mesaj = document.getElementById('anaMesaj').value || '—';
+  const butce = document.getElementById('butce').value;
+  const para = document.getElementById('para').value;
+  const dagilim = document.getElementById('butceDagilim').value || '—';
+  const kanallar = [...document.querySelectorAll('#kanalGrid .check-item.checked')].map(el => el.textContent.trim()).join(', ') || '—';
+
+  let projBadges = '';
+  for (let i = 0; i < projCount; i++) {
+    const ad = document.getElementById('p' + i + '_ad');
+    const name = (ad && ad.value.trim()) ? ad.value.trim() : 'Proje ' + (i + 1);
+    projBadges += `<span class="proj-summary-badge">${name}</span>`;
+  }
+
+  let projCards = '';
+  for (let i = 0; i < projCount; i++) {
+    const g = id => { const el = document.getElementById(id); return el ? (el.value || '—') : '—'; };
+    projCards += `
+    <div class="summary-card">
+      <div class="summary-title">${g('p' + i + '_ad') !== '—' ? g('p' + i + '_ad') : 'Proje ' + (i + 1)}</div>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="summary-key">Lokasyon</div><div class="summary-val">${g('p' + i + '_lokasyon')}</div></div>
+        <div class="summary-item"><div class="summary-key">Fiyat</div><div class="summary-val">${g('p' + i + '_fiyat')}</div></div>
+        <div class="summary-item"><div class="summary-key">Durum</div><div class="summary-val">${g('p' + i + '_durum')}</div></div>
+        <div class="summary-item"><div class="summary-key">Teslim</div><div class="summary-val">${g('p' + i + '_teslim')}</div></div>
+        <div class="summary-item"><div class="summary-key">Finansman</div><div class="summary-val">${g('p' + i + '_finansman')}</div></div>
+        <div class="summary-item"><div class="summary-key">İletişim</div><div class="summary-val">${g('p' + i + '_tel')}</div></div>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-item"><div class="summary-key">İçerik Linkleri</div><div class="summary-val">${[g('p'+i+'_link1'), g('p'+i+'_link2')].filter(v => v !== '—').join('<br>') || '—'}</div></div>
+      <div class="summary-divider"></div>
+      <div class="summary-item"><div class="summary-key">Notlar / Aciliyet</div><div class="summary-val">${g('p' + i + '_notlar')}</div></div>
+    </div>`;
+  }
+
+  document.getElementById('summaryContent').innerHTML = `
+    <div class="summary-card">
+      <div class="summary-title">Genel Brief</div>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="summary-key">Dönem</div><div class="summary-val">${ay} ${yil}</div></div>
+        <div class="summary-item"><div class="summary-key">Bütçe</div><div class="summary-val">${butce ? butce + ' ' + para : '—'}</div></div>
+        <div class="summary-item"><div class="summary-key">Kanallar</div><div class="summary-val">${kanallar}</div></div>
+        <div class="summary-item"><div class="summary-key">Proje sayısı</div><div class="summary-val">${projCount}</div></div>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-item"><div class="summary-key">Ana Mesaj</div><div class="summary-val">${mesaj}</div></div>
+      <div class="summary-divider"></div>
+      <div class="summary-item"><div class="summary-key">Öne Çıkan Projeler</div><div class="summary-val" style="margin-top:6px;">${projBadges}</div></div>
+      <div class="summary-divider"></div>
+      <div class="summary-item"><div class="summary-key">Bütçe Dağılımı</div><div class="summary-val">${dagilim}</div></div>
+    </div>
+    ${projCards}
+  `;
+}
+
+// ── SUBMIT ──
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymgzXNC-HhG4o4nsDFppFRQEvA86iJ6HqOpaIoCrKpvBzA3LkjNkzlYBSDcASzBy3TcQ/exec';
+
+function submitForm() {
+  const btn = document.querySelector('.btn-success');
+  btn.textContent = 'Gönderiliyor...';
+  btn.disabled = true;
+
+  const g = id => { const el = document.getElementById(id); return el ? (el.value || '') : ''; };
+
+  const projeler = [];
+  for (let i = 0; i < projCount; i++) {
+    projeler.push({
+      ad: g('p' + i + '_ad'),
+      ozet: g('p' + i + '_ozet'),
+      lokasyon: g('p' + i + '_lokasyon'),
+      fiyat: g('p' + i + '_fiyat'),
+      teslim: g('p' + i + '_teslim'),
+      tipler: g('p' + i + '_tipler'),
+      ozellikler: g('p' + i + '_ozellikler'),
+      durum: g('p' + i + '_durum'),
+      deger: g('p' + i + '_deger'),
+      finansman: g('p' + i + '_finansman'),
+      tel: g('p' + i + '_tel'),
+      notlar: g('p' + i + '_notlar'),
+      link1: g('p' + i + '_link1'),
+      link2: g('p' + i + '_link2'),
+    });
+  }
+
+  const kanallar = [...document.querySelectorAll('#kanalGrid .check-item.checked')]
+    .map(el => el.textContent.trim()).join(', ');
+
+  const payload = {
+    ay: g('ay'),
+    yil: g('yil'),
+    anaMesaj: g('anaMesaj'),
+    butce: g('butce'),
+    para: g('para'),
+    butceDagilim: g('butceDagilim'),
+    kanallar: kanallar,
+    projSayisi: projCount,
+    projeler: projeler
+  };
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-success').classList.add('active');
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('heroBlock').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  })
+  .catch(() => {
+    btn.textContent = 'Hata oluştu, tekrar dene';
+    btn.disabled = false;
+  });
+}
+</script>
+</body>
+</html>
