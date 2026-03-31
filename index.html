@@ -329,24 +329,25 @@
         <label>Ay</label>
         <select id="ay">
           <option value="">Seçin</option>
-          <option>Ocak</option><option>Şubat</option><option>Mart</option><option>Nisan</option>
-          <option>Mayıs</option><option>Haziran</option><option>Temmuz</option><option>Ağustos</option>
-          <option>Eylül</option><option>Ekim</option><option>Kasım</option><option>Aralık</option>
         </select>
       </div>
       <div>
         <label>Yıl</label>
         <select id="yil">
-          <option>2025</option><option>2026</option>
         </select>
       </div>
     </div>
 
-    <!-- Ana Mesaj -->
+    <!-- Çekim Tarihleri -->
     <div class="field">
-      <label>Bu ayın ana mesajı / teması</label>
-      <textarea id="anaMesaj" rows="2" placeholder="Örn: Teslim yaklaşıyor, sınırlı daire fırsatı — aciliyet vurgusu yapmak istiyoruz."></textarea>
-      <div class="inline-note">Tek cümle yeterli. Ajans içerik tonunu buna göre belirler.</div>
+      <label>Çekim için müsait tarihler</label>
+      <textarea id="anaMesaj" rows="2" placeholder="Örn: 5-8 Nisan arası uygunuz, hafta sonları da müsaitiz."></textarea>
+      <div class="inline-note">Fotoğraf/video çekimi için ajansın bilmesi gereken müsait tarihleri yazın.</div>
+    </div>
+
+    <div class="field">
+      <label>Ajansa not <span class="opt">— opsiyonel</span></label>
+      <textarea id="ajansNot" rows="2" placeholder="Kısıtlamalar, hassas konular, özel talepler, öncelikler..."></textarea>
     </div>
 
     <div class="divider"></div>
@@ -372,12 +373,9 @@
     <!-- Kanallar -->
     <div class="field">
       <label>Reklam verilecek kanallar</label>
-      <div class="check-grid" id="kanalGrid" style="grid-template-columns:1fr 1fr;">
+      <div class="check-grid" id="kanalGrid" style="grid-template-columns:1fr;">
         <div class="check-item" onclick="toggle(this)">
           <input type="checkbox"> <div class="check-box"><span class="check-mark"><svg viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div> Instagram
-        </div>
-        <div class="check-item" onclick="toggle(this)">
-          <input type="checkbox"> <div class="check-box"><span class="check-mark"><svg viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div> Google Ads
         </div>
       </div>
     </div>
@@ -397,7 +395,7 @@
 
     <div class="nav">
       <div></div>
-      <button class="btn btn-primary" onclick="goTo(1)">Proje Detaylarına Geç →</button>
+      <button class="btn btn-primary" onclick="validateStep0()">Proje Detaylarına Geç →</button>
     </div>
   </div>
 
@@ -419,7 +417,7 @@
 
     <div class="nav">
       <button class="btn btn-ghost" onclick="goTo(0)">← Geri</button>
-      <button class="btn btn-accent" onclick="goTo(2)">Özeti Gör →</button>
+      <button class="btn btn-accent" onclick="validateStep1()">Özeti Gör →</button>
     </div>
   </div>
 
@@ -450,7 +448,8 @@
     <div class="success-screen">
       <div class="success-icon">✓</div>
       <div class="success-title">Brief'iniz Alındı</div>
-      <div class="success-sub">Teşekkürler! Nesa ekibi en geç 24 saat içinde içerik planını sizinle paylaşacak.</div>
+      <div class="success-sub">Teşekkürler! Another Work ekibi en geç 24 saat içinde içerik planını sizinle paylaşacak.</div>
+      <button class="btn btn-primary" style="margin-top:28px;padding:14px 32px;font-size:15px;" onclick="resetForm()">+ Yeni Brief Oluştur</button>
     </div>
   </div>
 
@@ -463,9 +462,115 @@ const totalPanels = 3;
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
+  initDateSelects();
   setProjCount(3);
   updateProgress();
 });
+
+// ── DATE INIT — mevcut ay ve sonrası ──
+function initDateSelects() {
+  const aylar = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const now = new Date();
+  const buAy = now.getMonth(); // 0-indexed
+  const buYil = now.getFullYear();
+  const aySelect = document.getElementById('ay');
+  const yilSelect = document.getElementById('yil');
+
+  // Yılları doldur
+  [buYil, buYil+1].forEach(y => {
+    const o = document.createElement('option');
+    o.value = y; o.textContent = y;
+    yilSelect.appendChild(o);
+  });
+
+  function updateAylar() {
+    const seciliYil = parseInt(yilSelect.value);
+    const mevcutVal = aySelect.value;
+    aySelect.innerHTML = '<option value="">Seçin</option>';
+    aylar.forEach((ad, idx) => {
+      if (seciliYil === buYil && idx < buAy) return;
+      const o = document.createElement('option');
+      o.value = ad; o.textContent = ad;
+      aySelect.appendChild(o);
+    });
+    if (mevcutVal) aySelect.value = mevcutVal;
+  }
+
+  yilSelect.addEventListener('change', updateAylar);
+  updateAylar();
+}
+
+// ── VALIDATION ──
+function showError(msg) {
+  let el = document.getElementById('validationMsg');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'validationMsg';
+    el.style.cssText = 'background:#fff0f0;border:1px solid #e24b4a;color:#a32d2d;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;';
+    const nav = document.querySelector('#panel-0 .nav');
+    nav.parentNode.insertBefore(el, nav);
+  }
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+function showError1(msg) {
+  let el = document.getElementById('validationMsg1');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'validationMsg1';
+    el.style.cssText = 'background:#fff0f0;border:1px solid #e24b4a;color:#a32d2d;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;';
+    const nav = document.querySelector('#panel-1 .nav');
+    nav.parentNode.insertBefore(el, nav);
+  }
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+function validateStep0() {
+  const ay = document.getElementById('ay').value;
+  const butce = document.getElementById('butce').value;
+  if (!ay) { showError('Lütfen ay seçin.'); return; }
+  if (!butce || butce <= 0) { showError('Lütfen reklam bütçesini girin.'); return; }
+  goTo(1);
+}
+
+function validateStep1() {
+  for (let i = 0; i < projCount; i++) {
+    const ad = document.getElementById('p' + i + '_ad');
+    if (!ad || !ad.value.trim()) {
+      showError1('Proje ' + (i+1) + ' için proje adı zorunludur.');
+      switchProj(i);
+      return;
+    }
+    const ozet = document.getElementById('p' + i + '_ozet');
+    if (!ozet || !ozet.value.trim()) {
+      showError1('Proje ' + (i+1) + ' için proje özeti zorunludur.');
+      switchProj(i);
+      return;
+    }
+  }
+  goTo(2);
+}
+
+// ── RESET ──
+function resetForm() {
+  document.querySelectorAll('input[type=text], input[type=number], input[type=tel], textarea').forEach(el => el.value = '');
+  document.querySelectorAll('.check-item').forEach(el => el.classList.remove('checked'));
+  document.querySelectorAll('.proj-tab').forEach(el => el.classList.remove('filled'));
+  initDateSelects();
+  setProjCount(3);
+  document.getElementById('projSayisi').value = '3';
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-0').classList.add('active');
+  document.getElementById('heroBlock').style.display = 'block';
+  document.querySelectorAll('.step-pill').forEach((p,i) => { p.classList.remove('active','done'); if(i===0) p.classList.add('active'); });
+  currentPanel = 0;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 // ── TOGGLE CHECKBOX ──
 function toggle(el) {
@@ -661,6 +766,7 @@ function buildSummary() {
   const ay = document.getElementById('ay').value || '—';
   const yil = document.getElementById('yil').value;
   const mesaj = document.getElementById('anaMesaj').value || '—';
+  const ajansNot = document.getElementById('ajansNot').value || '—';
   const butce = document.getElementById('butce').value;
   const para = document.getElementById('para').value;
   const dagilim = document.getElementById('butceDagilim').value || '—';
@@ -704,7 +810,9 @@ function buildSummary() {
         <div class="summary-item"><div class="summary-key">Proje sayısı</div><div class="summary-val">${projCount}</div></div>
       </div>
       <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">Ana Mesaj</div><div class="summary-val">${mesaj}</div></div>
+      <div class="summary-item"><div class="summary-key">Çekim Tarihleri</div><div class="summary-val">${mesaj}</div></div>
+      <div class="summary-divider"></div>
+      <div class="summary-item"><div class="summary-key">Ajansa Not</div><div class="summary-val">${ajansNot}</div></div>
       <div class="summary-divider"></div>
       <div class="summary-item"><div class="summary-key">Öne Çıkan Projeler</div><div class="summary-val" style="margin-top:6px;">${projBadges}</div></div>
       <div class="summary-divider"></div>
@@ -715,7 +823,7 @@ function buildSummary() {
 }
 
 // ── SUBMIT ──
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzc7PU8-_UwE9oYj4okPxd03aVJbswZI3xit3-3JEov1nacnCLzpGU8-gj5EvmkeNiCww/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymgzXNC-HhG4o4nsDFppFRQEvA86iJ6HqOpaIoCrKpvBzA3LkjNkzlYBSDcASzBy3TcQ/exec';
 
 function submitForm() {
   const btn = document.querySelector('.btn-success');
@@ -751,6 +859,7 @@ function submitForm() {
     ay: g('ay'),
     yil: g('yil'),
     anaMesaj: g('anaMesaj'),
+    ajansNot: g('ajansNot'),
     butce: g('butce'),
     para: g('para'),
     butceDagilim: g('butceDagilim'),
@@ -759,23 +868,32 @@ function submitForm() {
     projeler: projeler
   };
 
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.name = 'submit_iframe';
+  document.body.appendChild(iframe);
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = SCRIPT_URL;
+  form.target = 'submit_iframe';
+
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(payload);
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(() => {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.getElementById('panel-success').classList.add('active');
     document.getElementById('progressFill').style.width = '100%';
     document.getElementById('heroBlock').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  })
-  .catch(() => {
-    btn.textContent = 'Hata oluştu, tekrar dene';
-    btn.disabled = false;
-  });
+    try { document.body.removeChild(form); document.body.removeChild(iframe); } catch(e) {}
+  }, 2500);
 }
 </script>
 </body>
