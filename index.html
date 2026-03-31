@@ -93,6 +93,7 @@
   .step-pill:last-child { border-right: none; }
   .step-pill.active { background: var(--ink); color: var(--white); }
   .step-pill.done { background: var(--paper-dark); color: var(--ink-soft); }
+  .step-pill:not(.active):not(.done) { pointer-events: none; opacity: 0.4; }
   .step-pill .pill-num { display: block; font-size: 18px; font-weight: 300; font-family: 'DM Serif Display', serif; }
 
   /* ── PANELS ── */
@@ -527,6 +528,12 @@ function showError1(msg) {
   el.textContent = msg;
   el.style.display = 'block';
   setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+function pilGoTo(index) {
+  if (index <= currentPanel) { goTo(index); return; }
+  if (currentPanel === 0 && index >= 1) { validateStep0(); return; }
+  if (currentPanel === 1 && index >= 2) { validateStep1(); return; }
 }
 
 function validateStep0() {
