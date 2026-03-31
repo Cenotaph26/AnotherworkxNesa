@@ -830,7 +830,7 @@ function buildSummary() {
 }
 
 // ── SUBMIT ──
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzc7PU8-_UwE9oYj4okPxd03aVJbswZI3xit3-3JEov1nacnCLzpGU8-gj5EvmkeNiCww/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-kFW8Cbf97mwJqUtLurTjlzraoIzMzNt0jZUrJpLenayEkX1_y4Dyz_bFJRDyaifmGg/exec';
 
 function submitForm() {
   const btn = document.querySelector('.btn-success');
@@ -875,18 +875,18 @@ function submitForm() {
     projeler: projeler
   };
 
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: new URLSearchParams({ payload: JSON.stringify(payload) })
-  }).then(() => {
-    showSuccess();
-  }).catch(() => {
-    showSuccess();
-  });
+  const encoded = encodeURIComponent(JSON.stringify(payload));
+  const script = document.createElement('script');
+  script.src = SCRIPT_URL + '?payload=' + encoded;
+  script.onload = () => { showSuccess(); document.body.removeChild(script); };
+  script.onerror = () => { showSuccess(); try { document.body.removeChild(script); } catch(e){} };
+  document.body.appendChild(script);
+
+  setTimeout(showSuccess, 5000);
 }
 
 function showSuccess() {
+  if (document.getElementById('panel-success').classList.contains('active')) return;
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-success').classList.add('active');
   document.getElementById('progressFill').style.width = '100%';
