@@ -3,8 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Another Work — Aylık Brief Formu</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>another work — aylık brief formu</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'Nimbus Sans';
+    src: local('Nimbus Sans'), local('NimbusSans'), local('Helvetica Neue'), local('Arial');
+    font-weight: normal;
+  }
+  .brand-text {
+    font-family: 'Nimbus Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+</style>
 <style>
   :root {
     --ink: #1a1a18;
@@ -35,15 +47,16 @@
 
   /* ── TOP BAR ── */
   .topbar {
-    background: var(--ink);
-    color: var(--white);
-    padding: 14px 40px;
+    background: var(--white);
+    color: var(--ink);
+    padding: 10px 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid var(--border);
   }
-  .topbar-brand { font-family: 'DM Serif Display', serif; font-size: 20px; letter-spacing: 0.02em; }
-  .topbar-sub { font-size: 12px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+  .topbar-brand { font-family: 'Nimbus Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: -0.01em; font-weight: 400; color: var(--ink); }
+  .topbar-sub { display: none; }
 
   /* ── PROGRESS ── */
   .progress-bar {
@@ -276,24 +289,11 @@
 <body>
 
 <div class="topbar">
-  <div style="display:flex;align-items:center;gap:14px;">
-    <!-- Another Work logo (geometric mark + wordmark) -->
-    <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- top-left full semicircle -->
-      <path d="M20 50 A25 25 0 1 1 70 50 Z" fill="#2a2a28"/>
-      <!-- top-right small semicircle -->
-      <path d="M50 50 A20 20 0 0 1 90 50 Z" fill="#2a2a28" transform="rotate(-10 70 50)"/>
-      <!-- bottom half circle -->
-      <path d="M20 50 A25 25 0 0 0 70 50 Z" fill="#1a1a18"/>
-      <!-- orange dot -->
-      <circle cx="72" cy="76" r="7" fill="#f0a500"/>
-    </svg>
-    <div>
-      <div class="topbar-brand">another work</div>
-      <div class="topbar-sub">Sosyal Medya Ajansı</div>
-    </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJ4AAACeCAYAAADDhbN7AAAKMWlDQ1BJQ0MgUHJvZmlsZQAAeJydlndUU9kWh8+9N71QkhCKlNBraFICSA29SJEuKjEJEErAkAAiNkRUcERRkaYIMijggKNDkbEiioUBUbHrBBlE1HFwFBuWSWStGd+8ee/Nm98f935rn73P3Wfvfda6AJD8gwXCTFgJgAyhWBTh58WIjYtnYAcBDPAAA2wA4HCzs0IW+EYCmQJ82IxsmRP4F726DiD5+yrTP4zBAP+flLlZIjEAUJiM5/L42VwZF8k4PVecJbdPyZi2NE3OMErOIlmCMlaTc/IsW3z2mWUPOfMyhDwZy3PO4mXw5Nwn4405Er6MkWAZF+cI+LkyviZjg3RJhkDGb+SxGXxONgAoktwu5nNTZGwtY5IoMoIt43kA4EjJX/DSL1jMzxPLD8XOzFouEiSniBkmXFOGjZMTi+HPz03ni8XMMA43jSPiMdiZGVkc4XIAZs/8WRR5bRmyIjvYODk4MG0tbb4o1H9d/JuS93aWXoR/7hlEH/jD9ld+mQ0AsKZltdn6h21pFQBd6wFQu/2HzWAvAIqyvnUOfXEeunxeUsTiLGcrq9zcXEsBn2spL+jv+p8Of0NffM9Svt3v5WF485M4knQxQ143bmZ6pkTEyM7icPkM5p+H+B8H/nUeFhH8JL6IL5RFRMumTCBMlrVbyBOIBZlChkD4n5r4D8P+pNm5lona+BHQllgCpSEaQH4eACgqESAJe2Qr0O99C8ZHA/nNi9GZmJ37z4L+fVe4TP7IFiR/jmNHRDK4ElHO7Jr8WgI0IABFQAPqQBvoAxPABLbAEbgAD+ADAkEoiARxYDHgghSQAUQgFxSAtaAYlIKtYCeoBnWgETSDNnAYdIFj4DQ4By6By2AE3AFSMA6egCnwCsxAEISFyBAVUod0IEPIHLKFWJAb5AMFQxFQHJQIJUNCSAIVQOugUqgcqobqoWboW+godBq6AA1Dt6BRaBL6FXoHIzAJpsFasBFsBbNgTzgIjoQXwcnwMjgfLoK3wJVwA3wQ7oRPw5fgEVgKP4GnEYAQETqiizARFsJGQpF4JAkRIauQEqQCaUDakB6kH7mKSJGnyFsUBkVFMVBMlAvKHxWF4qKWoVahNqOqUQdQnag+1FXUKGoK9RFNRmuizdHO6AB0LDoZnYsuRlegm9Ad6LPoEfQ4+hUGg6FjjDGOGH9MHCYVswKzGbMb0445hRnGjGGmsVisOtYc64oNxXKwYmwxtgp7EHsSewU7jn2DI+J0cLY4X1w8TogrxFXgWnAncFdwE7gZvBLeEO+MD8Xz8MvxZfhGfA9+CD+OnyEoE4wJroRIQiphLaGS0EY4S7hLeEEkEvWITsRwooC4hlhJPEQ8TxwlviVRSGYkNimBJCFtIe0nnSLdIr0gk8lGZA9yPFlM3kJuJp8h3ye/UaAqWCoEKPAUVivUKHQqXFF4pohXNFT0VFysmK9YoXhEcUjxqRJeyUiJrcRRWqVUo3RU6YbStDJV2UY5VDlDebNyi/IF5UcULMWI4kPhUYoo+yhnKGNUhKpPZVO51HXURupZ6jgNQzOmBdBSaaW0b2iDtCkVioqdSrRKnkqNynEVKR2hG9ED6On0Mvph+nX6O1UtVU9Vvuom1TbVK6qv1eaoeajx1UrU2tVG1N6pM9R91NPUt6l3qd/TQGmYaYRr5Grs0Tir8XQObY7LHO6ckjmH59zWhDXNNCM0V2ju0xzQnNbS1vLTytKq0jqj9VSbru2hnaq9Q/uE9qQOVcdNR6CzQ+ekzmOGCsOTkc6oZPQxpnQ1df11Jbr1uoO6M3rGelF6hXrtevf0Cfos/ST9Hfq9+lMGOgYhBgUGrQa3DfGGLMMUw12G/YavjYyNYow2GHUZPTJWMw4wzjduNb5rQjZxN1lm0mByzRRjyjJNM91tetkMNrM3SzGrMRsyh80dzAXmu82HLdAWThZCiwaLG0wS05OZw2xljlrSLYMtCy27LJ9ZGVjFW22z6rf6aG1vnW7daH3HhmITaFNo02Pzq62ZLde2xvbaXPJc37mr53bPfW5nbse322N3055qH2K/wb7X/oODo4PIoc1h0tHAMdGx1vEGi8YKY21mnXdCO3k5rXY65vTW2cFZ7HzY+RcXpkuaS4vLo3nG8/jzGueNueq5clzrXaVuDLdEt71uUnddd457g/sDD30PnkeTx4SnqWeq50HPZ17WXiKvDq/XbGf2SvYpb8Tbz7vEe9CH4hPlU+1z31fPN9m31XfKz95vhd8pf7R/kP82/xsBWgHcgOaAqUDHwJWBfUGkoAVB1UEPgs2CRcE9IXBIYMj2kLvzDecL53eFgtCA0O2h98KMw5aFfR+OCQ8Lrwl/GGETURDRv4C6YMmClgWvIr0iyyLvRJlESaJ6oxWjE6Kbo1/HeMeUx0hjrWJXxl6K04gTxHXHY+Oj45vipxf6LNy5cDzBPqE44foi40V5iy4s1licvvj4EsUlnCVHEtGJMYktie85oZwGzvTSgKW1S6e4bO4u7hOeB28Hb5Lvyi/nTyS5JpUnPUp2Td6ePJninlKR8lTAFlQLnqf6p9alvk4LTduf9ik9Jr09A5eRmHFUSBGmCfsytTPzMoezzLOKs6TLnJftXDYlChI1ZUPZi7K7xTTZz9SAxESyXjKa45ZTk/MmNzr3SJ5ynjBvYLnZ8k3LJ/J9879egVrBXdFboFuwtmB0pefK+lXQqqWrelfrry5aPb7Gb82BtYS1aWt/KLQuLC98uS5mXU+RVtGaorH1futbixWKRcU3NrhsqNuI2ijYOLhp7qaqTR9LeCUXS61LK0rfb+ZuvviVzVeVX33akrRlsMyhbM9WzFbh1uvb3LcdKFcuzy8f2x6yvXMHY0fJjpc7l+y8UGFXUbeLsEuyS1oZXNldZVC1tep9dUr1SI1XTXutZu2m2te7ebuv7PHY01anVVda926vYO/Ner/6zgajhop9mH05+x42Rjf2f836urlJo6m06cN+4X7pgYgDfc2Ozc0tmi1lrXCrpHXyYMLBy994f9Pdxmyrb6e3lx4ChySHHn+b+O31w0GHe4+wjrR9Z/hdbQe1o6QT6lzeOdWV0iXtjusePhp4tLfHpafje8vv9x/TPVZzXOV42QnCiaITn07mn5w+lXXq6enk02O9S3rvnIk9c60vvG/wbNDZ8+d8z53p9+w/ed71/LELzheOXmRd7LrkcKlzwH6g4wf7HzoGHQY7hxyHui87Xe4Znjd84or7ldNXva+euxZw7dLI/JHh61HXb95IuCG9ybv56Fb6ree3c27P3FlzF3235J7SvYr7mvcbfjT9sV3qID0+6j068GDBgztj3LEnP2X/9H686CH5YcWEzkTzI9tHxyZ9Jy8/Xvh4/EnWk5mnxT8r/1z7zOTZd794/DIwFTs1/lz0/NOvm1+ov9j/0u5l73TY9P1XGa9mXpe8UX9z4C3rbf+7mHcTM7nvse8rP5h+6PkY9PHup4xPn34D94Tz+6TMXDkAABIzSURBVHic7Z1PbBtXfse/71FaoAvLmxZJi8KmnQLtxmaIRbZFElrOLbAV+9BDrT++rsRsDwXWpuxdtEBg2Tl2TUrZnjam4/YUcSjl0KIRKR+yBdYk5S2CxqJo724XWIuUE9TebSXScRxp5tcDNeOZ4QwlWyL5Zvg+Fw6Hf+fNZ35v3n8GD1Eu36VyuYxCoQAiQqFQMF5bXV3FnTt3QEQAgFAohL6+PjDGAACRSASMMUQiEQSDQQSDB1lHDsLnFIu3aG1tzTg3+XweAEBEqFarKJVKiMViEDrxM5kMlUpF5HI5LCwsgIgMkezbnHNDOvPr5vfZ9x85cgShUBiRSAQnTpwQOi1EJZPJUD5/A6VSCfl8vuE8mNHTXjjxyuUyZbNZZDIZLCzkjQPgnEPTNABoKpMdt/1O7yEi9Pf34/jxt3D8+HEcOHBAqLQRBf0cKco0bt++3XCB6+fMvs98HoQRT1GmKZ1OG1moPao5RTdN01wjGWMMmqYhEAg4Xn1bRUOgnjUPDg5jZGREiDTqNMnk+6QoCkqlkuM5sYumRz6ntO6oeMvLy3T16hUoioJareYqgaZp4Jw37GOMGQdnvtIAGNJtJaebgOb37927F0NDI4hGowgGg10l4fLyMk1NJaAoCgA4iqbvNwcEp8BgpiPilct3KR6P46OPPmoajXT0g3K7mvT3uH3ebb/T95jvT5wi6+DgIMbHz/tewFwuR4nEZdy8edNyiwM4S6ezndwG6IB44+PjpCjTjgdhPslbRSL9qnIK6fr3AnAM94BzYjkJ7paVnDp1ClNTP/GdfOVymcbHzxolUqeLFUDDOWl2y+J0DmOxGHhLjsBGMpmkUOgQpdMp1xPsdp9gx7zfSSbzc6cCidP77M+b3SgDwOzsLEKhQ5RMvu98SXuQiYkJ6u/vt1R/OKWNUyBwS1N92ynytfSqLRaLdO5cDKVSqZU/01FCoRDi8UmEw2FPRsBM5mOKxWKO99mtoqURLx6P08mTb6FUKrnm9V7EfiylUgknTgwgHo977iCj0ShFo1FUq1UAjVloK2nJLw0O/g0tLCxY9jlV8noVt3uYSCSCdHpW+MiXz9+g0dFR1Go1ANur79xNdj3iLS4u0qFD33aVTr/n8jpOBRoAKBQKOHz4JVpaWhT26kokLtPw8LCRtTpVR7WDXRMvlUrRyZMn8fDhQ8emq2b1Ol7CSTjz/lqthoGBAaTTaeHkGxsbo0QiYTmGTkgH7JJ48fiP6fz5cRCpriVBP0gHuEc7+0kcHz+LRCIhjHwDAwOUzWYtJdNmtQetZse/GIudoampKQBPEt8twvnh/k6vQzRXC+nYL7qpqQTOnv1BRw96cXGRBgaOUalUBGONVUjmaqd2siPxYrEzNDMz45j45m23ikev4tZqYo56+gmdmZlBLBbriHyLi4s0MjLUULNgDwqdyHKfWbxY7Ayl02nLPnvW6rdsFoDj8Zlxuv+bmVHaHvmKxVt0+vQw1tbWGv6r2/lo53l6JvGSySTNzMz4UqydYs7GzFny7Ows2tnSMT4+jtXVVcdbAhF4avEUZZouXZoAAOPewK2k162Y5TOny8WLF5FOp1puwMDAAN25c8cinWh1qE8lXrFYpIsXLxoHoPdAsLfVdTvmNmJ7O3EsFkMr6/nGxsaoVCo2bbgXgacSb2xszLhnICLLTarbPU+3oZ9ge69pfZtzjrGxsZb8djz+Y5qfzxgBQD8/Ima32xZvdHSU7t2rNO2uJGnsP2jfr2kaVlZWMDR0alctyOV+bqnW0h+deuaIwLbESyaTdP16tuGqceqr1e04NUE5dSsqFAq4cuWnu5Zo0Wi06f8x/w8R2FK8crlMicTl+gHwLToCMn+0xe4EpxzBLKL5cXJyEuXy3R3bEI1GSe9hYsf8e56KeLHYGVSr1fqfJt60IyCo/U0vItIsjcyvVatVjI+P7+i3MpkMZbNzAACCuq3fFYGmpijKtNHTRKQw7XXM2XGhUICiTD9z4sZiZ55k5Qjs2n9sNU3Fi8fjAMQL017Hnh1PTEw80/dcuPAO1Wq1jvUw2Qmu4sXjcfr8888t+7x2cCJjlqVWqz11T5bl5d/StWvXGjomeAVX8T74INl09L7k2XCqFSAiXLny06f6Hqd7Qy+dH0fxEokEra6uWppZvHRQIuNWI/Dw4UMkEpe3FbJyuRzdvHmz4505d4KjeMnk+2CMQVXVjnQS7Abs0miahmQyua3PXr16xRIQVFX1XGBosEpRpmltba3+om2kvWT3sI9BYYyhWq0imUw2Texy+S7Nz89bxrGI1gFgOzSIF4/HG0K3iDXfXsdtWMBWUS+RSBifsc+84CUs4uVyObp3755lohxJe1lZWUEul3O9wrPZrLFtl85LgcFiVzqdbjoU0WtXlTfRjNmZ7CiKQtVq1fH2x2tRzyKePgoJaOyH76WryevMz2cc92ezWceSrIgdPbfCEC+TyVC1ump50dyfC5DytYtqtYpMJtOQ2PPzGdeuTp6NeHpDsxnzUEX9uaT1EJHlXg4AUqkPyd7BU3+vFwODIZ55BnUdvX4JgOdCuVfRs818/oZl//z8vLFtDgDmQqCXAgMH6n3uyuUyAOcxo+aiu6S16Gm9srKC5eVl40rP5XKW9zl1OPUSHADy+RuuYydE7c/lZ8y9lIH6GFm9F4r5PV6VDtgUb2lpqdP/Q2JCF0qfnVN/9BMcgK9n7PQiemTTA8Lt27c7+XdawmZW678ryusQEW7frotnvv/2C3x5eZlkiVVMGGO4deu/qFAoCDc8cafwSqUiS6wCwjmHqqq4f/8+APhmNlUdXqlUpHQCotfnffLJJ55rldgOvFKpyGxWIOxt4+ZqFD+dJw5ovjywTtKsY4VbGrsNMahUKsbrfop6XC8xAbKSeLewL+5nrux1SmMnqfTvePDggedbKZzg5XLZVwfUafT2bbN8zVaRBJzbwfXPPHr0yJcBgQNcZrW7iFNa2sXRZdQb+O3TiZk/4zb7lLfhYIqiULlcNh2Uv4rt7YbIOvezOfrVpXoS/b766ivcv38fa2trqFarePTokVF9Uv8uwvPPP48333yzE4fSIjgikYgYK3R3C8VikQqFHPL5PJaWllCpVFxXGwfq4nplmaqnpafTf8DvpFIfUqFQQDabxVtvHW/oPWwvhADdMe+gFK8FzM3N0fx8Bul0GufPn7fMH0jEG0QDGhc9sW/7DSneLpJMvk9XrlzB978fdY5gpvkF3YRyktGPyMGzu0AikaDDh1+iS5cuQY5L3h4ydXZAInGZDh9+iSYn45ZlOOW45K2R4j0DmczHFIm8RolEwhAOaFxGS45LdkeK9xRUKhUaG/seRaNRrKysNDSN2ZHjkt2RhYttks1m6dixY6hWVw2RzJPmONXHyXHJ7kjxtkEsdobGxr7XdASe2/q85vZY2eH2CTKrbYK+yLB5pUodt14nclzy9pARz4UbN27Q6dPDxtKbQOOcdk4VvG7PpXRWpHgOpFIpOn36NADNkkVKeXYPKZ6NVOpD+uEPz4HIOk2snIR8d5HimVCUaTp37hw0TTPW4gWkbK1AireJLh3QOOm4nxvrO4Us1eKJdOYKXl022ebaGro+4i0ufkYnT5507aakV/7KqLe7dLV45fJdGhgYAGCtHnHrlCnZPbo6H4lGo3BaYFjK1nq6VrwLF94h8/RsMittL10p3tzcHF27dg0AGgoUkvbQleKdOxcztu196CTtoevEi8XOGKvj6PhtCjAv0FXi5fN5SqfTxnP7NBKS9tFVqT0xMeHYcdM8TYSkPXSNeKlUivRJrGX/uM7TNeJNTsZhnhfGSTopYvvoCvEUZZpWVlZkVioQXSHe5cuXAciIJhK+F29u7t/piy++kIUHwfC9eFevXpXDCwXE1+JVKsu0sLAgx0sIiK/FUxRFZq+C4nvxJGLiW/GKxSKtrKzIeUsExbfimZdSB2TBQjR8K142O2dsy2gnHr4Vz2nxZymgOPhSvFwuZxhmn11dIga+FC+fv2Fsq6oKQN7jiYZPxXuy1L3ewVNms2LhS/Gc1uD12+qHXse34rkt0SQRA9+Jl8v9nOyzAjgtyynpLL4TT4cxBlVVHRcrlnQe34m3tLQEoJ69BgIBY1tWp4iF78TT50KxT/MvI55Y+E48M/YOAjLiiYMvxdNFM0c8Ge3EwnfiuZVmZbQTC9+J12zdCRn1xMF34jWLcDLqiYPvxHOrLJbRTix8J555ThSzbLKAIRa+E8/cUrHVOmOSzuE78fbt22dMQSYjnLj4brmBYDAopyDzAL6LeMFg0PEeT0Y/sfCheAeZuUpFViCLie/EA4CXX365YW5jGfHEwpfihUKhhrXIZMQTC1+KFw5/x9iW9Xdi4kvxDh06ZGzLDqBi4kvxjh49yvr6+izSyagnFr4UDwCOHDlqkU5GPbHwsXhHGvbJqCcOvhVvYGBARjqB8a14wWCQhcNhaJpmdJWSEoqDb8UDgNHRUVmdIii+Fm94+DST7bVi4mvxAGBoaAgAHPvnSTqH78UbG3u7039B4oDvxQuHwywSiXT6b0hs+F48AIjFYp3+CxIbXSFef/8bTaOeXGCv/XSFeIA16plFcxsYJGktXSNef/8bbHBw0HjuVKkso1776BrxgHrU6+vrM6YwM1cuy5aN9tJV4h048CIbHz9vyVrN2zLitY+uEg8AotEoe+21JwUNIjKin4x47aPrxAOAqakp7NmzRxYsOkhXird//3727rvvSuE6SFeKBwBDQyNGKVfOLtV+ulY8AJicfI+Zh0Lq2MdqyMLH7tPV4gFANnud7du3z7VaRa/vk9Utu4vvJu15FpLJDzA0dAq1Wq0h0plLvFI+d9bL/0Z4eB/swWfQvnUQ/Bt/iMCf9IM995JjgslU3KRYvEXDw8NYW1trkK+T869EIhGk07NCnif1ywrRr/4F6vJ1BOhrqEzPQDkYNkDgCPR9G4HwD8BeeMVyDF2f1eqEw99hijKDvXv3Nogmq1waoQefkvYfUWzc/RhE62CsvooSA8CgQWMcjDFs1H6Fx7m/w8bSTyw3yFI8E+FweFO+5yz7ZaHCCv3fr2n9xllg4yEYCyDAerBOGogBxDZvTQgAEZhG4LwH+G8F2q33jISU4tmoy6dg374gANmG68TGf/49GCeQFtiMbuvgCIBrHAwBqBrqz4mDbRbO1EAA6t0ZqA8+JUCK50g4HGaFQoGFQqGG18ylX/OjfduvbNz+Z9K+vA+NCBrfAAAw2pwKjmkAETgjEFRom88ZNDBNrTdP/vIqACleU7LZ62xoaKhh9nj9UV89yP6an2Hlf61no+CbjwAnXpduG9Dvi1BXf0lSvC2YnHyPJRIJ6JMAAdZFXPT597oB7WGF1h//DwAgQBoYC4AAaKhnrbSN6y6groP9rigj3nYYHj7NMpl5Yz6Wbq1Upi//14hyjAVA2gY4Y9D4BjTaMF5rhhrohfr491K87XLgwAGWTs+yCxcuYM+ePQ1ZbjcIyNljMOIgBqhQ6zs3M8368W+tE2kboECPFO9pefvtv2XZ7HUMDg42yOd3NjgHQQU4A9EGGO/BBm0WLsh5KS87nPWAa6oU71kIBoNscvI9lkql8eqrrxv7/S5f7x/9JethPWAqAawHoHUEQPXmL6aBb8MmDSrwB38sxdsJ/f39bHZ2lqVSKbz++utbf8AHaH/aDzANjDg4cYBpm9UoPcA2SrZcDaDn4F8zKd4u0N//BpuZ+Yjl8wsYHBxGX9+3jMKHPQq61QM2qx8UiZ4XR0AAODQQZ9CIANYLYhuAttnGzTTAaELrrX+QeP3lF4/Vv6cD/923BINBo4SRTqcpk/kY2WzW8h5zYcTeJmzfL6J87IVX2PovfkS4V4BGGgKsB6SpwGb7LEcvSNsAGIEzBhXrADRwFkAv/yYC332HAVK8ljE0NGRIqCjTlM1mkcvlUK1WLSVgXTR7yVjkUnLvq//INj4ZJV77NTSsA4yBqT31KMgeg/NeEL4Gpx6oRAiwXmi93wQ7+k8A/hyA7BbVdhYXP6ObN29icXER9+7dQz6ft7xuF1DkblHrv/gH0j7Pg2sqKMChgRAgBoJab7PF1/WI2Pciel+5APbcXxjHIeQBdSO5XI4AYGFhAUT1OjIihv3792NkZETY80QPPiX6TRrrX/wMnH0DRAyMr9fV6wsh8GenwA8ONPx/YQ9I4j02fvcpMapH7Z4X/qqpW/8Pchu0mjRACLsAAAAASUVORK5CYII=" style="height:52px;width:auto;display:block;" alt="another work">
+    <span style="font-family:'Nimbus Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;color:#1a1a18;letter-spacing:-0.02em;">another work</span>
   </div>
-  <div style="font-size:12px;color:#9a9a92;">Aylık Brief Formu</div>
+  <div style="font-size:12px;color:#9a9a92;font-family:'DM Sans',sans-serif;">aylık brief formu</div>
 </div>
 
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -302,38 +302,38 @@
 
   <!-- HERO -->
   <div class="hero" id="heroBlock">
-    <div class="hero-eyebrow">Another Work</div>
-    <h1>Aylık İçerik &<br>Reklam Briefingi</h1>
+    <div class="hero-eyebrow">another work</div>
+    <h1>aylık içerik &<br>reklam briefingi</h1>
     <div class="hero-divider"></div>
-    <p>Bu formu doldurarak ajansımızın bu ay için doğru strateji kurmasını sağlayın. Tahmini süre: <strong>3–5 dakika.</strong></p>
+    <p>bu formu doldurarak ajansımızın bu ay için doğru strateji kurmasını sağlayın. tahmini süre: <strong>3–5 dakika.</strong></p>
   </div>
 
   <!-- STEP NAV -->
   <div class="steps-nav">
-    <div class="step-pill active" id="pill-0" onclick="goTo(0)"><span class="pill-num">1</span>Dönem & Plan</div>
-    <div class="step-pill" id="pill-1" onclick="goTo(1)"><span class="pill-num">2</span>Projeler</div>
-    <div class="step-pill" id="pill-2" onclick="goTo(2)"><span class="pill-num">3</span>Özet & Gönder</div>
+    <div class="step-pill active" id="pill-0" onclick="goTo(0)"><span class="pill-num">1</span>dönem & plan</div>
+    <div class="step-pill" id="pill-1" onclick="goTo(1)"><span class="pill-num">2</span>projeler</div>
+    <div class="step-pill" id="pill-2" onclick="goTo(2)"><span class="pill-num">3</span>özet & gönder</div>
   </div>
 
   <!-- ═══ PANEL 0 — BRIEF ═══ -->
   <div class="panel active" id="panel-0">
 
     <div class="section-header">
-      <div class="section-number">Adım 1 / 3</div>
-      <div class="section-title">Dönem & Genel Plan</div>
-      <div class="section-desc">Bu ayki strateji, bütçe ve kanalları belirleyin.</div>
+      <div class="section-number">adım 1 / 3</div>
+      <div class="section-title">dönem & genel plan</div>
+      <div class="section-desc">bu ayki strateji, bütçe ve kanalları belirleyin.</div>
     </div>
 
     <!-- Dönem -->
     <div class="field field-row">
       <div>
-        <label>Ay</label>
+        <label>ay</label>
         <select id="ay">
           <option value="">Seçin</option>
         </select>
       </div>
       <div>
-        <label>Yıl</label>
+        <label>yıl</label>
         <select id="yil">
         </select>
       </div>
@@ -341,13 +341,13 @@
 
     <!-- Çekim Tarihleri -->
     <div class="field">
-      <label>Çekim için müsait tarihler</label>
+      <label>çekim için müsait tarihler</label>
       <textarea id="anaMesaj" rows="2" placeholder="Örn: 5-8 Nisan arası uygunuz, hafta sonları da müsaitiz."></textarea>
       <div class="inline-note">Fotoğraf/video çekimi için ajansın bilmesi gereken müsait tarihleri yazın.</div>
     </div>
 
     <div class="field">
-      <label>Ajansa not <span class="opt">— opsiyonel</span></label>
+      <label>ajansa not <span class="opt">— opsiyonel</span></label>
       <textarea id="ajansNot" rows="2" placeholder="Kısıtlamalar, hassas konular, özel talepler, öncelikler..."></textarea>
     </div>
 
@@ -355,7 +355,7 @@
 
     <!-- Bütçe -->
     <div class="field">
-      <label>Toplam aylık reklam bütçesi</label>
+      <label>toplam aylık reklam bütçesi</label>
       <div class="budget-row">
         <input type="number" id="butce" placeholder="0" min="0">
         <select id="para">
@@ -365,7 +365,7 @@
     </div>
 
     <div class="field">
-      <label>Bütçe dağılımı <span class="opt">— opsiyonel</span></label>
+      <label>bütçe dağılımı <span class="opt">— opsiyonel</span></label>
       <textarea id="butceDagilim" rows="2" placeholder="Örn: Proje A'ya %60, Proje B'ye %40. Boş bırakırsanız ajans önerecektir."></textarea>
     </div>
 
@@ -373,7 +373,7 @@
 
     <!-- Kanallar -->
     <div class="field">
-      <label>Reklam verilecek kanallar</label>
+      <label>reklam verilecek kanallar</label>
       <div class="check-grid" id="kanalGrid" style="grid-template-columns:1fr;">
         <div class="check-item" onclick="toggle(this)">
           <input type="checkbox"> <div class="check-box"><span class="check-mark"><svg viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div> Instagram
@@ -383,7 +383,7 @@
 
     <!-- Kaç proje -->
     <div class="field">
-      <label>Bu ay kaç proje öne çıkarılacak?</label>
+      <label>bu ay kaç proje öne çıkarılacak?</label>
       <select id="projSayisi" onchange="setProjCount(this.value)">
         <option value="1">1 proje</option>
         <option value="2">2 proje</option>
@@ -391,12 +391,12 @@
         <option value="4">4 proje</option>
         <option value="5">5 proje</option>
       </select>
-      <div class="inline-note">Seçiminize göre proje detay formları oluşturulacak.</div>
+      <div class="inline-note">seçiminize göre proje detay formları oluşturulacak.</div>
     </div>
 
     <div class="nav">
       <div></div>
-      <button class="btn btn-primary" onclick="validateStep0()">Proje Detaylarına Geç →</button>
+      <button class="btn btn-primary" onclick="validateStep0()">proje detaylarına Geç →</button>
     </div>
   </div>
 
@@ -404,9 +404,9 @@
   <div class="panel" id="panel-1">
 
     <div class="section-header">
-      <div class="section-number">Adım 2 / 3</div>
-      <div class="section-title">Proje Detayları</div>
-      <div class="section-desc">Her projeyi sırayla doldurun. Sekmelere tıklayarak geçiş yapabilirsiniz.</div>
+      <div class="section-number">adım 2 / 3</div>
+      <div class="section-title">proje detayları</div>
+      <div class="section-desc">her projeyi sırayla doldurun. sekmelere tıklayarak geçiş yapabilirsiniz.</div>
     </div>
 
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
@@ -417,8 +417,8 @@
     <div id="projPanels"></div>
 
     <div class="nav">
-      <button class="btn btn-ghost" onclick="goTo(0)">← Geri</button>
-      <button class="btn btn-accent" onclick="validateStep1()">Özeti Gör →</button>
+      <button class="btn btn-ghost" onclick="goTo(0)">← geri</button>
+      <button class="btn btn-accent" onclick="validateStep1()">özeti gör →</button>
     </div>
   </div>
 
@@ -426,20 +426,20 @@
   <div class="panel" id="panel-2">
 
     <div class="section-header">
-      <div class="section-number">Adım 3 / 3</div>
-      <div class="section-title">Kontrol & Gönder</div>
-      <div class="section-desc">Bilgilerinizi gözden geçirin, ardından gönderin.</div>
+      <div class="section-number">adım 3 / 3</div>
+      <div class="section-title">kontrol & gönder</div>
+      <div class="section-desc">bilgilerinizi gözden geçirin, ardından gönderin.</div>
     </div>
 
     <div id="summaryContent"></div>
 
     <div style="text-align:center;margin-top:32px;">
-      <button class="btn btn-success" onclick="submitForm()">Formu Gönder</button>
-      <div style="font-size:12px;color:var(--ink-muted);margin-top:10px;">Gönderdikten sonra ajansınız en geç 24 saat içinde geri dönecektir.</div>
+      <button class="btn btn-success" onclick="submitForm()">formu gönder</button>
+      <div style="font-size:12px;color:var(--ink-muted);margin-top:10px;">gönderdikten sonra ajansınız en geç 24 saat içinde geri dönecektir.</div>
     </div>
 
     <div class="nav" style="margin-top:24px;">
-      <button class="btn btn-ghost" onclick="goTo(1)">← Geri Dön</button>
+      <button class="btn btn-ghost" onclick="goTo(1)">← geri Dön</button>
       <div></div>
     </div>
   </div>
@@ -447,10 +447,12 @@
   <!-- ═══ SUCCESS ═══ -->
   <div class="panel" id="panel-success">
     <div class="success-screen">
-      <div class="success-icon">✓</div>
-      <div class="success-title">Brief'iniz Alındı</div>
-      <div class="success-sub">Teşekkürler! Another Work ekibi en geç 24 saat içinde içerik planını sizinle paylaşacak.</div>
-      <button class="btn btn-primary" style="margin-top:28px;padding:14px 32px;font-size:15px;" onclick="resetForm()">+ Yeni Brief Oluştur</button>
+      <div style="margin:0 auto 28px;display:flex;justify-content:center;">
+        <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QBMRXhpZgAATU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAB5qADAAQAAAABAAABrgAAAAD/7QA4UGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ+/8AAEQgBrgHmAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMAAQEBAQEBAgEBAgMCAgIDBAMDAwMEBgQEBAQEBgcGBgYGBgYHBwcHBwcHBwgICAgICAkJCQkJCwsLCwsLCwsLC//bAEMBAgICAwMDBQMDBQsIBggLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLC//dAAQAH//aAAwDAQACEQMRAD8A/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//0P8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9H/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//S/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//0/8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9T/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//V/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//1v8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9f/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooq3Y2F7qVytpYRNNK3RVGTQBUor2zQ/g/cShZ/EE/lA/8souW/Fug/AGvTdP8B+E9OA8qySRh/FL+8J/76yPyFLmQHyNRX2/DZWVuAtvCiAdNqgY/KnS21tNnzo1fPXcAaXMB8PUV9gX3grwrqCkXFjECe8Y2H81xXm+t/B6MqZtAuCD/AM85uR+DD+o/GnzIDweitPVdG1PRLk2mqQtC/bPQj2PQ/hWZTAKKKKACiiigAoqa3tri7mW2tUaSRzhVUZJP0Fet6F8ItRugJ9dlFsh/5Zp8z/ieg/Wi4Hj1FfWWnfDzwlpoGLUTMP4pjvz+B+X9K6qHTtPtl2W8EcY9FUD+QqeYD4jorrPHX/I3X/8A11/oK5OqAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/0P8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK3vDegXfiXVY9MteAeXfsqjqf8AD3oAv+E/CGo+K7sx2/7uBD+8lIyB7D1PtX0/oPh3SvDloLTTI9v95zy7H1J/yKt6VpdlothHp1gmyOMYHqT3J9zWjUNgFFFFIAooooAKKKKAM7VNJ07WrRrLU4lljbseoPqD2PuK+Z/GngS88LyfaoCZrNjhX7rns3+PQ19U1Bc21ve272l0gkjkBVlPQg007AfD1Fdl428KS+FtVMKZa2my0LH09D7iuNqwCuj8NeF9S8UXv2WxG1F/1kh+6g/x9BVPQtFvPEGpxaXZD5pDy3ZVHUn6V9daHolj4f05NN09cIvJJ6s3cn3NJuwFHw54U0jwxb+VYJmQj55W5dv8B7CulooqACiiigD5D8df8jdf/wDXX+grk66zx1/yN1//ANdf6CuTrQAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA/9H/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvqX4beHV0TQVuplxcXYEjeoX+Eflz9TXz14W0oa14htNNYZSRwX/wB1eW/QV9kAADAqZAFFFFSAUUUUAFFFFABRRRQAUUUUAcx4w8Px+JNDlsMDzQN8R9HHT8+h+tfIDo0bFHGGBwQexr7mr5t8TeFhL8R002MYivnWbj+6cl/5MaqLA9F+GHhtdI0UapOv+kXgDc9Vj/hH49T+HpXptNVVRQiDAAwAKdUgFFFFABRRRQB8h+Ov+Ruv/wDrr/QVyddZ46/5G6//AOuv9BXJ1oAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf//S/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD1f4QWgm8RTXTD/AFMBx9WIH8s19I18p+BfF1p4TnuJrmFpjMqqNpAxjPrXo/8AwuXS/wDnzl/76FS0B7LRXjX/AAuXS/8Anzl/76FH/C5dL/585f8AvoUrMD2WivGv+Fy6X/z5y/8AfQo/4XLpf/PnL/30KLMD2WivGv8Ahcul/wDPnL/30KP+Fy6X/wA+cv8A30KLMD2WivGv+Fy6X/z5y/8AfQo/4XLpf/PnL/30KLMD2WivGv8Ahcul/wDPnL/30K6HSvHV9rQD6dpFw6H+MlVX8zgUWA9ErnbvS45/E9nqhHMMEwz7kqB+hNacE2oSKGmgWP2L5P6Lj9awPFXieLwrbRX93CZA7GMBDzyM9x7UJAddRXjX/C5dL/585f8AvoUf8Ll0v/nzl/76FFmB7LRXjX/C5dL/AOfOX/voUf8AC5dL/wCfOX/voUWYHstFeNf8Ll0v/nzl/wC+hR/wuXS/+fOX/voUWYHlHjr/AJG6/wD+uv8AQVydbPiHU49Z1q51SJSizvuCnqKxqsAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA/9P/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigArd0Dw5qviS7+y6ZHnH3nPCqPc/061c8J+Fb3xVqP2WD5IU5lkxwo/xPYV9W6TpFhodimn6dGEjT8yfUnuTSbA47w58NtC0NVmu1F3cDne4+UH2Xp+Jya9DAAGBRRUXAK8h+Mf/ACArX/rv/wCymvXq8h+Mf/ICtf8Arv8A+ymmtwPnWiiirAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/9T/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACrNnaXF/dx2Vqu6SVgqj1JqtXsnwh0Nbm/m12cZW3Hlx/wC+3U/gP50Aey+GfD9r4a0mPTbflh80j/3nPU/4e1b9FFZgFFFFABXkPxj/AOQFa/8AXf8A9lNevV5D8Y/+QFa/9d//AGU01uB860UUVYBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB/9X/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvrL4d6eNP8ACNoMYaYGVvfecj9MV8m19raNEsOj2kKdEhjUfQKKUgNKiiioAKKKKACvIfjH/wAgK1/67/8Aspr16vIfjH/yArX/AK7/APspprcD51oooqwCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//W/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAr7X0h1l0m1kTo0KEfQqK+KK+tvh/fjUPCNm+eY08o+2zgfpilIDsqKKKgAooooAK8h+Mf/ACArX/rv/wCymvXq8h+Mf/ICtf8Arv8A+ymmtwPnWiiirAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/9f/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvbvg/rYjmuNAmP+s/ex/UcMPywfwrxGr2m6hc6VfxajaHbJCwZfw7fQ0MD7aorI0LWbTX9Li1SzPyyDkd1YdQfpWvWYBRRRQAV5D8Y/+QFa/wDXf/2U169XkPxj/wCQFa/9d/8A2U01uB860UUVYBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB//9D/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDtvBXjC48K3x35ktZSPNQf+hD3H619T2N9aalape2MglikGVYV8RV1fhjxhqvhafdZnfCxy8TfdPuPQ+9JoD69orkPDvjbQvEiBLaTy5z1hfhvw9fwrr6gAryH4x/8AICtf+u//ALKa9eryH4x/8gK1/wCu/wD7Kaa3A+daKKKsAoorW0CPTJtdsotbbZZNPGLhh2iLDeeOeBmk3ZNjSu7H9Af/AATw/wCCAvxP/a3+Gdh8dfjd4ibwJ4Y1mPz9KtYrb7RqN7AfuzFXZEhiccxlt7OvzbQpVj9Hftb/APBtF4p8C+BL7xx+yZ4xn8VXunxvM2g6tAkV1comTi3uIiEaXGAsbxoGP8YOBX9img2ui2Wh2Vn4bWJNOhgjS1WDHlCFVAQJjjaFxtxxitWv45xPjDxFLHvFUqqjTvpT5YuNuzduZ+bvftY/oCjwBlKwqozg3O2s7u9+61t6K1u9z/I1uLe4tLh7S7RopYmKOjgqyspwQQeQQeoqGvvD/gqBp/hbSv8AgoZ8YrDwakUdjH4ov/kgxsWYvmcADgETFwR2ORXwfX9d5fi/rWFpYm1ueMZW7cyTt8rn4Ni6Hsa9Sje/K2r97OwUUUV2HOFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/0f8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigBQSDkV2uk/ELxVpAEcdx50Y/gmG8fn1/WuJooA9vtfjPOFxe2CsfVH2/oQf51z3jjx5Z+K9Phs7aB4jHJvJYg9iO31rzGilYAooopgFFFFAH9Q3/BOD/g4Ug+Afwr0f4C/tb6DqGvaboECWWma7pJjkvEtYwFiiuIJXjWQRLhRKsgbYACjMNx+jf2uP+Dl/4fy+Arzwx+xn4Z1Q+IL2Jok1nX4oYILEuP8AWRW6STGaRf4RIUQNyQ4+U/x2UV+d4jwr4crY94+ph/eb5nG75G97uPr028j6ylxtm9PCrCxq6JWTsuZL1/XfzNDVtW1TX9Vudd1y4kvL29lee4nmYvJLLISzu7HlmZiSSeSTWfRRX6GkkrI+UbvqwooopiCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/0v8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9P/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//U/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//1f8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9b/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//X/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//0P8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9H/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//Z" style="height:120px;width:auto;display:block;" alt="another work">
+      </div>
+      <div class="success-title">brief'iniz alındı</div>
+      <div class="success-sub">Teşekkürler! another work ekibi en geç 24 saat içinde içerik planını sizinle paylaşacak.</div>
+      <button class="btn btn-primary" style="margin-top:28px;padding:14px 32px;font-size:15px;" onclick="resetForm()">+ yeni brief oluştur</button>
     </div>
   </div>
 
@@ -655,22 +657,22 @@ function projCardHTML(i) {
       <div class="proj-badge">${num}</div>
       <div>
         <div class="proj-card-title" id="ptitle-display-${i}">Proje ${num}</div>
-        <div class="proj-card-sub">Tüm alanları eksiksiz doldurun</div>
+        <div class="proj-card-sub">tüm alanları eksiksiz doldurun</div>
       </div>
     </div>
 
     <div class="field">
-      <label>Proje adı</label>
+      <label>proje adı</label>
       <input type="text" id="p${i}_ad" placeholder="Örn: Panorama Kavaklıdere" oninput="updateTabName(${i}, this.value)">
     </div>
 
     <div class="field">
-      <label>Proje özeti</label>
+      <label>proje özeti</label>
       <textarea id="p${i}_ozet" rows="3" placeholder="Projeyi tüm detaylarıyla açıklayın. Ne tür bir proje? Konsept nedir?"></textarea>
     </div>
 
     <div class="field">
-      <label>Lokasyon & çevre özellikleri</label>
+      <label>lokasyon & çevre özellikleri</label>
       <textarea id="p${i}_lokasyon" rows="2" placeholder="Örn: Çankaya merkez, metro çıkışına 3 dk, üniversiteye yakın, yüksek kotta panoramik manzara"></textarea>
     </div>
 
@@ -678,17 +680,17 @@ function projCardHTML(i) {
 
     <div class="field field-row">
       <div>
-        <label>Fiyat aralığı</label>
+        <label>fiyat aralığı</label>
         <input type="text" id="p${i}_fiyat" placeholder="Örn: 4.5M — 9M TL">
       </div>
       <div>
-        <label>Teslim tarihi</label>
+        <label>teslim tarihi</label>
         <input type="text" id="p${i}_teslim" placeholder="Örn: Aralık 2025">
       </div>
     </div>
 
     <div class="field">
-      <label>Daire tipleri & metrekare</label>
+      <label>daire tipleri & metrekare</label>
       <textarea id="p${i}_tipler" rows="2" placeholder="Örn: 1+1 (55m²), 2+1 (90m²), 3+1 (140m²)"></textarea>
     </div>
 
@@ -701,7 +703,7 @@ function projCardHTML(i) {
 
     <div class="field field-row">
       <div>
-        <label>Proje durumu</label>
+        <label>proje durumu</label>
         <select id="p${i}_durum">
           <option value="">Seçin</option>
           <option>Tamamlandı</option>
@@ -713,30 +715,30 @@ function projCardHTML(i) {
         </select>
       </div>
       <div>
-        <label>İletişim numarası</label>
+        <label>iletişim numarası</label>
         <input type="tel" id="p${i}_tel" placeholder="0500 000 00 00">
       </div>
     </div>
 
     <div class="field">
-      <label>Projenin yatırım değeri <span class="opt">— müşteri neden almalı?</span></label>
+      <label>projenin yatırım değeri <span class="opt">— müşteri neden almalı?</span></label>
       <textarea id="p${i}_deger" rows="2" placeholder="Örn: Bölgenin en hızlı değer kazanan lokasyonu, metro hattı tamamlandığında prim yapacak, kira getiri potansiyeli yüksek."></textarea>
     </div>
 
     <div class="field">
-      <label>Finansman seçenekleri</label>
+      <label>finansman seçenekleri</label>
       <textarea id="p${i}_finansman" rows="2" placeholder="Örn: %0 faiz 12 ay, 36 ay 1.20 vade oranı, banka kredisi ile uygun ödeme planı."></textarea>
     </div>
 
     <div class="divider"></div>
 
     <div class="field">
-      <label>Öne çıkarılması gereken konular / aciliyet</label>
+      <label>öne çıkarılması gereken konular / aciliyet</label>
       <textarea id="p${i}_notlar" rows="2" placeholder="Örn: Son 4 daire kaldı, fiyat artışı bekleniyor, bu ay kampanya süresi bitiyor."></textarea>
     </div>
 
     <div class="field">
-      <label>Mevcut içerik & görseller <span class="opt">— link ile ekleyin</span></label>
+      <label>mevcut içerik & görseller <span class="opt">— link ile ekleyin</span></label>
       <input type="text" id="p${i}_link1" placeholder="Drive, Dropbox veya WeTransfer linki">
       <div style="margin-top:8px;">
         <input type="text" id="p${i}_link2" placeholder="Varsa 2. link (opsiyonel)">
@@ -809,7 +811,7 @@ function buildSummary() {
 
   document.getElementById('summaryContent').innerHTML = `
     <div class="summary-card">
-      <div class="summary-title">Genel Brief</div>
+      <div class="summary-title">genel brief</div>
       <div class="summary-grid">
         <div class="summary-item"><div class="summary-key">Dönem</div><div class="summary-val">${ay} ${yil}</div></div>
         <div class="summary-item"><div class="summary-key">Bütçe</div><div class="summary-val">${butce ? butce + ' ' + para : '—'}</div></div>
@@ -819,9 +821,9 @@ function buildSummary() {
       <div class="summary-divider"></div>
       <div class="summary-item"><div class="summary-key">Çekim Tarihleri</div><div class="summary-val">${mesaj}</div></div>
       <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">Ajansa Not</div><div class="summary-val">${ajansNot}</div></div>
+      <div class="summary-item"><div class="summary-key">ajansa not</div><div class="summary-val">${ajansNot}</div></div>
       <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">Öne Çıkan Projeler</div><div class="summary-val" style="margin-top:6px;">${projBadges}</div></div>
+      <div class="summary-item"><div class="summary-key">Öne Çıkan projeler</div><div class="summary-val" style="margin-top:6px;">${projBadges}</div></div>
       <div class="summary-divider"></div>
       <div class="summary-item"><div class="summary-key">Bütçe Dağılımı</div><div class="summary-val">${dagilim}</div></div>
     </div>
