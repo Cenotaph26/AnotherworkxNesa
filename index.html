@@ -607,7 +607,8 @@ let projIdCnt = 0, taskIdCnt = 0;
 let sentSections = new Set();
 let focusSelected = [];
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-kFW8Cbf97mwJqUtLurTjlzraoIzMzNt0jZUrJpLenayEkX1_y4Dyz_bFJRDyaifmGg/exec';
+// ── Cloudflare Worker URL — deploy ettikten sonra buraya yapıştır ──
+const WORKER_URL = 'https://YOUR_WORKER.YOUR_SUBDOMAIN.workers.dev';
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
@@ -1150,19 +1151,30 @@ function collectSectionData(n) {
   }
 }
 
-function sendSection(n) {
+async function sendSection(n) {
   const btn = event.currentTarget;
+  const origText = btn.textContent;
   btn.textContent = 'Gönderiliyor...';
   btn.disabled = true;
 
   const data = collectSectionData(n);
-  const encoded = encodeURIComponent(JSON.stringify(data));
-  const script = document.createElement('script');
-  script.src = SCRIPT_URL + '?payload=' + encoded;
-  script.onload = () => { markSent(n); try { document.body.removeChild(script); } catch(e){} };
-  script.onerror = () => { markSent(n); try { document.body.removeChild(script); } catch(e){} };
-  document.body.appendChild(script);
-  setTimeout(() => markSent(n), 5000);
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.ok) {
+      markSent(n);
+    } else {
+      throw new Error(json.error || 'Bilinmeyen hata');
+    }
+  } catch (err) {
+    btn.textContent = origText;
+    btn.disabled = false;
+    showToast('❌ Hata: ' + err.message);
+  }
 }
 
 function markSent(n) {
@@ -1181,26 +1193,30 @@ function markSent(n) {
   showToast('✓ Gönderildi!');
 }
 
-function sendAll() {
+async function sendAll() {
   const unsent = [0, 1, 2].filter(n => !sentSections.has(n));
   if (unsent.length === 0) { showToast('Tüm bölümler zaten gönderildi.'); return; }
 
-  let done = 0;
-  unsent.forEach(n => {
+  const allBtn = document.querySelector('.global-send .btn-accent');
+  if (allBtn) { allBtn.textContent = 'Gönderiliyor...'; allBtn.disabled = true; }
+
+  const results = await Promise.allSettled(unsent.map(async n => {
     const data = collectSectionData(n);
-    const encoded = encodeURIComponent(JSON.stringify(data));
-    const script = document.createElement('script');
-    script.src = SCRIPT_URL + '?payload=' + encoded;
-    const finish = () => {
-      markSent(n);
-      done++;
-      try { document.body.removeChild(script); } catch(e){}
-    };
-    script.onload = finish;
-    script.onerror = finish;
-    document.body.appendChild(script);
-    setTimeout(finish, 5000);
-  });
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'Hata');
+    markSent(n);
+  }));
+
+  if (allBtn) { allBtn.textContent = 'Tümünü Gönder →'; allBtn.disabled = false; }
+
+  const failed = results.filter(r => r.status === 'rejected');
+  if (failed.length === 0) showToast('✓ Tüm bölümler gönderildi!');
+  else showToast('❌ ' + failed.length + ' bölüm gönderilemedi');
 }
 
 function updateGlobalStatus() {
