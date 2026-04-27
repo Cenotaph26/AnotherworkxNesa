@@ -3,898 +3,1383 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>another work — aylık brief formu</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>another work — brief platformu</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  @font-face {
-    font-family: 'Nimbus Sans';
-    src: local('Nimbus Sans'), local('NimbusSans'), local('Helvetica Neue'), local('Arial');
-    font-weight: normal;
-  }
-  .brand-text {
-    font-family: 'Nimbus Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-  }
-</style>
-<style>
-  :root {
-    --ink: #1a1a18;
-    --ink-soft: #5a5a55;
-    --ink-muted: #9a9a92;
-    --paper: #f7f5f0;
-    --paper-dark: #edeae2;
-    --accent: #f0a500;
-    --accent-dark: #c88a00;
-    --white: #ffffff;
-    --border: rgba(26,26,24,0.12);
-    --border-strong: rgba(26,26,24,0.22);
-    --success: #4a7c59;
-    --radius: 4px;
-    --radius-lg: 10px;
-  }
+:root {
+  --ink: #1a1a18;
+  --ink-soft: #5a5a55;
+  --ink-muted: #9a9a92;
+  --paper: #f7f5f0;
+  --paper-dark: #edeae2;
+  --accent: #f0a500;
+  --accent-dark: #c88a00;
+  --accent-light: #fdf8ef;
+  --white: #ffffff;
+  --border: rgba(26,26,24,0.10);
+  --border-strong: rgba(26,26,24,0.20);
+  --success: #4a7c59;
+  --danger: #c0392b;
+  --radius: 4px;
+  --radius-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.6; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+.topbar { background: var(--white); padding: 11px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
+.topbar-brand { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; letter-spacing: -0.01em; font-weight: 400; }
+.topbar-right { font-size: 12px; color: var(--ink-muted); }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.6;
-  }
+.container { max-width: 760px; margin: 0 auto; padding: 40px 24px 100px; }
 
-  /* ── TOP BAR ── */
-  .topbar {
-    background: var(--white);
-    color: var(--ink);
-    padding: 10px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-  }
-  .topbar-brand { font-family: 'Nimbus Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 18px; letter-spacing: -0.01em; font-weight: 400; color: var(--ink); }
-  .topbar-sub { display: none; }
+/* PAGE TITLE */
+.page-title { font-family: 'DM Serif Display', serif; font-size: clamp(24px,4vw,34px); color: var(--ink); margin-bottom: 6px; }
+.page-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 40px; }
 
-  /* ── PROGRESS ── */
-  .progress-bar {
-    background: var(--paper-dark);
-    height: 3px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 0.4s ease;
-    width: 0%;
-  }
+/* ── SECTION BLOCK ── */
+.section-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 24px;
+  overflow: visible;
+  transition: box-shadow 0.2s;
+}
+.section-block > .section-header {
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.section-block:not(.open) > .section-header {
+  border-radius: var(--radius-lg);
+}
+.section-block:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
 
-  /* ── LAYOUT ── */
-  .container { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px; cursor: pointer; user-select: none;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+}
+.section-block.open .section-header { border-bottom-color: var(--border); }
+.section-header-left { display: flex; align-items: center; gap: 14px; }
+.section-num {
+  width: 28px; height: 28px; background: var(--ink); color: white;
+  border-radius: 50%; font-family: 'DM Serif Display', serif; font-size: 14px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.section-block.sent .section-num { background: var(--success); }
+.section-label { font-size: 13px; font-weight: 500; color: var(--ink); }
+.section-sublabel { font-size: 11px; color: var(--ink-muted); margin-top: 1px; }
+.section-header-right { display: flex; align-items: center; gap: 10px; }
+.section-status { font-size: 11px; padding: 3px 9px; border-radius: 20px; font-weight: 500; }
+.status-draft { background: var(--paper-dark); color: var(--ink-muted); }
+.status-filled { background: #e8f5ec; color: var(--success); }
+.status-sent { background: #e8f5ec; color: var(--success); }
+.chevron { font-size: 12px; color: var(--ink-muted); transition: transform 0.25s; }
+.section-block.open .chevron { transform: rotate(180deg); }
 
-  /* ── HERO ── */
-  .hero { margin-bottom: 48px; }
-  .hero-eyebrow {
-    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); font-weight: 500; margin-bottom: 10px;
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(28px, 5vw, 42px);
-    line-height: 1.15;
-    color: var(--ink);
-    margin-bottom: 14px;
-  }
-  .hero p { font-size: 14px; color: var(--ink-soft); max-width: 480px; }
-  .hero-divider { width: 48px; height: 2px; background: var(--accent); margin: 20px 0; }
+.section-body { display: none; padding: 24px; }
+.section-block.open .section-body { display: block; animation: fadeSlide 0.22s ease; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ── STEP INDICATOR ── */
-  .steps-nav {
-    display: flex; gap: 0; margin-bottom: 40px;
-    border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
-  }
-  .step-pill {
-    flex: 1; padding: 10px 8px; text-align: center; cursor: pointer;
-    font-size: 12px; font-weight: 500; color: var(--ink-muted);
-    background: var(--white); border-right: 1px solid var(--border);
-    transition: all 0.2s; user-select: none;
-  }
-  .step-pill:last-child { border-right: none; }
-  .step-pill.active { background: var(--ink); color: var(--white); }
-  .step-pill.done { background: var(--paper-dark); color: var(--ink-soft); }
-  .step-pill:not(.active):not(.done) { pointer-events: none; opacity: 0.4; }
-  .step-pill .pill-num { display: block; font-size: 18px; font-weight: 300; font-family: 'DM Serif Display', serif; }
+/* SEND BAR */
+.send-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px; background: var(--paper); border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+.send-bar-note { font-size: 12px; color: var(--ink-muted); }
+.send-bar-btns { display: flex; gap: 8px; }
 
-  /* ── PANELS ── */
-  .panel { display: none; animation: fadeIn 0.3s ease; }
-  .panel.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+/* FIELDS */
+.field { margin-bottom: 18px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+label .opt { font-weight: 300; text-transform: none; letter-spacing: 0; color: var(--ink-muted); font-size: 11px; }
+input[type=text], input[type=tel], input[type=date], input[type=number], input[type=email], select, textarea {
+  width: 100%; padding: 10px 13px; background: var(--white); border: 1px solid var(--border-strong);
+  border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--ink); outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(240,165,0,0.12); }
+textarea { resize: vertical; min-height: 78px; line-height: 1.6; }
+select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5a55' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+::placeholder { color: var(--ink-muted); font-size: 13px; }
+.budget-row { display: grid; grid-template-columns: 1fr 80px; gap: 8px; }
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+.inline-note { font-size: 11px; color: var(--ink-muted); margin-top: 6px; }
 
-  /* ── SECTION HEADER ── */
-  .section-header { margin-bottom: 28px; }
-  .section-number {
-    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); font-weight: 500; margin-bottom: 6px;
-  }
-  .section-title {
-    font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--ink); margin-bottom: 6px;
-  }
-  .section-desc { font-size: 13px; color: var(--ink-soft); }
+/* BUTTONS */
+.btn { padding: 10px 22px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; letter-spacing: 0.02em; }
+.btn-ghost { background: transparent; border: 1px solid var(--border-strong); color: var(--ink-soft); }
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+.btn-primary { background: var(--ink); color: var(--white); }
+.btn-primary:hover { background: #2d2d2a; }
+.btn-accent { background: var(--accent); color: var(--white); }
+.btn-accent:hover { background: var(--accent-dark); }
+.btn-success { background: var(--success); color: var(--white); }
+.btn-success:hover { background: #3a6347; }
+.btn-sm { padding: 6px 13px; font-size: 12px; }
+.btn-danger-sm { background: transparent; border: 1px solid #e8c5c0; color: var(--danger); padding: 5px 10px; font-size: 11px; border-radius: 3px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+.btn-danger-sm:hover { background: #fdf2f0; }
 
-  /* ── FIELD ── */
-  .field { margin-bottom: 22px; }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  label {
-    display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.05em;
-    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 7px;
-  }
-  label .opt { font-weight: 300; text-transform: none; letter-spacing: 0; color: var(--ink-muted); font-size: 11px; }
-  input[type=text], input[type=tel], input[type=date], input[type=number], select, textarea {
-    width: 100%; padding: 11px 14px;
-    background: var(--white); border: 1px solid var(--border-strong);
-    border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
-    font-size: 14px; color: var(--ink); outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    -webkit-appearance: none;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,169,110,0.15);
-  }
-  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-  select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5a55' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
-  ::placeholder { color: var(--ink-muted); }
+/* GLOBAL SEND BAR */
+.global-send {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--white); border-top: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
+  z-index: 300; box-shadow: 0 -4px 20px rgba(0,0,0,0.07);
+}
+.global-send-info { font-size: 12px; color: var(--ink-soft); }
+.global-send-info strong { color: var(--ink); }
 
-  /* ── CHECKBOX GROUP ── */
-  .check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-  .check-item {
-    display: flex; align-items: center; gap: 9px;
-    padding: 9px 12px; background: var(--white);
-    border: 1px solid var(--border-strong); border-radius: var(--radius);
-    cursor: pointer; transition: all 0.15s; user-select: none; font-size: 13px;
-  }
-  .check-item:hover { border-color: var(--accent); }
-  .check-item.checked { background: #fdf8ef; border-color: var(--accent); color: var(--ink); font-weight: 500; }
-  .check-item input { display: none; }
-  .check-box {
-    width: 16px; height: 16px; border: 1.5px solid var(--border-strong);
-    border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-  }
-  .check-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
-  .check-mark { display: none; }
-  .check-item.checked .check-mark { display: block; }
-  .check-mark svg { width: 10px; height: 10px; display: block; }
+/* ── SM FOCUS CHIPS ── */
+.focus-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.focus-chip {
+  padding: 7px 14px; border: 1.5px solid var(--border-strong); border-radius: 24px;
+  font-size: 13px; cursor: pointer; background: var(--white); color: var(--ink-soft);
+  transition: all 0.15s; user-select: none; font-family: 'DM Sans', sans-serif;
+}
+.focus-chip:hover { border-color: var(--accent); color: var(--accent-dark); }
+.focus-chip.active { background: var(--accent); border-color: var(--accent); color: white; font-weight: 500; }
 
-  /* ── PROJECT TABS ── */
-  .proj-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
-  .proj-tab {
-    padding: 7px 16px; border: 1px solid var(--border-strong);
-    border-radius: 24px; font-size: 13px; font-weight: 500; cursor: pointer;
-    background: var(--white); color: var(--ink-soft); transition: all 0.15s;
-  }
-  .proj-tab.active { background: var(--ink); border-color: var(--ink); color: var(--white); }
-  .proj-tab.filled { border-color: var(--success); color: var(--success); }
-  .proj-tab.active.filled { background: var(--success); border-color: var(--success); color: var(--white); }
+/* ── CARDS (Google Forms style) ── */
+.cards-wrap { display: flex; flex-direction: column; gap: 12px; }
+.gf-card {
+  border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
+  overflow: hidden; background: var(--white);
+  transition: box-shadow 0.15s;
+}
+.gf-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.gf-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 16px; cursor: pointer; user-select: none; background: var(--paper);
+  border-bottom: 1px solid transparent;
+}
+.gf-card.open .gf-card-header { border-bottom-color: var(--border); background: var(--paper-dark); }
+.gf-card-title { font-size: 13px; font-weight: 500; color: var(--ink); }
+.gf-card-sub { font-size: 11px; color: var(--ink-muted); margin-top: 1px; }
+.gf-card-chevron { font-size: 11px; color: var(--ink-muted); transition: transform 0.2s; }
+.gf-card.open .gf-card-chevron { transform: rotate(180deg); }
+.gf-card-body { display: none; padding: 16px; }
+.gf-card.open .gf-card-body { display: block; animation: fadeSlide 0.18s ease; }
+.gf-card-accent { border-left: 3px solid var(--accent); }
 
-  /* ── PROJECT CARD ── */
-  .proj-panel { display: none; }
-  .proj-panel.active { display: block; }
-  .proj-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius-lg); padding: 28px;
-  }
-  .proj-card-header {
-    display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
-    padding-bottom: 16px; border-bottom: 1px solid var(--border);
-  }
-  .proj-badge {
-    width: 32px; height: 32px; background: var(--ink); color: var(--white);
-    border-radius: 50%; font-family: 'DM Serif Display', serif; font-size: 16px;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .proj-card-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--ink); }
-  .proj-card-sub { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+.add-card-btn {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  width: 100%; padding: 12px; border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-lg); background: transparent; font-family: 'DM Sans', sans-serif;
+  font-size: 13px; color: var(--ink-muted); cursor: pointer; transition: all 0.18s; font-weight: 500;
+}
+.add-card-btn:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--accent-light); }
 
-  /* ── MEDIA UPLOAD ── */
-  .upload-zone {
-    border: 1.5px dashed var(--border-strong); border-radius: var(--radius-lg);
-    padding: 28px; text-align: center; cursor: pointer; transition: all 0.2s;
-    background: var(--white);
-  }
-  .upload-zone:hover { border-color: var(--accent); background: #fdf8ef; }
-  .upload-zone input { display: none; }
-  .upload-icon { font-size: 28px; margin-bottom: 8px; }
-  .upload-label { font-size: 13px; color: var(--ink-soft); }
-  .upload-label span { color: var(--accent); font-weight: 500; cursor: pointer; }
-  .upload-hint { font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
-  .upload-list { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
-  .upload-chip {
-    padding: 4px 10px; background: var(--paper-dark); border-radius: 20px;
-    font-size: 12px; color: var(--ink-soft); display: flex; align-items: center; gap: 6px;
-  }
-  .upload-chip button { background: none; border: none; cursor: pointer; color: var(--ink-muted); font-size: 14px; line-height: 1; padding: 0; }
+/* APT TABLE */
+.apt-table-wrap { overflow-x: auto; margin-bottom: 12px; }
+.apt-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.apt-table th { background: var(--paper-dark); color: var(--ink-soft); font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 7px 9px; border: 1px solid var(--border-strong); text-align: left; white-space: nowrap; }
+.apt-table td { border: 1px solid var(--border); padding: 0; vertical-align: middle; }
+.apt-table td input, .apt-table td select { border: none; border-radius: 0; padding: 7px 9px; font-size: 12px; height: 34px; min-width: 0; background: transparent; }
+.apt-table td input:focus, .apt-table td select:focus { background: var(--accent-light); outline: 2px solid var(--accent); outline-offset: -2px; box-shadow: none; }
+.apt-table td.td-floor { min-width: 88px; }
+.apt-table td.td-type { min-width: 90px; }
+.apt-table td.td-net, .apt-table td.td-brut { min-width: 72px; }
+.apt-table td.td-kitchen { min-width: 90px; }
+.apt-table td.td-bath { min-width: 80px; }
+.apt-table .price-range { display: flex; gap: 3px; padding: 3px 7px; align-items: center; }
+.apt-table .price-range input { padding: 3px 5px; font-size: 11px; width: 70px; height: 26px; border: 1px solid var(--border-strong); border-radius: 3px; background: white; }
+.apt-table .price-range span { font-size: 11px; color: var(--ink-muted); }
+.apt-table .del-btn { background: none; border: none; cursor: pointer; color: var(--ink-muted); font-size: 15px; padding: 4px 7px; transition: color 0.15s; }
+.apt-table .del-btn:hover { color: var(--danger); }
+.add-row-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--accent-dark); cursor: pointer; padding: 6px 0; font-weight: 500; background: none; border: none; font-family: 'DM Sans', sans-serif; }
+.add-row-btn:hover { text-decoration: underline; }
 
-  /* ── BUDGET FIELD ── */
-  .budget-row { display: grid; grid-template-columns: 1fr 80px; gap: 8px; }
+/* TASK CARDS */
+.task-templates { margin-bottom: 16px; }
+.tpl-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); font-weight: 500; margin-bottom: 8px; }
+.tpl-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.tpl-pill { padding: 5px 11px; border: 1px solid var(--border-strong); border-radius: 20px; font-size: 12px; cursor: pointer; background: var(--white); color: var(--ink-soft); transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+.tpl-pill:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--accent-light); }
+.task-row { display: grid; grid-template-columns: 1fr 160px 110px; gap: 10px; }
+.task-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.priority-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.p-yuksek { background: #ef4444; }
+.p-orta { background: #f59e0b; }
+.p-dusuk { background: #10b981; }
 
-  /* ── NAV BUTTONS ── */
-  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 36px; }
-  .btn {
-    padding: 13px 28px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none;
-    letter-spacing: 0.02em;
-  }
-  .btn-ghost {
-    background: transparent; border: 1px solid var(--border-strong); color: var(--ink-soft);
-  }
-  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
-  .btn-primary { background: var(--ink); color: var(--white); }
-  .btn-primary:hover { background: #2d2d2a; }
-  .btn-accent { background: var(--accent); color: var(--white); }
-  .btn-accent:hover { background: var(--accent-dark); }
-  .btn-success { background: var(--success); color: var(--white); padding: 15px 36px; font-size: 15px; }
-  .btn-success:hover { background: #3a6347; }
+/* TOAST */
+.toast {
+  position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--ink); color: white; padding: 10px 20px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.3s; z-index: 999; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ── PROJ COUNTER ── */
-  .proj-counter {
-    font-size: 12px; color: var(--ink-muted); padding: 6px 12px;
-    background: var(--paper-dark); border-radius: 20px;
-  }
+/* SENT OVERLAY */
+.sent-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--success); font-weight: 500;
+}
 
-  /* ── SUMMARY ── */
-  .summary-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px;
-  }
-  .summary-title { font-family: 'DM Serif Display', serif; font-size: 18px; margin-bottom: 16px; }
-  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .summary-item {}
-  .summary-key { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 2px; }
-  .summary-val { font-size: 14px; color: var(--ink); font-weight: 400; }
-  .summary-divider { height: 1px; background: var(--border); margin: 14px 0; }
-  .proj-summary-badge {
-    display: inline-block; padding: 3px 10px; background: #fdf8ef;
-    border: 1px solid var(--accent); border-radius: 20px;
-    font-size: 12px; color: var(--accent-dark); font-weight: 500; margin: 2px;
-  }
 
-  /* ── SUCCESS ── */
-  .success-screen { text-align: center; padding: 60px 0; }
-  .success-icon { font-size: 48px; margin-bottom: 20px; }
-  .success-title { font-family: 'DM Serif Display', serif; font-size: 32px; margin-bottom: 12px; }
-  .success-sub { font-size: 15px; color: var(--ink-soft); max-width: 360px; margin: 0 auto; }
+/* ── CUSTOM FIELD BUILDER ── */
+.cfb-wrap { margin-top: 20px; }
+.cfb-label-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.cfb-section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.cfb-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
 
-  /* ── MOBILE ── */
-  @media (max-width: 560px) {
-    .topbar { padding: 12px 16px; }
-    .container { padding: 32px 16px 60px; }
-    .field-row { grid-template-columns: 1fr; }
-    .summary-grid { grid-template-columns: 1fr; }
-    .steps-nav { display: none; }
-    .budget-row { grid-template-columns: 1fr 70px; }
-  }
+/* the live card */
+.cf-card {
+  border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
+  background: var(--white); overflow: hidden;
+}
+.cf-card-top {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+  background: var(--paper);
+}
+.cf-card-top-left { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.cf-question-input {
+  font-size: 14px; font-weight: 500; color: var(--ink);
+  border: none; border-bottom: 1.5px solid var(--border-strong);
+  border-radius: 0; background: transparent; padding: 4px 0; width: 100%;
+  outline: none; font-family: 'DM Sans', sans-serif;
+}
+.cf-question-input:focus { border-bottom-color: var(--accent); }
+.cf-type-select {
+  font-size: 11px; color: var(--ink-muted); border: 1px solid var(--border-strong);
+  border-radius: 3px; padding: 3px 8px; background: var(--white);
+  font-family: 'DM Sans', sans-serif; cursor: pointer; outline: none;
+  width: fit-content;
+}
+.cf-card-actions { display: flex; gap: 6px; align-items: center; }
+.cf-del-btn {
+  background: none; border: none; cursor: pointer; color: var(--ink-muted);
+  font-size: 18px; padding: 2px 5px; transition: color 0.15s; line-height: 1;
+}
+.cf-del-btn:hover { color: var(--danger); }
+.cf-req-toggle {
+  font-size: 11px; color: var(--ink-muted); cursor: pointer; user-select: none;
+  padding: 3px 8px; border: 1px solid var(--border-strong); border-radius: 3px;
+  background: var(--white); transition: all 0.15s; font-family: 'DM Sans', sans-serif;
+}
+.cf-req-toggle.required { background: var(--accent-light); border-color: var(--accent); color: var(--accent-dark); }
 
-  /* ── INLINE NOTE ── */
-  .inline-note {
-    font-size: 12px; color: var(--ink-muted); margin-top: 5px; padding-left: 2px;
-  }
+/* options editor */
+.cf-options-wrap { padding: 12px 16px; }
+.cf-option-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
+}
+.cf-option-icon { font-size: 14px; color: var(--ink-muted); flex-shrink: 0; width: 18px; text-align: center; }
+.cf-option-input {
+  flex: 1; border: none; border-bottom: 1px dashed var(--border-strong);
+  font-size: 13px; color: var(--ink); background: transparent; outline: none;
+  padding: 3px 0; font-family: 'DM Sans', sans-serif;
+}
+.cf-option-input:focus { border-bottom-color: var(--accent); }
+.cf-opt-del { background: none; border: none; cursor: pointer; color: var(--ink-muted); font-size: 14px; padding: 0 4px; }
+.cf-opt-del:hover { color: var(--danger); }
+.cf-add-option {
+  display: flex; align-items: center; gap: 6px; font-size: 12px;
+  color: var(--ink-muted); cursor: pointer; padding: 4px 0; margin-top: 4px;
+  background: none; border: none; font-family: 'DM Sans', sans-serif;
+}
+.cf-add-option:hover { color: var(--accent-dark); }
 
-  .divider { height: 1px; background: var(--border); margin: 28px 0; }
+/* paragraph preview */
+.cf-para-preview {
+  padding: 10px 16px;
+}
+.cf-para-preview textarea {
+  width: 100%; border: none; border-bottom: 1px solid var(--border-strong);
+  border-radius: 0; background: transparent; font-size: 13px; color: var(--ink-muted);
+  font-style: italic; resize: none; outline: none; padding: 4px 0; min-height: 48px;
+  font-family: 'DM Sans', sans-serif; pointer-events: none;
+}
+.cf-short-preview { padding: 10px 16px; }
+.cf-short-preview input {
+  width: 60%; border: none; border-bottom: 1px solid var(--border-strong);
+  border-radius: 0; background: transparent; font-size: 13px; color: var(--ink-muted);
+  font-style: italic; outline: none; padding: 4px 0; pointer-events: none;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* add field picker */
+.cf-picker-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px; border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-lg); background: transparent;
+  font-size: 12px; color: var(--ink-muted); cursor: pointer;
+  transition: all 0.18s; font-family: 'DM Sans', sans-serif; font-weight: 500;
+}
+.cf-picker-btn:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--accent-light); }
+
+.cf-picker-dropdown {
+  display: none; position: absolute; z-index: 500;
+  background: var(--white); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg); box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+  overflow: hidden; min-width: 220px;
+  bottom: calc(100% + 6px); left: 0;
+}
+.cf-picker-dropdown.open { display: block; animation: fadeSlide 0.15s ease; }
+.cf-picker-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; cursor: pointer; font-size: 13px; color: var(--ink);
+  transition: background 0.12s;
+}
+.cf-picker-option:hover { background: var(--accent-light); }
+.cf-picker-option .cf-type-icon { font-size: 15px; width: 20px; text-align: center; }
+.cf-picker-wrap { position: relative; display: inline-block; }
+
+@media (max-width: 600px) {
+  .topbar { padding: 10px 16px; }
+  .container { padding: 24px 12px 80px; }
+  .field-row, .field-row-3, .task-row, .task-row-2 { grid-template-columns: 1fr; }
+  .global-send { padding: 10px 16px; }
+}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div style="display:flex;align-items:center;gap:10px;">
-    <img src="data:image/png;base64,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" style="height:52px;width:auto;display:block;" alt="another work">
-    <span style="font-family:'Nimbus Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;color:#1a1a18;letter-spacing:-0.02em;">another work</span>
-  </div>
-  <div style="font-size:12px;color:#9a9a92;font-family:'DM Sans',sans-serif;">aylık brief formu</div>
+  <span class="topbar-brand">another work</span>
+  <span class="topbar-right" id="topbarDate"></span>
 </div>
-
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
 <div class="container">
 
-  <!-- HERO -->
-  <div class="hero" id="heroBlock">
-    <div class="hero-eyebrow">another work</div>
-    <h1>aylık içerik &<br>reklam briefingi</h1>
-    <div class="hero-divider"></div>
-    <p>bu formu doldurarak ajansımızın bu ay için doğru strateji kurmasını sağlayın. tahmini süre: <strong>3–5 dakika.</strong></p>
-  </div>
+  <div class="page-title">Brief Platformu</div>
+  <p class="page-sub">Her bölümü ayrı ayrı veya hepsini birden gönderebilirsiniz.</p>
 
-  <!-- STEP NAV -->
-  <div class="steps-nav">
-    <div class="step-pill active" id="pill-0" onclick="goTo(0)"><span class="pill-num">1</span>dönem & plan</div>
-    <div class="step-pill" id="pill-1" onclick="goTo(1)"><span class="pill-num">2</span>projeler</div>
-    <div class="step-pill" id="pill-2" onclick="goTo(2)"><span class="pill-num">3</span>özet & gönder</div>
-  </div>
-
-  <!-- ═══ PANEL 0 — BRIEF ═══ -->
-  <div class="panel active" id="panel-0">
-
-    <div class="section-header">
-      <div class="section-number">adım 1 / 3</div>
-      <div class="section-title">dönem & genel plan</div>
-      <div class="section-desc">bu ayki strateji, bütçe ve kanalları belirleyin.</div>
-    </div>
-
-    <!-- Dönem -->
-    <div class="field field-row">
-      <div>
-        <label>ay</label>
-        <select id="ay">
-          <option value="">Seçin</option>
-        </select>
+  <!-- ══════════════════════════════════════
+       BÖLÜM 1 — AJANS BİLGİLENDİRME NOTU
+  ══════════════════════════════════════ -->
+  <div class="section-block open" id="block-0">
+    <div class="section-header" onclick="toggleBlock(0)">
+      <div class="section-header-left">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-label">Ajans Bilgilendirme Notu</div>
+          <div class="section-sublabel">Ay, bütçe, Instagram planlaması ve öncelikler</div>
+        </div>
       </div>
-      <div>
-        <label>yıl</label>
-        <select id="yil">
-        </select>
+      <div class="section-header-right">
+        <span class="section-status status-draft" id="status-0">Taslak</span>
+        <span class="chevron">▼</span>
       </div>
     </div>
 
-    <!-- Çekim Tarihleri -->
-    <div class="field">
-      <label>çekim için müsait tarihler</label>
-      <textarea id="anaMesaj" rows="2" placeholder="Örn: 5-8 Nisan arası uygunuz, hafta sonları da müsaitiz."></textarea>
-      <div class="inline-note">Fotoğraf/video çekimi için ajansın bilmesi gereken müsait tarihleri yazın.</div>
-    </div>
+    <div class="section-body">
 
-    <div class="field">
-      <label>ajansa not <span class="opt">— opsiyonel</span></label>
-      <textarea id="ajansNot" rows="2" placeholder="Kısıtlamalar, hassas konular, özel talepler, öncelikler..."></textarea>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Bütçe -->
-    <div class="field">
-      <label>toplam aylık reklam bütçesi</label>
-      <div class="budget-row">
-        <input type="number" id="butce" placeholder="0" min="0">
-        <select id="para">
-          <option>TRY</option><option>USD</option><option>EUR</option>
-        </select>
+      <div class="field-row">
+        <div class="field">
+          <label>Ay</label>
+          <select id="ay"><option value="">Seçin</option></select>
+        </div>
+        <div class="field">
+          <label>Yıl</label>
+          <select id="yil"></select>
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label>bütçe dağılımı <span class="opt">— opsiyonel</span></label>
-      <textarea id="butceDagilim" rows="2" placeholder="Örn: Proje A'ya %60, Proje B'ye %40. Boş bırakırsanız ajans önerecektir."></textarea>
-    </div>
+      <!-- INSTAGRAM PLANLAMA -->
+      <div class="field">
+        <label>Instagram — Bu Ay Neye Ağırlık Veriyoruz?</label>
+        <div class="focus-chips" id="focusChips">
+          <span class="focus-chip" onclick="toggleChip(this)">📹 Reels</span>
+          <span class="focus-chip" onclick="toggleChip(this)">📖 Story</span>
+          <span class="focus-chip" onclick="toggleChip(this)">🖼 Feed Görseli</span>
+          <span class="focus-chip" onclick="toggleChip(this)">🏷 Kampanya</span>
+          <span class="focus-chip" onclick="toggleChip(this)">🚀 Lansman</span>
+          <span class="focus-chip" onclick="toggleChip(this)">🎯 Dönüşüm Reklamı</span>
+          <span class="focus-chip" onclick="toggleChip(this)">🤝 Influencer</span>
+          <span class="focus-chip" onclick="toggleChip(this)">📊 Marka Bilinirliği</span>
+        </div>
+        <textarea id="smPlan" rows="3" placeholder="Bu ay Instagram'da özellikle şunlara odaklanmak istiyoruz: Örn. Reels içerikleri ile projenin lokasyonunu ve sosyal alanlarını vurgulamak, Story'de fiyat ve teslim tarihi hatırlatmaları yapmak..."></textarea>
+      </div>
 
-    <div class="divider"></div>
+      <!-- PROJELER -->
+      <div class="field">
+        <label>Bu Ay Reklamı Yapılacak Projeler</label>
+        <div class="cards-wrap" id="ajansProjects">
+          <div style="font-size:13px;color:var(--ink-muted);padding:8px 0;">2. bölümde proje ekledikçe burada görünür.</div>
+        </div>
+      </div>
 
-    <!-- Kanallar -->
-    <div class="field">
-      <label>reklam verilecek kanallar</label>
-      <div class="check-grid" id="kanalGrid" style="grid-template-columns:1fr;">
-        <div class="check-item" onclick="toggle(this)">
-          <input type="checkbox"> <div class="check-box"><span class="check-mark"><svg viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div> Instagram
+      <div class="field">
+        <label>Aylık Reklam Bütçesi</label>
+        <div class="budget-row">
+          <input type="number" id="butce" placeholder="50.000">
+          <select id="para">
+            <option>₺</option><option>$</option><option>€</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Bütçe Dağılımı <span class="opt">— hangi projeye ne kadar?</span></label>
+        <textarea id="butceDagilim" rows="2" placeholder="Örn: Prime %40, Nesa Vision %35, diğer %25"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Ajansa Özel Not</label>
+        <textarea id="ajansNot" rows="3" placeholder="Örn: Bu ay teslim tarihi yaklaşan Prime'a öncelik verelim. Çekim tarihleri 5–8 Mayıs."></textarea>
+      </div>
+
+      <!-- CUSTOM FIELD BUILDER sec-0 -->
+      <div class="cfb-wrap" id="cfb-0">
+        <div class="cfb-label-row">
+          <span class="cfb-section-label">Özel Alanlar</span>
+        </div>
+        <div class="cfb-cards" id="cfb-cards-0"></div>
+        <div class="cf-picker-wrap" id="cfb-picker-wrap-0">
+          <button class="cf-picker-btn" onclick="toggleCfPicker('0')">
+            <span style="font-size:16px;line-height:1;">+</span> Alan Ekle
+          </button>
+          <div class="cf-picker-dropdown" id="cfb-picker-0">
+            <div class="cf-picker-option" onclick="addCustomField('0','short')"><span class="cf-type-icon">▭</span> Kısa Metin</div>
+            <div class="cf-picker-option" onclick="addCustomField('0','paragraph')"><span class="cf-type-icon">☰</span> Paragraf</div>
+            <div class="cf-picker-option" onclick="addCustomField('0','radio')"><span class="cf-type-icon">◉</span> Çoktan Seçmeli</div>
+            <div class="cf-picker-option" onclick="addCustomField('0','checkbox')"><span class="cf-type-icon">☑</span> Onay Kutuları</div>
+            <div class="cf-picker-option" onclick="addCustomField('0','dropdown')"><span class="cf-type-icon">▾</span> Açılır Liste</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="send-bar">
+        <span class="send-bar-note" id="note-0">Sadece bu bölümü gönderebilirsiniz.</span>
+        <div class="send-bar-btns">
+          <button class="btn btn-ghost btn-sm" onclick="saveSection(0)">Kaydet</button>
+          <button class="btn btn-success btn-sm" onclick="sendSection(0)">Bu Bölümü Gönder ✓</button>
         </div>
       </div>
     </div>
-
-    <!-- Kaç proje -->
-    <div class="field">
-      <label>bu ay kaç proje öne çıkarılacak?</label>
-      <select id="projSayisi" onchange="setProjCount(this.value)">
-        <option value="1">1 proje</option>
-        <option value="2">2 proje</option>
-        <option value="3" selected>3 proje</option>
-        <option value="4">4 proje</option>
-        <option value="5">5 proje</option>
-      </select>
-      <div class="inline-note">seçiminize göre proje detay formları oluşturulacak.</div>
-    </div>
-
-    <div class="nav">
-      <div></div>
-      <button class="btn btn-primary" onclick="validateStep0()">proje detaylarına Geç →</button>
-    </div>
   </div>
 
-  <!-- ═══ PANEL 1 — PROJELER ═══ -->
-  <div class="panel" id="panel-1">
-
-    <div class="section-header">
-      <div class="section-number">adım 2 / 3</div>
-      <div class="section-title">proje detayları</div>
-      <div class="section-desc">her projeyi sırayla doldurun. sekmelere tıklayarak geçiş yapabilirsiniz.</div>
-    </div>
-
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <div class="proj-tabs" id="projTabs"></div>
-      <div class="proj-counter" id="projCounter">0 / 0 dolduruldu</div>
-    </div>
-
-    <div id="projPanels"></div>
-
-    <div class="nav">
-      <button class="btn btn-ghost" onclick="goTo(0)">← geri</button>
-      <button class="btn btn-accent" onclick="validateStep1()">özeti gör →</button>
-    </div>
-  </div>
-
-  <!-- ═══ PANEL 2 — SUMMARY ═══ -->
-  <div class="panel" id="panel-2">
-
-    <div class="section-header">
-      <div class="section-number">adım 3 / 3</div>
-      <div class="section-title">kontrol & gönder</div>
-      <div class="section-desc">bilgilerinizi gözden geçirin, ardından gönderin.</div>
-    </div>
-
-    <div id="summaryContent"></div>
-
-    <div style="text-align:center;margin-top:32px;">
-      <button class="btn btn-success" onclick="submitForm()">formu gönder</button>
-      <div style="font-size:12px;color:var(--ink-muted);margin-top:10px;">gönderdikten sonra ajansınız en geç 24 saat içinde geri dönecektir.</div>
-    </div>
-
-    <div class="nav" style="margin-top:24px;">
-      <button class="btn btn-ghost" onclick="goTo(1)">← geri Dön</button>
-      <div></div>
-    </div>
-  </div>
-
-  <!-- ═══ SUCCESS ═══ -->
-  <div class="panel" id="panel-success">
-    <div class="success-screen">
-      <div style="margin:0 auto 28px;display:flex;justify-content:center;">
-        <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QBMRXhpZgAATU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAB5qADAAQAAAABAAABrgAAAAD/7QA4UGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ+/8AAEQgBrgHmAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMAAQEBAQEBAgEBAgMCAgIDBAMDAwMEBgQEBAQEBgcGBgYGBgYHBwcHBwcHBwgICAgICAkJCQkJCwsLCwsLCwsLC//bAEMBAgICAwMDBQMDBQsIBggLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLC//dAAQAH//aAAwDAQACEQMRAD8A/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//0P8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9H/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//S/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//0/8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9T/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//V/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//1v8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9f/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooq3Y2F7qVytpYRNNK3RVGTQBUor2zQ/g/cShZ/EE/lA/8souW/Fug/AGvTdP8B+E9OA8qySRh/FL+8J/76yPyFLmQHyNRX2/DZWVuAtvCiAdNqgY/KnS21tNnzo1fPXcAaXMB8PUV9gX3grwrqCkXFjECe8Y2H81xXm+t/B6MqZtAuCD/AM85uR+DD+o/GnzIDweitPVdG1PRLk2mqQtC/bPQj2PQ/hWZTAKKKKACiiigAoqa3tri7mW2tUaSRzhVUZJP0Fet6F8ItRugJ9dlFsh/5Zp8z/ieg/Wi4Hj1FfWWnfDzwlpoGLUTMP4pjvz+B+X9K6qHTtPtl2W8EcY9FUD+QqeYD4jorrPHX/I3X/8A11/oK5OqAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/0P8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK3vDegXfiXVY9MteAeXfsqjqf8AD3oAv+E/CGo+K7sx2/7uBD+8lIyB7D1PtX0/oPh3SvDloLTTI9v95zy7H1J/yKt6VpdlothHp1gmyOMYHqT3J9zWjUNgFFFFIAooooAKKKKAM7VNJ07WrRrLU4lljbseoPqD2PuK+Z/GngS88LyfaoCZrNjhX7rns3+PQ19U1Bc21ve272l0gkjkBVlPQg007AfD1Fdl428KS+FtVMKZa2my0LH09D7iuNqwCuj8NeF9S8UXv2WxG1F/1kh+6g/x9BVPQtFvPEGpxaXZD5pDy3ZVHUn6V9daHolj4f05NN09cIvJJ6s3cn3NJuwFHw54U0jwxb+VYJmQj55W5dv8B7CulooqACiiigD5D8df8jdf/wDXX+grk66zx1/yN1//ANdf6CuTrQAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA/9H/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvqX4beHV0TQVuplxcXYEjeoX+Eflz9TXz14W0oa14htNNYZSRwX/wB1eW/QV9kAADAqZAFFFFSAUUUUAFFFFABRRRQAUUUUAcx4w8Px+JNDlsMDzQN8R9HHT8+h+tfIDo0bFHGGBwQexr7mr5t8TeFhL8R002MYivnWbj+6cl/5MaqLA9F+GHhtdI0UapOv+kXgDc9Vj/hH49T+HpXptNVVRQiDAAwAKdUgFFFFABRRRQB8h+Ov+Ruv/wDrr/QVyddZ46/5G6//AOuv9BXJ1oAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf//S/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD1f4QWgm8RTXTD/AFMBx9WIH8s19I18p+BfF1p4TnuJrmFpjMqqNpAxjPrXo/8AwuXS/wDnzl/76FS0B7LRXjX/AAuXS/8Anzl/76FH/C5dL/585f8AvoUrMD2WivGv+Fy6X/z5y/8AfQo/4XLpf/PnL/30KLMD2WivGv8Ahcul/wDPnL/30KP+Fy6X/wA+cv8A30KLMD2WivGv+Fy6X/z5y/8AfQo/4XLpf/PnL/30KLMD2WivGv8Ahcul/wDPnL/30K6HSvHV9rQD6dpFw6H+MlVX8zgUWA9ErnbvS45/E9nqhHMMEwz7kqB+hNacE2oSKGmgWP2L5P6Lj9awPFXieLwrbRX93CZA7GMBDzyM9x7UJAddRXjX/C5dL/585f8AvoUf8Ll0v/nzl/76FFmB7LRXjX/C5dL/AOfOX/voUf8AC5dL/wCfOX/voUWYHstFeNf8Ll0v/nzl/wC+hR/wuXS/+fOX/voUWYHlHjr/AJG6/wD+uv8AQVydbPiHU49Z1q51SJSizvuCnqKxqsAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA/9P/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigArd0Dw5qviS7+y6ZHnH3nPCqPc/061c8J+Fb3xVqP2WD5IU5lkxwo/xPYV9W6TpFhodimn6dGEjT8yfUnuTSbA47w58NtC0NVmu1F3cDne4+UH2Xp+Jya9DAAGBRRUXAK8h+Mf/ACArX/rv/wCymvXq8h+Mf/ICtf8Arv8A+ymmtwPnWiiirAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/9T/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACrNnaXF/dx2Vqu6SVgqj1JqtXsnwh0Nbm/m12cZW3Hlx/wC+3U/gP50Aey+GfD9r4a0mPTbflh80j/3nPU/4e1b9FFZgFFFFABXkPxj/AOQFa/8AXf8A9lNevV5D8Y/+QFa/9d//AGU01uB860UUVYBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB/9X/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvrL4d6eNP8ACNoMYaYGVvfecj9MV8m19raNEsOj2kKdEhjUfQKKUgNKiiioAKKKKACvIfjH/wAgK1/67/8Aspr16vIfjH/yArX/AK7/APspprcD51oooqwCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//W/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAr7X0h1l0m1kTo0KEfQqK+KK+tvh/fjUPCNm+eY08o+2zgfpilIDsqKKKgAooooAK8h+Mf/ACArX/rv/wCymvXq8h+Mf/ICtf8Arv8A+ymmtwPnWiiirAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/9f/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvbvg/rYjmuNAmP+s/ex/UcMPywfwrxGr2m6hc6VfxajaHbJCwZfw7fQ0MD7aorI0LWbTX9Li1SzPyyDkd1YdQfpWvWYBRRRQAV5D8Y/+QFa/wDXf/2U169XkPxj/wCQFa/9d/8A2U01uB860UUVYBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB//9D/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDtvBXjC48K3x35ktZSPNQf+hD3H619T2N9aalape2MglikGVYV8RV1fhjxhqvhafdZnfCxy8TfdPuPQ+9JoD69orkPDvjbQvEiBLaTy5z1hfhvw9fwrr6gAryH4x/8AICtf+u//ALKa9eryH4x/8gK1/wCu/wD7Kaa3A+daKKKsAoorW0CPTJtdsotbbZZNPGLhh2iLDeeOeBmk3ZNjSu7H9Af/AATw/wCCAvxP/a3+Gdh8dfjd4ibwJ4Y1mPz9KtYrb7RqN7AfuzFXZEhiccxlt7OvzbQpVj9Hftb/APBtF4p8C+BL7xx+yZ4xn8VXunxvM2g6tAkV1comTi3uIiEaXGAsbxoGP8YOBX9img2ui2Wh2Vn4bWJNOhgjS1WDHlCFVAQJjjaFxtxxitWv45xPjDxFLHvFUqqjTvpT5YuNuzduZ+bvftY/oCjwBlKwqozg3O2s7u9+61t6K1u9z/I1uLe4tLh7S7RopYmKOjgqyspwQQeQQeoqGvvD/gqBp/hbSv8AgoZ8YrDwakUdjH4ov/kgxsWYvmcADgETFwR2ORXwfX9d5fi/rWFpYm1ueMZW7cyTt8rn4Ni6Hsa9Sje/K2r97OwUUUV2HOFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/0f8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigBQSDkV2uk/ELxVpAEcdx50Y/gmG8fn1/WuJooA9vtfjPOFxe2CsfVH2/oQf51z3jjx5Z+K9Phs7aB4jHJvJYg9iO31rzGilYAooopgFFFFAH9Q3/BOD/g4Ug+Afwr0f4C/tb6DqGvaboECWWma7pJjkvEtYwFiiuIJXjWQRLhRKsgbYACjMNx+jf2uP+Dl/4fy+Arzwx+xn4Z1Q+IL2Jok1nX4oYILEuP8AWRW6STGaRf4RIUQNyQ4+U/x2UV+d4jwr4crY94+ph/eb5nG75G97uPr028j6ylxtm9PCrCxq6JWTsuZL1/XfzNDVtW1TX9Vudd1y4kvL29lee4nmYvJLLISzu7HlmZiSSeSTWfRRX6GkkrI+UbvqwooopiCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/0v8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9P/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//U/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//1f8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9b/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//X/wA/+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//0P8AP/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9H/AD/6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//Z" style="height:120px;width:auto;display:block;" alt="another work">
+  <!-- ══════════════════════════════════════
+       BÖLÜM 2 — PROJE DETAYLARI
+  ══════════════════════════════════════ -->
+  <div class="section-block" id="block-1">
+    <div class="section-header" onclick="toggleBlock(1)">
+      <div class="section-header-left">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-label">Proje Detayları</div>
+          <div class="section-sublabel" id="proj-sublabel">Henüz proje yok</div>
+        </div>
       </div>
-      <div class="success-title">brief'iniz alındı</div>
-      <div class="success-sub">Teşekkürler! another work ekibi en geç 24 saat içinde içerik planını sizinle paylaşacak.</div>
-      <button class="btn btn-primary" style="margin-top:28px;padding:14px 32px;font-size:15px;" onclick="resetForm()">+ yeni brief oluştur</button>
+      <div class="section-header-right">
+        <span class="section-status status-draft" id="status-1">Taslak</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <div class="cards-wrap" id="projCards"></div>
+
+      <button class="add-card-btn" onclick="addProject()" style="margin-top:10px;">
+        <span style="font-size:17px;line-height:1;">+</span> Yeni Proje Ekle
+      </button>
+
+      <!-- CUSTOM FIELD BUILDER sec-1 -->
+      <div class="cfb-wrap" id="cfb-1">
+        <div class="cfb-label-row">
+          <span class="cfb-section-label">Özel Alanlar</span>
+        </div>
+        <div class="cfb-cards" id="cfb-cards-1"></div>
+        <div class="cf-picker-wrap" id="cfb-picker-wrap-1">
+          <button class="cf-picker-btn" onclick="toggleCfPicker('1')">
+            <span style="font-size:16px;line-height:1;">+</span> Alan Ekle
+          </button>
+          <div class="cf-picker-dropdown" id="cfb-picker-1">
+            <div class="cf-picker-option" onclick="addCustomField('1','short')"><span class="cf-type-icon">▭</span> Kısa Metin</div>
+            <div class="cf-picker-option" onclick="addCustomField('1','paragraph')"><span class="cf-type-icon">☰</span> Paragraf</div>
+            <div class="cf-picker-option" onclick="addCustomField('1','radio')"><span class="cf-type-icon">◉</span> Çoktan Seçmeli</div>
+            <div class="cf-picker-option" onclick="addCustomField('1','checkbox')"><span class="cf-type-icon">☑</span> Onay Kutuları</div>
+            <div class="cf-picker-option" onclick="addCustomField('1','dropdown')"><span class="cf-type-icon">▾</span> Açılır Liste</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="send-bar">
+        <span class="send-bar-note" id="note-1">Sadece proje detaylarını gönderin.</span>
+        <div class="send-bar-btns">
+          <button class="btn btn-ghost btn-sm" onclick="saveSection(1)">Kaydet</button>
+          <button class="btn btn-success btn-sm" onclick="sendSection(1)">Bu Bölümü Gönder ✓</button>
+        </div>
+      </div>
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════
+       BÖLÜM 3 — GÖREVLER
+  ══════════════════════════════════════ -->
+  <div class="section-block" id="block-2">
+    <div class="section-header" onclick="toggleBlock(2)">
+      <div class="section-header-left">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-label">Görevler</div>
+          <div class="section-sublabel" id="task-sublabel">Henüz görev yok</div>
+        </div>
+      </div>
+      <div class="section-header-right">
+        <span class="section-status status-draft" id="status-2">Taslak</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <div class="task-templates">
+        <div class="tpl-label">Hızlı Ekle</div>
+        <div class="tpl-pills">
+          <span class="tpl-pill" onclick="addTask('Billboard Tasarımı')">🖼 Billboard</span>
+          <span class="tpl-pill" onclick="addTask('PDF Broşür Tasarımı')">📄 PDF Broşür</span>
+          <span class="tpl-pill" onclick="addTask('Instagram Reels')">📱 Reels</span>
+          <span class="tpl-pill" onclick="addTask('Instagram Story')">📖 Story</span>
+          <span class="tpl-pill" onclick="addTask('Feed Görseli')">🖼 Feed Görseli</span>
+          <span class="tpl-pill" onclick="addTask('Video Montaj')">🎬 Video Montaj</span>
+          <span class="tpl-pill" onclick="addTask('Fotoğraf Çekimi')">📷 Fotoğraf</span>
+          <span class="tpl-pill" onclick="addTask('Logo Tasarımı')">✏️ Logo</span>
+          <span class="tpl-pill" onclick="addTask('Sunum / PowerPoint')">📊 Sunum</span>
+          <span class="tpl-pill" onclick="addTask('E-posta Şablonu')">✉️ E-posta</span>
+        </div>
+      </div>
+
+      <div class="cards-wrap" id="taskCards"></div>
+
+      <button class="add-card-btn" onclick="addTask('')" style="margin-top:10px;">
+        <span style="font-size:17px;line-height:1;">+</span> Özel Görev Ekle
+      </button>
+
+      <!-- CUSTOM FIELD BUILDER sec-2 -->
+      <div class="cfb-wrap" id="cfb-2">
+        <div class="cfb-label-row">
+          <span class="cfb-section-label">Özel Alanlar</span>
+        </div>
+        <div class="cfb-cards" id="cfb-cards-2"></div>
+        <div class="cf-picker-wrap" id="cfb-picker-wrap-2">
+          <button class="cf-picker-btn" onclick="toggleCfPicker('2')">
+            <span style="font-size:16px;line-height:1;">+</span> Alan Ekle
+          </button>
+          <div class="cf-picker-dropdown" id="cfb-picker-2">
+            <div class="cf-picker-option" onclick="addCustomField('2','short')"><span class="cf-type-icon">▭</span> Kısa Metin</div>
+            <div class="cf-picker-option" onclick="addCustomField('2','paragraph')"><span class="cf-type-icon">☰</span> Paragraf</div>
+            <div class="cf-picker-option" onclick="addCustomField('2','radio')"><span class="cf-type-icon">◉</span> Çoktan Seçmeli</div>
+            <div class="cf-picker-option" onclick="addCustomField('2','checkbox')"><span class="cf-type-icon">☑</span> Onay Kutuları</div>
+            <div class="cf-picker-option" onclick="addCustomField('2','dropdown')"><span class="cf-type-icon">▾</span> Açılır Liste</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="send-bar">
+        <span class="send-bar-note" id="note-2">Sadece görevleri gönderin.</span>
+        <div class="send-bar-btns">
+          <button class="btn btn-ghost btn-sm" onclick="saveSection(2)">Kaydet</button>
+          <button class="btn btn-success btn-sm" onclick="sendSection(2)">Bu Bölümü Gönder ✓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- GLOBAL SEND BAR -->
+<div class="global-send">
+  <div class="global-send-info">
+    <strong id="globalStatus">0 / 3 gönderildi</strong> — Hepsini birden göndermek için:
+  </div>
+  <button class="btn btn-accent" onclick="sendAll()">Tümünü Gönder →</button>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
-let currentPanel = 0;
-let projCount = 3;
-const totalPanels = 3;
+// ── STATE ──
+let projects = [];
+let tasks = [];
+let projIdCnt = 0, taskIdCnt = 0;
+let sentSections = new Set();
+let focusSelected = [];
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-kFW8Cbf97mwJqUtLurTjlzraoIzMzNt0jZUrJpLenayEkX1_y4Dyz_bFJRDyaifmGg/exec';
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
-  initDateSelects();
-  setProjCount(3);
-  updateProgress();
+  initDate();
+  renderAjansProjects();
 });
 
-// ── DATE INIT — mevcut ay ve sonrası ──
-function initDateSelects() {
+function initDate() {
   const aylar = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
   const now = new Date();
-  const buAy = now.getMonth(); // 0-indexed
+  const buAy = now.getMonth();
   const buYil = now.getFullYear();
-  const aySelect = document.getElementById('ay');
-  const yilSelect = document.getElementById('yil');
+  const ayEl = document.getElementById('ay');
+  const yilEl = document.getElementById('yil');
 
-  // Yılları doldur
   [buYil, buYil+1].forEach(y => {
     const o = document.createElement('option');
-    o.value = y; o.textContent = y;
-    yilSelect.appendChild(o);
+    o.value = y; o.textContent = y; yilEl.appendChild(o);
   });
+  yilEl.value = buYil;
 
-  function updateAylar() {
-    const seciliYil = parseInt(yilSelect.value);
-    const mevcutVal = aySelect.value;
-    aySelect.innerHTML = '<option value="">Seçin</option>';
-    aylar.forEach((ad, idx) => {
-      if (seciliYil === buYil && idx < buAy) return;
+  function fillAylar() {
+    const secYil = parseInt(yilEl.value);
+    const cur = ayEl.value;
+    ayEl.innerHTML = '<option value="">Seçin</option>';
+    aylar.forEach((a, i) => {
+      if (secYil === buYil && i < buAy) return;
       const o = document.createElement('option');
-      o.value = ad; o.textContent = ad;
-      aySelect.appendChild(o);
+      o.value = a; o.textContent = a; ayEl.appendChild(o);
     });
-    if (mevcutVal) aySelect.value = mevcutVal;
+    if (cur) ayEl.value = cur;
+    if (!ayEl.value && ayEl.options.length > 1) ayEl.selectedIndex = 1;
   }
+  yilEl.addEventListener('change', fillAylar);
+  fillAylar();
 
-  yilSelect.addEventListener('change', updateAylar);
-  updateAylar();
+  document.getElementById('topbarDate').textContent = aylar[buAy] + ' ' + buYil;
 }
 
-// ── VALIDATION ──
-function showError(msg) {
-  let el = document.getElementById('validationMsg');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'validationMsg';
-    el.style.cssText = 'background:#fff0f0;border:1px solid #e24b4a;color:#a32d2d;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;';
-    const nav = document.querySelector('#panel-0 .nav');
-    nav.parentNode.insertBefore(el, nav);
-  }
-  el.textContent = msg;
-  el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 4000);
+// ── ACCORDION ──
+function toggleBlock(n) {
+  const block = document.getElementById('block-' + n);
+  block.classList.toggle('open');
 }
 
-function showError1(msg) {
-  let el = document.getElementById('validationMsg1');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'validationMsg1';
-    el.style.cssText = 'background:#fff0f0;border:1px solid #e24b4a;color:#a32d2d;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;';
-    const nav = document.querySelector('#panel-1 .nav');
-    nav.parentNode.insertBefore(el, nav);
-  }
-  el.textContent = msg;
-  el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 4000);
+// ── FOCUS CHIPS ──
+function toggleChip(el) {
+  el.classList.toggle('active');
+  focusSelected = [...document.querySelectorAll('#focusChips .focus-chip.active')].map(c => c.textContent.trim());
 }
 
-function pilGoTo(index) {
-  if (index <= currentPanel) { goTo(index); return; }
-  if (currentPanel === 0 && index >= 1) { validateStep0(); return; }
-  if (currentPanel === 1 && index >= 2) { validateStep1(); return; }
+// ══════════════════════════════════
+//  SECTION 1 — PROJELER
+// ══════════════════════════════════
+function addProject() {
+  projIdCnt++;
+  const p = { id: projIdCnt, name: '', lokasyon: '', ozet: '', durum: '', teslim: '', deger: '', finansman: '', tel: '', notlar: '', link1: '', link2: '', rows: [], selected: false, featured: false };
+  projects.push(p);
+  renderProjCards();
+  updateProjSublabel();
+  renderAjansProjects();
+  // auto-open the new card
+  setTimeout(() => {
+    const card = document.getElementById('gfc-proj-' + p.id);
+    if (card && !card.classList.contains('open')) toggleGfCard('proj', p.id);
+  }, 50);
 }
 
-function validateStep0() {
-  const ay = document.getElementById('ay').value;
-  const butce = document.getElementById('butce').value;
-  if (!ay) { showError('Lütfen ay seçin.'); return; }
-  if (!butce || butce <= 0) { showError('Lütfen reklam bütçesini girin.'); return; }
-  goTo(1);
+function removeProject(id) {
+  projects = projects.filter(p => p.id !== id);
+  renderProjCards();
+  updateProjSublabel();
+  renderAjansProjects();
 }
 
-function validateStep1() {
-  for (let i = 0; i < projCount; i++) {
-    const ad = document.getElementById('p' + i + '_ad');
-    if (!ad || !ad.value.trim()) {
-      showError1('Proje ' + (i+1) + ' için proje adı zorunludur.');
-      switchProj(i);
-      return;
-    }
-    const ozet = document.getElementById('p' + i + '_ozet');
-    if (!ozet || !ozet.value.trim()) {
-      showError1('Proje ' + (i+1) + ' için proje özeti zorunludur.');
-      switchProj(i);
-      return;
-    }
-  }
-  goTo(2);
-}
-
-// ── RESET ──
-function resetForm() {
-  document.querySelectorAll('input[type=text], input[type=number], input[type=tel], textarea').forEach(el => el.value = '');
-  document.querySelectorAll('.check-item').forEach(el => el.classList.remove('checked'));
-  document.querySelectorAll('.proj-tab').forEach(el => el.classList.remove('filled'));
-  initDateSelects();
-  setProjCount(3);
-  document.getElementById('projSayisi').value = '3';
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-0').classList.add('active');
-  document.getElementById('heroBlock').style.display = 'block';
-  document.querySelectorAll('.step-pill').forEach((p,i) => { p.classList.remove('active','done'); if(i===0) p.classList.add('active'); });
-  currentPanel = 0;
-  updateProgress();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ── TOGGLE CHECKBOX ──
-function toggle(el) {
-  el.classList.toggle('checked');
-}
-
-// ── NAVIGATION ──
-function goTo(index) {
-  if (index === 2) buildSummary();
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.step-pill').forEach((p, i) => {
-    p.classList.remove('active', 'done');
-    if (i < index) p.classList.add('done');
-    if (i === index) p.classList.add('active');
-  });
-  document.getElementById('panel-' + index).classList.add('active');
-  document.getElementById('heroBlock').style.display = index === 0 ? 'block' : 'none';
-  currentPanel = index;
-  updateProgress();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function updateProgress() {
-  const pct = (currentPanel / totalPanels) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
-}
-
-// ── PROJECT COUNT ──
-function setProjCount(n) {
-  projCount = parseInt(n);
-  renderProjTabs();
-  renderProjPanels();
-}
-
-function renderProjTabs() {
-  const tabs = document.getElementById('projTabs');
-  tabs.innerHTML = '';
-  for (let i = 0; i < projCount; i++) {
-    const t = document.createElement('div');
-    t.className = 'proj-tab' + (i === 0 ? ' active' : '');
-    t.id = 'ptab-' + i;
-    t.textContent = 'Proje ' + (i + 1);
-    t.onclick = () => switchProj(i);
-    tabs.appendChild(t);
-  }
-}
-
-function renderProjPanels() {
-  const container = document.getElementById('projPanels');
-  container.innerHTML = '';
-  for (let i = 0; i < projCount; i++) {
-    const div = document.createElement('div');
-    div.className = 'proj-panel' + (i === 0 ? ' active' : '');
-    div.id = 'pp-' + i;
-    div.innerHTML = projCardHTML(i);
-    container.appendChild(div);
-  }
-  updateProjCounter();
-}
-
-function switchProj(index) {
-  document.querySelectorAll('.proj-tab').forEach((t, i) => {
-    t.classList.toggle('active', i === index);
-  });
-  document.querySelectorAll('.proj-panel').forEach((p, i) => {
-    p.classList.toggle('active', i === index);
+function renderProjCards() {
+  const wrap = document.getElementById('projCards');
+  if (projects.length === 0) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = projects.map((p, idx) => buildProjCard(p, idx)).join('');
+  // attach listeners
+  projects.forEach(p => {
+    const fields = ['ad','lokasyon','ozet','durum','teslim','deger','finansman','tel','notlar','link1','link2'];
+    fields.forEach(f => {
+      const el = document.getElementById('pf_' + p.id + '_' + f);
+      if (!el) return;
+      el.addEventListener('input', e => {
+        const key = f === 'ad' ? 'name' : f;
+        p[key] = e.target.value;
+        if (f === 'ad') {
+          const titleEl = document.getElementById('gfc-title-proj-' + p.id);
+          if (titleEl) titleEl.textContent = e.target.value || 'Proje ' + p.id;
+          renderAjansProjects();
+          renderTaskProjects();
+        }
+      });
+      el.addEventListener('change', e => {
+        const key = f === 'ad' ? 'name' : f;
+        p[key] = e.target.value;
+      });
+    });
   });
 }
 
-function projCardHTML(i) {
-  const num = i + 1;
+function buildProjCard(p, idx) {
+  const rowsHTML = p.rows.map((r, ri) => buildAptRow(p.id, ri, r)).join('');
   return `
-  <div class="proj-card">
-    <div class="proj-card-header">
-      <div class="proj-badge">${num}</div>
+  <div class="gf-card gf-card-accent" id="gfc-proj-${p.id}">
+    <div class="gf-card-header" onclick="toggleGfCard('proj',${p.id})">
       <div>
-        <div class="proj-card-title" id="ptitle-display-${i}">Proje ${num}</div>
-        <div class="proj-card-sub">tüm alanları eksiksiz doldurun</div>
+        <div class="gf-card-title" id="gfc-title-proj-${p.id}">${p.name || 'Proje ' + p.id}</div>
+        <div class="gf-card-sub">${p.lokasyon || 'Lokasyon girilmedi'}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="btn-danger-sm" onclick="event.stopPropagation();removeProject(${p.id})">Sil</button>
+        <span class="gf-card-chevron">▼</span>
       </div>
     </div>
-
-    <div class="field">
-      <label>proje adı</label>
-      <input type="text" id="p${i}_ad" placeholder="Örn: Panorama Kavaklıdere" oninput="updateTabName(${i}, this.value)">
-    </div>
-
-    <div class="field">
-      <label>proje özeti</label>
-      <textarea id="p${i}_ozet" rows="3" placeholder="Projeyi tüm detaylarıyla açıklayın. Ne tür bir proje? Konsept nedir?"></textarea>
-    </div>
-
-    <div class="field">
-      <label>lokasyon & çevre özellikleri</label>
-      <textarea id="p${i}_lokasyon" rows="2" placeholder="Örn: Çankaya merkez, metro çıkışına 3 dk, üniversiteye yakın, yüksek kotta panoramik manzara"></textarea>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="field field-row">
-      <div>
-        <label>fiyat aralığı</label>
-        <input type="text" id="p${i}_fiyat" placeholder="Örn: 4.5M — 9M TL">
+    <div class="gf-card-body" id="gfc-body-proj-${p.id}">
+      <div class="field-row">
+        <div class="field"><label>Proje Adı</label><input type="text" id="pf_${p.id}_ad" value="${p.name}" placeholder="Örn: Prime, Nesa Vision..."></div>
+        <div class="field"><label>Lokasyon</label><input type="text" id="pf_${p.id}_lokasyon" value="${p.lokasyon}" placeholder="Örn: Çankaya, Ankara"></div>
       </div>
-      <div>
-        <label>teslim tarihi</label>
-        <input type="text" id="p${i}_teslim" placeholder="Örn: Aralık 2025">
+      <div class="field"><label>Proje Özeti</label><textarea id="pf_${p.id}_ozet" rows="2" placeholder="Kısaca projeyi anlatın...">${p.ozet}</textarea></div>
+      <div class="divider"></div>
+      <label style="margin-bottom:10px;">Daire Tipleri & Fiyatlar</label>
+      <div class="apt-table-wrap">
+        <table class="apt-table">
+          <thead><tr>
+            <th>Kat</th><th>Tipi</th><th>Net m²</th><th>Brüt m²</th><th>Mutfak</th><th>Ebb. Banyo</th><th colspan="2">Fiyat Aralığı</th><th></th>
+          </tr></thead>
+          <tbody id="apttbody-${p.id}">${rowsHTML}</tbody>
+        </table>
       </div>
-    </div>
-
-    <div class="field">
-      <label>daire tipleri & metrekare</label>
-      <textarea id="p${i}_tipler" rows="2" placeholder="Örn: 1+1 (55m²), 2+1 (90m²), 3+1 (140m²)"></textarea>
-    </div>
-
-    <div class="field">
-      <label>Daire özellikleri <span class="opt">— her tip için ayrı belirtin</span></label>
-      <textarea id="p${i}_ozellikler" rows="3" placeholder="Örn:&#10;1+1 — ada mutfak, balkon, yerden ısıtma&#10;2+1 — bahçe katı, özel bahçe, çift banyo&#10;3+1 — çatı katı, teras, jakuzi"></textarea>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="field field-row">
-      <div>
-        <label>proje durumu</label>
-        <select id="p${i}_durum">
-          <option value="">Seçin</option>
-          <option>Tamamlandı</option>
-          <option>Devam Ediyor — %25</option>
-          <option>Devam Ediyor — %50</option>
-          <option>Devam Ediyor — %75</option>
-          <option>Devam Ediyor — %90</option>
-          <option>Proje aşaması</option>
-        </select>
+      <button class="add-row-btn" onclick="addAptRow(${p.id})">+ Tip Ekle</button>
+      <div class="divider"></div>
+      <div class="field-row">
+        <div class="field"><label>İnşaat Durumu</label>
+          <select id="pf_${p.id}_durum">
+            <option value="">Seçin</option>
+            <option>Proje Aşaması</option><option>Temel Aşaması</option>
+            <option>Devam Ediyor — %25</option><option>Devam Ediyor — %50</option>
+            <option>Devam Ediyor — %75</option><option>Devam Ediyor — %90</option>
+            <option>Tamamlandı</option>
+          </select>
+        </div>
+        <div class="field"><label>Teslim Tarihi</label><input type="text" id="pf_${p.id}_teslim" value="${p.teslim}" placeholder="Örn: 2025 Q3"></div>
       </div>
-      <div>
-        <label>iletişim numarası</label>
-        <input type="tel" id="p${i}_tel" placeholder="0500 000 00 00">
+      <div class="field"><label>Yatırım Değeri</label><textarea id="pf_${p.id}_deger" rows="2" placeholder="Müşteri neden almalı?">${p.deger}</textarea></div>
+      <div class="field"><label>Finansman Seçenekleri</label><textarea id="pf_${p.id}_finansman" rows="2" placeholder="Örn: %0 faiz 12 ay...">${p.finansman}</textarea></div>
+      <div class="divider"></div>
+      <div class="field"><label>Öne Çıkarılması Gereken Konular / Aciliyet</label><textarea id="pf_${p.id}_notlar" rows="2" placeholder="Örn: Son 4 daire kaldı, bu ay fiyat artışı...">${p.notlar}</textarea></div>
+      <div class="field-row">
+        <div class="field"><label>İçerik Linki 1</label><input type="text" id="pf_${p.id}_link1" value="${p.link1}" placeholder="Drive, Dropbox..."></div>
+        <div class="field"><label>İçerik Linki 2 <span class="opt">opsiyonel</span></label><input type="text" id="pf_${p.id}_link2" value="${p.link2}" placeholder="2. link"></div>
       </div>
     </div>
-
-    <div class="field">
-      <label>projenin yatırım değeri <span class="opt">— müşteri neden almalı?</span></label>
-      <textarea id="p${i}_deger" rows="2" placeholder="Örn: Bölgenin en hızlı değer kazanan lokasyonu, metro hattı tamamlandığında prim yapacak, kira getiri potansiyeli yüksek."></textarea>
-    </div>
-
-    <div class="field">
-      <label>finansman seçenekleri</label>
-      <textarea id="p${i}_finansman" rows="2" placeholder="Örn: %0 faiz 12 ay, 36 ay 1.20 vade oranı, banka kredisi ile uygun ödeme planı."></textarea>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="field">
-      <label>öne çıkarılması gereken konular / aciliyet</label>
-      <textarea id="p${i}_notlar" rows="2" placeholder="Örn: Son 4 daire kaldı, fiyat artışı bekleniyor, bu ay kampanya süresi bitiyor."></textarea>
-    </div>
-
-    <div class="field">
-      <label>mevcut içerik & görseller <span class="opt">— link ile ekleyin</span></label>
-      <input type="text" id="p${i}_link1" placeholder="Drive, Dropbox veya WeTransfer linki">
-      <div style="margin-top:8px;">
-        <input type="text" id="p${i}_link2" placeholder="Varsa 2. link (opsiyonel)">
-      </div>
-      <div class="inline-note">Google Drive, Dropbox, WeTransfer veya herhangi bir paylaşım linki ekleyebilirsiniz.</div>
-    </div>
-
   </div>`;
 }
 
-function updateTabName(i, val) {
-  const tab = document.getElementById('ptab-' + i);
-  if (val.trim()) {
-    tab.textContent = val.trim().substring(0, 16);
-    tab.classList.add('filled');
-  } else {
-    tab.textContent = 'Proje ' + (i + 1);
-    tab.classList.remove('filled');
-  }
-  updateProjCounter();
+function updateProjSublabel() {
+  const el = document.getElementById('proj-sublabel');
+  if (el) el.textContent = projects.length === 0 ? 'Henüz proje yok' : projects.length + ' proje';
 }
 
-function updateProjCounter() {
-  let filled = 0;
-  for (let i = 0; i < projCount; i++) {
-    const ad = document.getElementById('p' + i + '_ad');
-    if (ad && ad.value.trim()) filled++;
-  }
-  document.getElementById('projCounter').textContent = filled + ' / ' + projCount + ' dolduruldu';
+// ── APT ROWS ──
+function buildAptRow(projId, ri, r) {
+  r = r || {};
+  return `<tr>
+    <td class="td-floor"><select onchange="saveAptField(${projId},${ri},'floor',this.value)">
+      <option value="">—</option>
+      ${['Zemin','Üst Kat','Ara Kat','Çatı Katı','Bahçe Katı','Villa'].map(v=>`<option ${r.floor===v?'selected':''}>${v}</option>`).join('')}
+    </select></td>
+    <td class="td-type"><select onchange="saveAptField(${projId},${ri},'type',this.value)">
+      <option value="">—</option>
+      ${['1+0','1+1','2+0','2+1','3+0','3+1','4+0','4+1','Villa 3+1','Villa 4+1','Ofis','Dükan'].map(v=>`<option ${r.type===v?'selected':''}>${v}</option>`).join('')}
+    </select></td>
+    <td class="td-net"><input type="number" placeholder="85" value="${r.net||''}" onchange="saveAptField(${projId},${ri},'net',this.value)"></td>
+    <td class="td-brut"><input type="number" placeholder="105" value="${r.brut||''}" onchange="saveAptField(${projId},${ri},'brut',this.value)"></td>
+    <td class="td-kitchen"><select onchange="saveAptField(${projId},${ri},'kitchen',this.value)">
+      <option value="">—</option>
+      ${['Açık','Kapalı','Ada'].map(v=>`<option ${r.kitchen===v?'selected':''}>${v}</option>`).join('')}
+    </select></td>
+    <td class="td-bath"><select onchange="saveAptField(${projId},${ri},'bath',this.value)">
+      <option value="">—</option>
+      <option ${r.bath==='Var'?'selected':''}>Var</option>
+      <option ${r.bath==='Yok'?'selected':''}>Yok</option>
+    </select></td>
+    <td><div class="price-range">
+      <input type="text" placeholder="başlangıç" value="${r.priceFrom||''}" onchange="saveAptField(${projId},${ri},'priceFrom',this.value)">
+      <span>—</span>
+      <input type="text" placeholder="bitiş" value="${r.priceTo||''}" onchange="saveAptField(${projId},${ri},'priceTo',this.value)">
+    </div></td>
+    <td><button class="del-btn" onclick="removeAptRow(${projId},${ri})">×</button></td>
+  </tr>`;
 }
 
-// ── SUMMARY ──
-function buildSummary() {
-  const ay = document.getElementById('ay').value || '—';
-  const yil = document.getElementById('yil').value;
-  const mesaj = document.getElementById('anaMesaj').value || '—';
-  const ajansNot = document.getElementById('ajansNot').value || '—';
-  const butce = document.getElementById('butce').value;
-  const para = document.getElementById('para').value;
-  const dagilim = document.getElementById('butceDagilim').value || '—';
-  const kanallar = [...document.querySelectorAll('#kanalGrid .check-item.checked')].map(el => el.textContent.trim()).join(', ') || '—';
+function addAptRow(projId) {
+  const p = projects.find(p => p.id === projId);
+  if (!p) return;
+  const ri = p.rows.length;
+  p.rows.push({});
+  const tbody = document.getElementById('apttbody-' + projId);
+  if (tbody) tbody.insertAdjacentHTML('beforeend', buildAptRow(projId, ri, {}));
+}
 
-  let projBadges = '';
-  for (let i = 0; i < projCount; i++) {
-    const ad = document.getElementById('p' + i + '_ad');
-    const name = (ad && ad.value.trim()) ? ad.value.trim() : 'Proje ' + (i + 1);
-    projBadges += `<span class="proj-summary-badge">${name}</span>`;
-  }
+function removeAptRow(projId, ri) {
+  const p = projects.find(p => p.id === projId);
+  if (!p) return;
+  p.rows.splice(ri, 1);
+  const tbody = document.getElementById('apttbody-' + projId);
+  if (tbody) tbody.innerHTML = p.rows.map((r, i) => buildAptRow(projId, i, r)).join('');
+}
 
-  let projCards = '';
-  for (let i = 0; i < projCount; i++) {
-    const g = id => { const el = document.getElementById(id); return el ? (el.value || '—') : '—'; };
-    projCards += `
-    <div class="summary-card">
-      <div class="summary-title">${g('p' + i + '_ad') !== '—' ? g('p' + i + '_ad') : 'Proje ' + (i + 1)}</div>
-      <div class="summary-grid">
-        <div class="summary-item"><div class="summary-key">Lokasyon</div><div class="summary-val">${g('p' + i + '_lokasyon')}</div></div>
-        <div class="summary-item"><div class="summary-key">Fiyat</div><div class="summary-val">${g('p' + i + '_fiyat')}</div></div>
-        <div class="summary-item"><div class="summary-key">Durum</div><div class="summary-val">${g('p' + i + '_durum')}</div></div>
-        <div class="summary-item"><div class="summary-key">Teslim</div><div class="summary-val">${g('p' + i + '_teslim')}</div></div>
-        <div class="summary-item"><div class="summary-key">Finansman</div><div class="summary-val">${g('p' + i + '_finansman')}</div></div>
-        <div class="summary-item"><div class="summary-key">İletişim</div><div class="summary-val">${g('p' + i + '_tel')}</div></div>
+function saveAptField(projId, ri, field, value) {
+  const p = projects.find(p => p.id === projId);
+  if (p && p.rows[ri]) p.rows[ri][field] = value;
+}
+
+// ══════════════════════════════════
+//  SECTION 0 — AJANS PROJE LİSTESİ
+// ══════════════════════════════════
+// Manuel proje listesi (bölüm 2 doldurulmadan bölüm 1'e girilenler)
+let manualAjProjects = []; // [{id, name, selected, featured, ajNote}]
+let manualAjIdCnt = 0;
+
+function addManualAjProject() {
+  manualAjIdCnt++;
+  manualAjProjects.push({ id: manualAjIdCnt, name: '', selected: true, featured: false, ajNote: '' });
+  renderAjansProjects();
+  setTimeout(() => toggleGfCard('aj-m', manualAjIdCnt), 50);
+}
+
+function removeManualAjProject(id) {
+  manualAjProjects = manualAjProjects.filter(p => p.id !== id);
+  renderAjansProjects();
+}
+
+function renderAjansProjects() {
+  const wrap = document.getElementById('ajansProjects');
+  const fromProjects = projects.map(p => `
+    <div class="gf-card" id="gfc-aj-${p.id}">
+      <div class="gf-card-header" onclick="toggleGfCard('aj',${p.id})">
+        <div>
+          <div class="gf-card-title">${p.name || 'Proje ' + p.id}</div>
+          <div class="gf-card-sub">${p.lokasyon || '—'} &nbsp;·&nbsp; ${getAjProjStatus(p)}</div>
+        </div>
+        <span class="gf-card-chevron">▼</span>
       </div>
-      <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">İçerik Linkleri</div><div class="summary-val">${[g('p'+i+'_link1'), g('p'+i+'_link2')].filter(v => v !== '—').join('<br>') || '—'}</div></div>
-      <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">Notlar / Aciliyet</div><div class="summary-val">${g('p' + i + '_notlar')}</div></div>
+      <div class="gf-card-body" id="gfc-body-aj-${p.id}">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="btn btn-ghost btn-sm ${p.selected?'btn-primary':''}" onclick="toggleAjSel(${p.id},this)">
+            ${p.selected ? '✓ Seçildi' : 'Bu Ay Seç'}
+          </button>
+          <button class="btn btn-ghost btn-sm" style="${p.featured?'background:#f59e0b;color:white;border-color:#f59e0b':''}" onclick="toggleAjFeat(${p.id},this)">
+            ${p.featured ? '⭐ Öne Çıkan' : 'Öne Çıkar'}
+          </button>
+        </div>
+        <div class="field"><label>Bu Proje İçin Özel Not</label>
+          <textarea rows="2" placeholder="Bu ay bu projeye özel odaklanmak istediğimiz şeyler..." onchange="saveAjNote(${p.id},this.value)">${p.ajNote||''}</textarea>
+        </div>
+      </div>
+    </div>`).join('');
+
+  const fromManual = manualAjProjects.map(p => `
+    <div class="gf-card" id="gfc-aj-m-${p.id}" style="border-style:dashed;">
+      <div class="gf-card-header" onclick="toggleGfCard('aj-m',${p.id})">
+        <div>
+          <div class="gf-card-title" style="color:var(--ink-soft);">${p.name || 'Proje adı girin...'}</div>
+          <div class="gf-card-sub">Manuel girilen proje &nbsp;·&nbsp; ${p.featured ? '⭐ Öne Çıkan' : p.selected ? '✓ Seçildi' : ''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="btn-danger-sm" onclick="event.stopPropagation();removeManualAjProject(${p.id})">Sil</button>
+          <span class="gf-card-chevron">▼</span>
+        </div>
+      </div>
+      <div class="gf-card-body" id="gfc-body-aj-m-${p.id}">
+        <div class="field">
+          <label>Proje Adı</label>
+          <input type="text" value="${p.name}" placeholder="Örn: Prime, Nesa Vision..."
+            oninput="manualAjProjects.find(x=>x.id===${p.id}).name=this.value; document.querySelector('#gfc-aj-m-${p.id} .gf-card-title').textContent=this.value||'Proje adı girin...'">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="btn btn-ghost btn-sm ${p.selected?'btn-primary':''}" onclick="toggleManualAjSel(${p.id},this)">
+            ${p.selected ? '✓ Seçildi' : 'Bu Ay Seç'}
+          </button>
+          <button class="btn btn-ghost btn-sm" style="${p.featured?'background:#f59e0b;color:white;border-color:#f59e0b':''}" onclick="toggleManualAjFeat(${p.id},this)">
+            ${p.featured ? '⭐ Öne Çıkan' : 'Öne Çıkar'}
+          </button>
+        </div>
+        <div class="field"><label>Bu Proje İçin Özel Not</label>
+          <textarea rows="2" placeholder="Bu ay bu projeye özel odaklanmak istediğimiz şeyler..."
+            onchange="manualAjProjects.find(x=>x.id===${p.id}).ajNote=this.value">${p.ajNote}</textarea>
+        </div>
+      </div>
+    </div>`).join('');
+
+  wrap.innerHTML = fromProjects + fromManual +
+    `<button class="add-card-btn" onclick="addManualAjProject()" style="margin-top:6px;">
+      <span style="font-size:17px;line-height:1;">+</span> Proje Gir
+    </button>`;
+}
+
+function toggleManualAjSel(id, btn) {
+  const p = manualAjProjects.find(p => p.id === id);
+  if (!p) return;
+  p.selected = !p.selected;
+  if (!p.selected) p.featured = false;
+  renderAjansProjects();
+}
+
+function toggleManualAjFeat(id, btn) {
+  const p = manualAjProjects.find(p => p.id === id);
+  if (!p) return;
+  p.featured = !p.featured;
+  if (p.featured) p.selected = true;
+  renderAjansProjects();
+}
+
+function getAjProjStatus(p) {
+  if (p.featured) return '⭐ Öne Çıkan';
+  if (p.selected) return '✓ Seçildi';
+  return 'Henüz seçilmedi';
+}
+
+function toggleAjSel(id, btn) {
+  const p = projects.find(p => p.id === id);
+  if (!p) return;
+  p.selected = !p.selected;
+  if (!p.selected) p.featured = false;
+  renderAjansProjects();
+}
+
+function toggleAjFeat(id, btn) {
+  const p = projects.find(p => p.id === id);
+  if (!p) return;
+  p.featured = !p.featured;
+  if (p.featured) p.selected = true;
+  renderAjansProjects();
+}
+
+function saveAjNote(id, val) {
+  const p = projects.find(p => p.id === id);
+  if (p) p.ajNote = val;
+}
+
+// ══════════════════════════════════
+//  SECTION 2 — GÖREVLER
+// ══════════════════════════════════
+function addTask(name) {
+  taskIdCnt++;
+  tasks.push({ id: taskIdCnt, name: name || '', project: '', priority: 'Orta', assignee: '', due: '', desc: '' });
+  renderTaskCards();
+  updateTaskSublabel();
+  setTimeout(() => {
+    const card = document.getElementById('gfc-task-' + taskIdCnt);
+    if (card && !card.classList.contains('open')) toggleGfCard('task', taskIdCnt);
+  }, 50);
+}
+
+function removeTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
+  renderTaskCards();
+  updateTaskSublabel();
+}
+
+function renderTaskCards() {
+  const wrap = document.getElementById('taskCards');
+  if (tasks.length === 0) { wrap.innerHTML = ''; return; }
+
+  // Build project options — from state + "Manuel Gir" fallback
+  const hasProjects = projects.length > 0;
+  const projOpts = '<option value="">— Proje —</option>' +
+    projects.map(p => `<option value="${p.name || 'Proje ' + p.id}">${p.name || 'Proje ' + p.id}</option>`).join('') +
+    '<option value="__manual__">✏️ Manuel gir...</option>';
+
+  wrap.innerHTML = tasks.map((t, i) => {
+    const dotClass = t.priority === 'Yüksek' ? 'p-yuksek' : t.priority === 'Düşük' ? 'p-dusuk' : 'p-orta';
+    const isManual = t.projectManual;
+    // If project value isn't in list and isn't empty, it was manually entered
+    const selectVal = isManual ? '__manual__' : (t.project || '');
+    return `
+    <div class="gf-card gf-card-accent" id="gfc-task-${t.id}">
+      <div class="gf-card-header" onclick="toggleGfCard('task',${t.id})">
+        <div>
+          <div class="gf-card-title">
+            <span class="priority-dot ${dotClass}"></span>
+            ${t.name || 'Görev ' + (i+1)}
+          </div>
+          <div class="gf-card-sub">${t.project || 'Proje atanmadı'} ${t.due ? '· ' + t.due : ''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="btn-danger-sm" onclick="event.stopPropagation();removeTask(${t.id})">Sil</button>
+          <span class="gf-card-chevron">▼</span>
+        </div>
+      </div>
+      <div class="gf-card-body" id="gfc-body-task-${t.id}">
+        <div class="task-row">
+          <div class="field"><label>Görev Adı</label>
+            <input type="text" value="${t.name}" placeholder="Örn: Nesa Vision Billboard Tasarımı"
+              oninput="saveTaskField(${t.id},'name',this.value);updateTaskCardTitle(${t.id},this.value)">
+          </div>
+          <div class="field"><label>İlgili Proje</label>
+            <select id="task-proj-${t.id}" onchange="onTaskProjChange(${t.id},this.value)">
+              ${projOpts.replace(`value="${selectVal}"`, `value="${selectVal}" selected`)}
+            </select>
+            <input type="text" id="task-proj-manual-${t.id}"
+              style="margin-top:6px;${isManual?'':'display:none;'}"
+              value="${isManual ? t.project : ''}"
+              placeholder="Proje adını yazın..."
+              oninput="saveTaskField(${t.id},'project',this.value)">
+          </div>
+          <div class="field"><label>Öncelik</label>
+            <select onchange="saveTaskField(${t.id},'priority',this.value);updateTaskDot(${t.id},this.value)">
+              <option ${t.priority==='Yüksek'?'selected':''}>Yüksek</option>
+              <option ${t.priority==='Orta'||!t.priority?'selected':''}>Orta</option>
+              <option ${t.priority==='Düşük'?'selected':''}>Düşük</option>
+            </select>
+          </div>
+        </div>
+        <div class="task-row-2">
+          <div class="field"><label>Sorumlu <span class="opt">opsiyonel</span></label>
+            <input type="text" value="${t.assignee}" placeholder="Kişi veya ekip..." oninput="saveTaskField(${t.id},'assignee',this.value)">
+          </div>
+          <div class="field"><label>Teslim Tarihi <span class="opt">opsiyonel</span></label>
+            <input type="date" value="${t.due}" onchange="saveTaskField(${t.id},'due',this.value)">
+          </div>
+        </div>
+        <div class="field"><label>Açıklama <span class="opt">opsiyonel</span></label>
+          <textarea rows="2" placeholder="Boyutlar, format, detaylar..." oninput="saveTaskField(${t.id},'desc',this.value)">${t.desc}</textarea>
+        </div>
+      </div>
     </div>`;
-  }
-
-  document.getElementById('summaryContent').innerHTML = `
-    <div class="summary-card">
-      <div class="summary-title">genel brief</div>
-      <div class="summary-grid">
-        <div class="summary-item"><div class="summary-key">Dönem</div><div class="summary-val">${ay} ${yil}</div></div>
-        <div class="summary-item"><div class="summary-key">Bütçe</div><div class="summary-val">${butce ? butce + ' ' + para : '—'}</div></div>
-        <div class="summary-item"><div class="summary-key">Kanallar</div><div class="summary-val">${kanallar}</div></div>
-        <div class="summary-item"><div class="summary-key">Proje sayısı</div><div class="summary-val">${projCount}</div></div>
-      </div>
-      <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">Çekim Tarihleri</div><div class="summary-val">${mesaj}</div></div>
-      <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">ajansa not</div><div class="summary-val">${ajansNot}</div></div>
-      <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">Öne Çıkan projeler</div><div class="summary-val" style="margin-top:6px;">${projBadges}</div></div>
-      <div class="summary-divider"></div>
-      <div class="summary-item"><div class="summary-key">Bütçe Dağılımı</div><div class="summary-val">${dagilim}</div></div>
-    </div>
-    ${projCards}
-  `;
+  }).join('');
 }
 
-// ── SUBMIT ──
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-kFW8Cbf97mwJqUtLurTjlzraoIzMzNt0jZUrJpLenayEkX1_y4Dyz_bFJRDyaifmGg/exec';
+function saveTaskField(id, field, value) {
+  const t = tasks.find(t => t.id === id);
+  if (t) t[field] = value;
+}
 
-function submitForm() {
-  const btn = document.querySelector('.btn-success');
+function onTaskProjChange(id, value) {
+  const t = tasks.find(t => t.id === id);
+  if (!t) return;
+  const manualInput = document.getElementById('task-proj-manual-' + id);
+  if (value === '__manual__') {
+    t.projectManual = true;
+    t.project = '';
+    if (manualInput) { manualInput.style.display = ''; manualInput.focus(); }
+  } else {
+    t.projectManual = false;
+    t.project = value;
+    if (manualInput) manualInput.style.display = 'none';
+  }
+}
+
+function updateTaskCardTitle(id, val) {
+  const el = document.getElementById('gfc-task-' + id);
+  if (el) {
+    const titleEl = el.querySelector('.gf-card-title');
+    if (titleEl) {
+      const dot = titleEl.querySelector('.priority-dot');
+      titleEl.innerHTML = '';
+      if (dot) titleEl.appendChild(dot);
+      titleEl.appendChild(document.createTextNode(val || 'Görev'));
+    }
+  }
+}
+
+function updateTaskDot(id, priority) {
+  const t = tasks.find(t => t.id === id);
+  if (t) t.priority = priority;
+  const el = document.getElementById('gfc-task-' + id);
+  if (el) {
+    const dot = el.querySelector('.priority-dot');
+    if (dot) { dot.className = 'priority-dot ' + (priority==='Yüksek'?'p-yuksek':priority==='Düşük'?'p-dusuk':'p-orta'); }
+  }
+}
+
+function updateTaskSublabel() {
+  const el = document.getElementById('task-sublabel');
+  if (el) el.textContent = tasks.length === 0 ? 'Henüz görev yok' : tasks.length + ' görev';
+}
+
+function renderTaskProjects() {
+  // Update project dropdowns in task cards
+  document.querySelectorAll('[id^="task-proj-"]').forEach(sel => {
+    const id = parseInt(sel.id.replace('task-proj-',''));
+    const t = tasks.find(t => t.id === id);
+    const cur = t ? t.project : '';
+    const opts = '<option value="">— Proje —</option>' +
+      projects.map(p => `<option value="${p.name || 'Proje '+p.id}" ${(p.name||'Proje '+p.id)===cur?'selected':''}>${p.name || 'Proje '+p.id}</option>`).join('');
+    sel.innerHTML = opts;
+  });
+}
+
+// ── CARD TOGGLE ──
+function toggleGfCard(prefix, id) {
+  const card = document.getElementById('gfc-' + prefix + '-' + id);
+  if (card) card.classList.toggle('open');
+}
+
+// ══════════════════════════════════
+//  SEND
+// ══════════════════════════════════
+function collectSectionData(n) {
+  if (n === 0) {
+    // Collect from DOM
+    const smFocus = [...document.querySelectorAll('#focusChips .focus-chip.active')].map(c => c.textContent.trim());
+    return {
+      section: 'ajans_bilgilendirme',
+      ay: document.getElementById('ay').value,
+      yil: document.getElementById('yil').value,
+      instagramFokus: smFocus.join(', '),
+      instagramPlan: document.getElementById('smPlan').value,
+      seciliProjeler: [
+        ...projects.filter(p => p.selected).map(p => p.name || 'Proje ' + p.id),
+        ...manualAjProjects.filter(p => p.selected).map(p => p.name || '(İsimsiz)')
+      ],
+      oneCikanProjeler: [
+        ...projects.filter(p => p.featured).map(p => p.name || 'Proje ' + p.id),
+        ...manualAjProjects.filter(p => p.featured).map(p => p.name || '(İsimsiz)')
+      ],
+      butce: document.getElementById('butce').value + ' ' + document.getElementById('para').value,
+      butceDagilim: document.getElementById('butceDagilim').value,
+      ajansNot: document.getElementById('ajansNot').value
+    };
+  }
+  if (n === 1) {
+    // Collect project DOM values
+    projects.forEach(p => {
+      ['ad','lokasyon','ozet','durum','teslim','deger','finansman','tel','notlar','link1','link2'].forEach(f => {
+        const el = document.getElementById('pf_' + p.id + '_' + f);
+        if (el) { const key = f==='ad'?'name':f; p[key] = el.value; }
+      });
+    });
+    return { section: 'proje_detaylari', projeler: projects };
+  }
+  if (n === 2) {
+    return { section: 'gorevler', gorevler: tasks };
+  }
+}
+
+function sendSection(n) {
+  const btn = event.currentTarget;
   btn.textContent = 'Gönderiliyor...';
   btn.disabled = true;
 
-  const g = id => { const el = document.getElementById(id); return el ? (el.value || '') : ''; };
-
-  const projeler = [];
-  for (let i = 0; i < projCount; i++) {
-    projeler.push({
-      ad: g('p' + i + '_ad'),
-      ozet: g('p' + i + '_ozet'),
-      lokasyon: g('p' + i + '_lokasyon'),
-      fiyat: g('p' + i + '_fiyat'),
-      teslim: g('p' + i + '_teslim'),
-      tipler: g('p' + i + '_tipler'),
-      ozellikler: g('p' + i + '_ozellikler'),
-      durum: g('p' + i + '_durum'),
-      deger: g('p' + i + '_deger'),
-      finansman: g('p' + i + '_finansman'),
-      tel: g('p' + i + '_tel'),
-      notlar: g('p' + i + '_notlar'),
-      link1: g('p' + i + '_link1'),
-      link2: g('p' + i + '_link2'),
-    });
-  }
-
-  const kanallar = [...document.querySelectorAll('#kanalGrid .check-item.checked')]
-    .map(el => el.textContent.trim()).join(', ');
-
-  const payload = {
-    ay: g('ay'),
-    yil: g('yil'),
-    anaMesaj: g('anaMesaj'),
-    ajansNot: g('ajansNot'),
-    butce: g('butce'),
-    para: g('para'),
-    butceDagilim: g('butceDagilim'),
-    kanallar: kanallar,
-    projSayisi: projCount,
-    projeler: projeler
-  };
-
-  const encoded = encodeURIComponent(JSON.stringify(payload));
+  const data = collectSectionData(n);
+  const encoded = encodeURIComponent(JSON.stringify(data));
   const script = document.createElement('script');
   script.src = SCRIPT_URL + '?payload=' + encoded;
-  script.onload = () => { showSuccess(); document.body.removeChild(script); };
-  script.onerror = () => { showSuccess(); try { document.body.removeChild(script); } catch(e){} };
+  script.onload = () => { markSent(n); try { document.body.removeChild(script); } catch(e){} };
+  script.onerror = () => { markSent(n); try { document.body.removeChild(script); } catch(e){} };
   document.body.appendChild(script);
-
-  setTimeout(showSuccess, 5000);
+  setTimeout(() => markSent(n), 5000);
 }
 
-function showSuccess() {
-  if (document.getElementById('panel-success').classList.contains('active')) return;
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-success').classList.add('active');
-  document.getElementById('progressFill').style.width = '100%';
-  document.getElementById('heroBlock').style.display = 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function markSent(n) {
+  sentSections.add(n);
+  const block = document.getElementById('block-' + n);
+  const statusEl = document.getElementById('status-' + n);
+  const noteEl = document.getElementById('note-' + n);
+  const sendBarBtns = block.querySelectorAll('.send-bar .btn-success');
+
+  if (statusEl) { statusEl.textContent = '✓ Gönderildi'; statusEl.className = 'section-status status-sent'; }
+  if (noteEl) noteEl.innerHTML = '<span class="sent-badge">✓ Bu bölüm gönderildi</span>';
+  if (block) block.classList.add('sent');
+  sendBarBtns.forEach(b => { b.textContent = '✓ Gönderildi'; b.disabled = true; b.style.opacity = '0.6'; });
+
+  updateGlobalStatus();
+  showToast('✓ Gönderildi!');
 }
+
+function sendAll() {
+  const unsent = [0, 1, 2].filter(n => !sentSections.has(n));
+  if (unsent.length === 0) { showToast('Tüm bölümler zaten gönderildi.'); return; }
+
+  let done = 0;
+  unsent.forEach(n => {
+    const data = collectSectionData(n);
+    const encoded = encodeURIComponent(JSON.stringify(data));
+    const script = document.createElement('script');
+    script.src = SCRIPT_URL + '?payload=' + encoded;
+    const finish = () => {
+      markSent(n);
+      done++;
+      try { document.body.removeChild(script); } catch(e){}
+    };
+    script.onload = finish;
+    script.onerror = finish;
+    document.body.appendChild(script);
+    setTimeout(finish, 5000);
+  });
+}
+
+function updateGlobalStatus() {
+  const el = document.getElementById('globalStatus');
+  if (el) el.textContent = sentSections.size + ' / 3 gönderildi';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function saveSection(n) {
+  showToast('Kaydedildi ✓');
+}
+
+// ══════════════════════════════════════
+//  CUSTOM FIELD BUILDER
+// ══════════════════════════════════════
+const customFields = { '0': [], '1': [], '2': [] };
+let cfIdCnt = 0;
+
+const TYPE_META = {
+  short:     { label: 'Kısa Metin',      icon: '▭' },
+  paragraph: { label: 'Paragraf',        icon: '☰' },
+  radio:     { label: 'Çoktan Seçmeli',  icon: '◉' },
+  checkbox:  { label: 'Onay Kutuları',   icon: '☑' },
+  dropdown:  { label: 'Açılır Liste',    icon: '▾' },
+};
+
+function toggleCfPicker(sec) {
+  const dd = document.getElementById('cfb-picker-' + sec);
+  dd.classList.toggle('open');
+  // close others
+  ['0','1','2'].forEach(s => { if (s !== sec) document.getElementById('cfb-picker-' + s).classList.remove('open'); });
+}
+// close pickers on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.cf-picker-wrap')) {
+    document.querySelectorAll('.cf-picker-dropdown').forEach(d => d.classList.remove('open'));
+  }
+});
+
+function addCustomField(sec, type) {
+  cfIdCnt++;
+  const field = { id: cfIdCnt, sec, type, question: '', required: false, options: type === 'radio' || type === 'checkbox' || type === 'dropdown' ? ['Seçenek 1', 'Seçenek 2'] : [] };
+  customFields[sec].push(field);
+  document.getElementById('cfb-picker-' + sec).classList.remove('open');
+  renderCustomFields(sec);
+  // focus question input
+  setTimeout(() => {
+    const inp = document.getElementById('cf-q-' + cfIdCnt);
+    if (inp) inp.focus();
+  }, 60);
+}
+
+function removeCustomField(sec, id) {
+  customFields[sec] = customFields[sec].filter(f => f.id !== id);
+  renderCustomFields(sec);
+}
+
+function updateCfQuestion(id, val) {
+  for (const sec of ['0','1','2']) {
+    const f = customFields[sec].find(f => f.id === id);
+    if (f) { f.question = val; return; }
+  }
+}
+
+function updateCfType(id, type) {
+  for (const sec of ['0','1','2']) {
+    const f = customFields[sec].find(f => f.id === id);
+    if (f) {
+      f.type = type;
+      if ((type === 'radio' || type === 'checkbox' || type === 'dropdown') && f.options.length === 0) {
+        f.options = ['Seçenek 1', 'Seçenek 2'];
+      }
+      renderCustomFields(sec);
+      return;
+    }
+  }
+}
+
+function toggleCfRequired(id) {
+  for (const sec of ['0','1','2']) {
+    const f = customFields[sec].find(f => f.id === id);
+    if (f) { f.required = !f.required; renderCustomFields(sec); return; }
+  }
+}
+
+function addCfOption(id) {
+  for (const sec of ['0','1','2']) {
+    const f = customFields[sec].find(f => f.id === id);
+    if (f) {
+      f.options.push('Seçenek ' + (f.options.length + 1));
+      renderCustomFields(sec);
+      setTimeout(() => {
+        const inputs = document.querySelectorAll('[data-cfopt="' + id + '"]');
+        if (inputs.length) inputs[inputs.length - 1].focus();
+      }, 40);
+      return;
+    }
+  }
+}
+
+function updateCfOption(id, idx, val) {
+  for (const sec of ['0','1','2']) {
+    const f = customFields[sec].find(f => f.id === id);
+    if (f) { f.options[idx] = val; return; }
+  }
+}
+
+function removeCfOption(id, idx) {
+  for (const sec of ['0','1','2']) {
+    const f = customFields[sec].find(f => f.id === id);
+    if (f && f.options.length > 1) {
+      f.options.splice(idx, 1);
+      renderCustomFields(sec);
+      return;
+    }
+  }
+}
+
+function renderCustomFields(sec) {
+  const wrap = document.getElementById('cfb-cards-' + sec);
+  if (!wrap) return;
+  wrap.innerHTML = customFields[sec].map(f => buildCfCard(f)).join('');
+}
+
+function buildCfCard(f) {
+  const meta = TYPE_META[f.type] || TYPE_META.short;
+  const typeOpts = Object.entries(TYPE_META).map(([k, v]) =>
+    `<option value="${k}" ${f.type === k ? 'selected' : ''}>${v.icon} ${v.label}</option>`
+  ).join('');
+
+  let bodyHTML = '';
+  if (f.type === 'short') {
+    bodyHTML = `<div class="cf-short-preview"><input type="text" placeholder="Kısa metin yanıtı..." readonly></div>`;
+  } else if (f.type === 'paragraph') {
+    bodyHTML = `<div class="cf-para-preview"><textarea rows="2" placeholder="Uzun metin yanıtı..." readonly></textarea></div>`;
+  } else if (f.type === 'radio' || f.type === 'checkbox' || f.type === 'dropdown') {
+    const iconChar = f.type === 'radio' ? '○' : f.type === 'checkbox' ? '□' : '▾';
+    const optRows = f.options.map((opt, i) => `
+      <div class="cf-option-row">
+        <span class="cf-option-icon">${iconChar}</span>
+        <input class="cf-option-input" type="text" value="${opt.replace(/"/g,'&quot;')}" data-cfopt="${f.id}"
+          onchange="updateCfOption(${f.id},${i},this.value)" placeholder="Seçenek ${i+1}">
+        <button class="cf-opt-del" onclick="removeCfOption(${f.id},${i})">×</button>
+      </div>`).join('');
+    bodyHTML = `<div class="cf-options-wrap">
+      ${optRows}
+      <button class="cf-add-option" onclick="addCfOption(${f.id})">
+        <span>${iconChar}</span> Seçenek ekle
+      </button>
+    </div>`;
+  }
+
+  return `
+  <div class="cf-card" id="cf-card-${f.id}">
+    <div class="cf-card-top">
+      <div class="cf-card-top-left">
+        <input class="cf-question-input" id="cf-q-${f.id}" type="text"
+          value="${(f.question||'').replace(/"/g,'&quot;')}"
+          placeholder="Soru başlığı..."
+          oninput="updateCfQuestion(${f.id},this.value)">
+        <select class="cf-type-select" onchange="updateCfType(${f.id},this.value)">${typeOpts}</select>
+      </div>
+      <div class="cf-card-actions">
+        <button class="cf-req-toggle ${f.required?'required':''}" onclick="toggleCfRequired(${f.id})">
+          ${f.required ? '✱ Zorunlu' : 'Opsiyonel'}
+        </button>
+        <button class="cf-del-btn" onclick="removeCustomField('${f.sec}',${f.id})">×</button>
+      </div>
+    </div>
+    ${bodyHTML}
+  </div>`;
+}
+
 </script>
 </body>
 </html>
