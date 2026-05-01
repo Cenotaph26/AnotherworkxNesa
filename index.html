@@ -221,119 +221,142 @@ select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns
 
 
 /* ── CUSTOM FIELD BUILDER ── */
-.cfb-wrap { margin-top: 20px; }
-.cfb-label-row {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 10px;
-}
+.cfb-wrap { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 20px; }
 .cfb-section-label {
   font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-muted);
+  color: var(--ink-muted); margin-bottom: 12px; display: block;
 }
-.cfb-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+.cfb-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
 
-/* the live card */
+/* Google Forms style card */
 .cf-card {
   border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
-  background: var(--white); overflow: hidden;
+  background: var(--white); overflow: visible;
+  transition: box-shadow 0.15s;
 }
-.cf-card-top {
+.cf-card:focus-within { box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-color: var(--accent); }
+
+/* EDIT MODE — top bar */
+.cf-card-edit {
   display: flex; align-items: flex-start; gap: 10px;
-  padding: 14px 16px; border-bottom: 1px solid var(--border);
-  background: var(--paper);
+  padding: 14px 16px 10px; background: var(--paper-dark);
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
-.cf-card-top-left { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.cf-card-edit-left { flex: 1; display: flex; flex-direction: column; gap: 8px; }
 .cf-question-input {
   font-size: 14px; font-weight: 500; color: var(--ink);
-  border: none; border-bottom: 1.5px solid var(--border-strong);
-  border-radius: 0; background: transparent; padding: 4px 0; width: 100%;
+  border: none; border-bottom: 2px solid var(--border-strong);
+  border-radius: 0; background: transparent; padding: 5px 0; width: 100%;
   outline: none; font-family: 'DM Sans', sans-serif;
 }
 .cf-question-input:focus { border-bottom-color: var(--accent); }
+.cf-type-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .cf-type-select {
-  font-size: 11px; color: var(--ink-muted); border: 1px solid var(--border-strong);
-  border-radius: 3px; padding: 3px 8px; background: var(--white);
+  font-size: 12px; color: var(--ink-soft); border: 1px solid var(--border-strong);
+  border-radius: 4px; padding: 4px 10px; background: var(--white);
   font-family: 'DM Sans', sans-serif; cursor: pointer; outline: none;
-  width: fit-content;
 }
-.cf-card-actions { display: flex; gap: 6px; align-items: center; }
-.cf-del-btn {
-  background: none; border: none; cursor: pointer; color: var(--ink-muted);
-  font-size: 18px; padding: 2px 5px; transition: color 0.15s; line-height: 1;
-}
-.cf-del-btn:hover { color: var(--danger); }
+.cf-type-select:focus { border-color: var(--accent); }
 .cf-req-toggle {
   font-size: 11px; color: var(--ink-muted); cursor: pointer; user-select: none;
-  padding: 3px 8px; border: 1px solid var(--border-strong); border-radius: 3px;
+  padding: 4px 9px; border: 1px solid var(--border-strong); border-radius: 20px;
   background: var(--white); transition: all 0.15s; font-family: 'DM Sans', sans-serif;
 }
-.cf-req-toggle.required { background: var(--accent-light); border-color: var(--accent); color: var(--accent-dark); }
-
-/* options editor */
-.cf-options-wrap { padding: 12px 16px; }
-.cf-option-row {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
+.cf-req-toggle.required { background: var(--accent-light); border-color: var(--accent); color: var(--accent-dark); font-weight: 500; }
+.cf-card-actions { display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
+.cf-del-btn {
+  background: none; border: none; cursor: pointer; color: var(--ink-muted);
+  font-size: 19px; padding: 3px 6px; transition: color 0.15s; line-height: 1;
+  border-radius: 4px;
 }
-.cf-option-icon { font-size: 14px; color: var(--ink-muted); flex-shrink: 0; width: 18px; text-align: center; }
+.cf-del-btn:hover { color: var(--danger); background: #fdf2f0; }
+
+/* ANSWER AREA */
+.cf-answer-area { padding: 14px 16px 16px; }
+.cf-answer-area label.cf-qlabel {
+  font-size: 14px; font-weight: 500; color: var(--ink); display: block;
+  margin-bottom: 10px; letter-spacing: 0; text-transform: none;
+}
+.cf-answer-area label.cf-qlabel .cf-req-star { color: var(--danger); margin-left: 2px; }
+
+/* short text answer */
+.cf-input-short {
+  width: 100%; border: none; border-bottom: 1.5px solid var(--border-strong);
+  border-radius: 0; font-size: 14px; color: var(--ink); padding: 6px 0;
+  background: transparent; outline: none; font-family: 'DM Sans', sans-serif;
+}
+.cf-input-short:focus { border-bottom-color: var(--accent); }
+
+/* paragraph answer */
+.cf-input-para {
+  width: 100%; border: none; border-bottom: 1.5px solid var(--border-strong);
+  border-radius: 0; font-size: 14px; color: var(--ink); padding: 6px 0;
+  background: transparent; outline: none; font-family: 'DM Sans', sans-serif;
+  resize: none; min-height: 72px; line-height: 1.6;
+}
+.cf-input-para:focus { border-bottom-color: var(--accent); }
+
+/* radio / checkbox answers */
+.cf-choices { display: flex; flex-direction: column; gap: 8px; }
+.cf-choice-row { display: flex; align-items: center; gap: 10px; }
+.cf-choice-row input[type=radio],
+.cf-choice-row input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+.cf-choice-label { font-size: 14px; color: var(--ink); }
+
+/* dropdown answer */
+.cf-input-dropdown {
+  border: 1px solid var(--border-strong); border-radius: var(--radius);
+  font-size: 14px; padding: 8px 12px; font-family: 'DM Sans', sans-serif;
+  color: var(--ink); background: var(--white); outline: none; cursor: pointer;
+  min-width: 200px;
+}
+.cf-input-dropdown:focus { border-color: var(--accent); }
+
+/* options editor (inside edit bar) */
+.cf-options-editor { padding: 10px 16px 4px; border-top: 1px dashed var(--border); }
+.cf-option-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.cf-option-icon { font-size: 13px; color: var(--ink-muted); flex-shrink: 0; width: 18px; text-align: center; }
 .cf-option-input {
   flex: 1; border: none; border-bottom: 1px dashed var(--border-strong);
   font-size: 13px; color: var(--ink); background: transparent; outline: none;
-  padding: 3px 0; font-family: 'DM Sans', sans-serif;
+  padding: 4px 0; font-family: 'DM Sans', sans-serif;
 }
 .cf-option-input:focus { border-bottom-color: var(--accent); }
-.cf-opt-del { background: none; border: none; cursor: pointer; color: var(--ink-muted); font-size: 14px; padding: 0 4px; }
+.cf-opt-del { background: none; border: none; cursor: pointer; color: var(--ink-muted); font-size: 15px; padding: 0 4px; line-height: 1; }
 .cf-opt-del:hover { color: var(--danger); }
 .cf-add-option {
-  display: flex; align-items: center; gap: 6px; font-size: 12px;
-  color: var(--ink-muted); cursor: pointer; padding: 4px 0; margin-top: 4px;
-  background: none; border: none; font-family: 'DM Sans', sans-serif;
+  display: inline-flex; align-items: center; gap: 5px; font-size: 12px;
+  color: var(--ink-muted); cursor: pointer; padding: 5px 0; margin-top: 2px;
+  background: none; border: none; font-family: 'DM Sans', sans-serif; font-weight: 500;
 }
 .cf-add-option:hover { color: var(--accent-dark); }
-
-/* paragraph preview */
-.cf-para-preview {
-  padding: 10px 16px;
-}
-.cf-para-preview textarea {
-  width: 100%; border: none; border-bottom: 1px solid var(--border-strong);
-  border-radius: 0; background: transparent; font-size: 13px; color: var(--ink-muted);
-  font-style: italic; resize: none; outline: none; padding: 4px 0; min-height: 48px;
-  font-family: 'DM Sans', sans-serif; pointer-events: none;
-}
-.cf-short-preview { padding: 10px 16px; }
-.cf-short-preview input {
-  width: 60%; border: none; border-bottom: 1px solid var(--border-strong);
-  border-radius: 0; background: transparent; font-size: 13px; color: var(--ink-muted);
-  font-style: italic; outline: none; padding: 4px 0; pointer-events: none;
-  font-family: 'DM Sans', sans-serif;
-}
 
 /* add field picker */
 .cf-picker-btn {
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 8px 16px; border: 1.5px dashed var(--border-strong);
+  padding: 9px 18px; border: 1.5px dashed var(--border-strong);
   border-radius: var(--radius-lg); background: transparent;
-  font-size: 12px; color: var(--ink-muted); cursor: pointer;
+  font-size: 13px; color: var(--ink-muted); cursor: pointer;
   transition: all 0.18s; font-family: 'DM Sans', sans-serif; font-weight: 500;
 }
 .cf-picker-btn:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--accent-light); }
-
+.cf-picker-wrap { position: relative; display: inline-block; }
 .cf-picker-dropdown {
   display: none; position: absolute; z-index: 500;
   background: var(--white); border: 1px solid var(--border-strong);
-  border-radius: var(--radius-lg); box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
-  overflow: hidden; min-width: 220px;
+  border-radius: var(--radius-lg); box-shadow: 0 -4px 24px rgba(0,0,0,0.13);
+  overflow: hidden; min-width: 230px;
   bottom: calc(100% + 6px); left: 0;
 }
 .cf-picker-dropdown.open { display: block; animation: fadeSlide 0.15s ease; }
 .cf-picker-option {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 16px; cursor: pointer; font-size: 13px; color: var(--ink);
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px; cursor: pointer; font-size: 13px; color: var(--ink);
   transition: background 0.12s;
 }
 .cf-picker-option:hover { background: var(--accent-light); }
-.cf-picker-option .cf-type-icon { font-size: 15px; width: 20px; text-align: center; }
-.cf-picker-wrap { position: relative; display: inline-block; }
+.cf-picker-option .cf-type-icon { font-size: 16px; width: 22px; text-align: center; color: var(--ink-soft); }
 
 @media (max-width: 600px) {
   .topbar { padding: 10px 16px; }
@@ -1242,19 +1265,13 @@ const customFields = { '0': [], '1': [], '2': [] };
 let cfIdCnt = 0;
 
 const TYPE_META = {
-  short:     { label: 'Kısa Metin',      icon: '▭' },
-  paragraph: { label: 'Paragraf',        icon: '☰' },
-  radio:     { label: 'Çoktan Seçmeli',  icon: '◉' },
-  checkbox:  { label: 'Onay Kutuları',   icon: '☑' },
-  dropdown:  { label: 'Açılır Liste',    icon: '▾' },
+  short:     { label: 'Kısa Metin',     icon: '▭' },
+  paragraph: { label: 'Paragraf',       icon: '☰' },
+  radio:     { label: 'Çoktan Seçmeli', icon: '◉' },
+  checkbox:  { label: 'Onay Kutuları',  icon: '☑' },
+  dropdown:  { label: 'Açılır Liste',   icon: '▾' },
 };
 
-function toggleCfPicker(sec) {
-  const dd = document.getElementById('cfb-picker-' + sec);
-  dd.classList.toggle('open');
-  // close others
-  ['0','1','2'].forEach(s => { if (s !== sec) document.getElementById('cfb-picker-' + s).classList.remove('open'); });
-}
 // close pickers on outside click
 document.addEventListener('click', e => {
   if (!e.target.closest('.cf-picker-wrap')) {
@@ -1262,13 +1279,26 @@ document.addEventListener('click', e => {
   }
 });
 
+function toggleCfPicker(sec) {
+  const dd = document.getElementById('cfb-picker-' + sec);
+  const isOpen = dd.classList.contains('open');
+  document.querySelectorAll('.cf-picker-dropdown').forEach(d => d.classList.remove('open'));
+  if (!isOpen) dd.classList.add('open');
+}
+
 function addCustomField(sec, type) {
   cfIdCnt++;
-  const field = { id: cfIdCnt, sec, type, question: '', required: false, options: type === 'radio' || type === 'checkbox' || type === 'dropdown' ? ['Seçenek 1', 'Seçenek 2'] : [] };
+  const hasOpts = type === 'radio' || type === 'checkbox' || type === 'dropdown';
+  const field = {
+    id: cfIdCnt, sec, type,
+    question: '',
+    required: false,
+    options: hasOpts ? ['Seçenek 1', 'Seçenek 2'] : [],
+    answer: type === 'checkbox' ? [] : ''
+  };
   customFields[sec].push(field);
   document.getElementById('cfb-picker-' + sec).classList.remove('open');
   renderCustomFields(sec);
-  // focus question input
   setTimeout(() => {
     const inp = document.getElementById('cf-q-' + cfIdCnt);
     if (inp) inp.focus();
@@ -1280,65 +1310,67 @@ function removeCustomField(sec, id) {
   renderCustomFields(sec);
 }
 
-function updateCfQuestion(id, val) {
+function findField(id) {
   for (const sec of ['0','1','2']) {
     const f = customFields[sec].find(f => f.id === id);
-    if (f) { f.question = val; return; }
+    if (f) return f;
+  }
+  return null;
+}
+
+function updateCfQuestion(id, val) {
+  const f = findField(id); if (f) f.question = val;
+  // update the answer label live without full re-render
+  const lbl = document.getElementById('cf-qlabel-' + id);
+  if (lbl) {
+    lbl.childNodes[0].textContent = val || 'Soru başlığı...';
   }
 }
 
 function updateCfType(id, type) {
-  for (const sec of ['0','1','2']) {
-    const f = customFields[sec].find(f => f.id === id);
-    if (f) {
-      f.type = type;
-      if ((type === 'radio' || type === 'checkbox' || type === 'dropdown') && f.options.length === 0) {
-        f.options = ['Seçenek 1', 'Seçenek 2'];
-      }
-      renderCustomFields(sec);
-      return;
-    }
+  const f = findField(id); if (!f) return;
+  f.type = type;
+  f.answer = type === 'checkbox' ? [] : '';
+  if ((type === 'radio' || type === 'checkbox' || type === 'dropdown') && f.options.length === 0) {
+    f.options = ['Seçenek 1', 'Seçenek 2'];
   }
+  renderCustomFields(f.sec);
 }
 
 function toggleCfRequired(id) {
-  for (const sec of ['0','1','2']) {
-    const f = customFields[sec].find(f => f.id === id);
-    if (f) { f.required = !f.required; renderCustomFields(sec); return; }
-  }
+  const f = findField(id); if (!f) return;
+  f.required = !f.required;
+  renderCustomFields(f.sec);
 }
 
 function addCfOption(id) {
-  for (const sec of ['0','1','2']) {
-    const f = customFields[sec].find(f => f.id === id);
-    if (f) {
-      f.options.push('Seçenek ' + (f.options.length + 1));
-      renderCustomFields(sec);
-      setTimeout(() => {
-        const inputs = document.querySelectorAll('[data-cfopt="' + id + '"]');
-        if (inputs.length) inputs[inputs.length - 1].focus();
-      }, 40);
-      return;
-    }
-  }
+  const f = findField(id); if (!f) return;
+  f.options.push('Seçenek ' + (f.options.length + 1));
+  renderCustomFields(f.sec);
+  setTimeout(() => {
+    const inputs = document.querySelectorAll('[data-cfopt="' + id + '"]');
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }, 40);
 }
 
 function updateCfOption(id, idx, val) {
-  for (const sec of ['0','1','2']) {
-    const f = customFields[sec].find(f => f.id === id);
-    if (f) { f.options[idx] = val; return; }
-  }
+  const f = findField(id); if (f) f.options[idx] = val;
 }
 
 function removeCfOption(id, idx) {
-  for (const sec of ['0','1','2']) {
-    const f = customFields[sec].find(f => f.id === id);
-    if (f && f.options.length > 1) {
-      f.options.splice(idx, 1);
-      renderCustomFields(sec);
-      return;
-    }
-  }
+  const f = findField(id);
+  if (f && f.options.length > 1) { f.options.splice(idx, 1); renderCustomFields(f.sec); }
+}
+
+function saveCfAnswer(id, val) {
+  const f = findField(id); if (f) f.answer = val;
+}
+
+function saveCfCheckbox(id, val, checked) {
+  const f = findField(id); if (!f) return;
+  if (!Array.isArray(f.answer)) f.answer = [];
+  if (checked) { if (!f.answer.includes(val)) f.answer.push(val); }
+  else { f.answer = f.answer.filter(v => v !== val); }
 }
 
 function renderCustomFields(sec) {
@@ -1348,51 +1380,98 @@ function renderCustomFields(sec) {
 }
 
 function buildCfCard(f) {
-  const meta = TYPE_META[f.type] || TYPE_META.short;
   const typeOpts = Object.entries(TYPE_META).map(([k, v]) =>
     `<option value="${k}" ${f.type === k ? 'selected' : ''}>${v.icon} ${v.label}</option>`
   ).join('');
 
-  let bodyHTML = '';
-  if (f.type === 'short') {
-    bodyHTML = `<div class="cf-short-preview"><input type="text" placeholder="Kısa metin yanıtı..." readonly></div>`;
-  } else if (f.type === 'paragraph') {
-    bodyHTML = `<div class="cf-para-preview"><textarea rows="2" placeholder="Uzun metin yanıtı..." readonly></textarea></div>`;
-  } else if (f.type === 'radio' || f.type === 'checkbox' || f.type === 'dropdown') {
-    const iconChar = f.type === 'radio' ? '○' : f.type === 'checkbox' ? '□' : '▾';
-    const optRows = f.options.map((opt, i) => `
+  // ── OPTIONS EDITOR (shown for radio/checkbox/dropdown in edit bar) ──
+  let optionsEditor = '';
+  if (f.type === 'radio' || f.type === 'checkbox' || f.type === 'dropdown') {
+    const icon = f.type === 'radio' ? '○' : f.type === 'checkbox' ? '□' : '—';
+    const rows = f.options.map((opt, i) => `
       <div class="cf-option-row">
-        <span class="cf-option-icon">${iconChar}</span>
-        <input class="cf-option-input" type="text" value="${opt.replace(/"/g,'&quot;')}" data-cfopt="${f.id}"
-          onchange="updateCfOption(${f.id},${i},this.value)" placeholder="Seçenek ${i+1}">
+        <span class="cf-option-icon">${icon}</span>
+        <input class="cf-option-input" type="text" value="${opt.replace(/"/g,'&quot;')}"
+          data-cfopt="${f.id}" placeholder="Seçenek ${i+1}"
+          onchange="updateCfOption(${f.id},${i},this.value)">
         <button class="cf-opt-del" onclick="removeCfOption(${f.id},${i})">×</button>
       </div>`).join('');
-    bodyHTML = `<div class="cf-options-wrap">
-      ${optRows}
+    optionsEditor = `<div class="cf-options-editor">
+      ${rows}
       <button class="cf-add-option" onclick="addCfOption(${f.id})">
-        <span>${iconChar}</span> Seçenek ekle
+        <span style="font-size:14px;">${icon}</span> Seçenek ekle
       </button>
     </div>`;
   }
 
+  // ── ANSWER AREA ──
+  const qLabel = `<label class="cf-qlabel" id="cf-qlabel-${f.id}">${f.question || 'Soru başlığı...'
+    }${f.required ? '<span class="cf-req-star">*</span>' : ''}</label>`;
+
+  let answerHTML = '';
+  if (f.type === 'short') {
+    answerHTML = `<input type="text" class="cf-input-short"
+      placeholder="Kısa metin cevabınız..."
+      value="${String(f.answer||'').replace(/"/g,'&quot;')}"
+      oninput="saveCfAnswer(${f.id},this.value)">`;
+  } else if (f.type === 'paragraph') {
+    answerHTML = `<textarea class="cf-input-para" rows="3"
+      placeholder="Cevabınızı yazın..."
+      oninput="saveCfAnswer(${f.id},this.value)">${f.answer||''}</textarea>`;
+  } else if (f.type === 'radio') {
+    answerHTML = `<div class="cf-choices">` +
+      f.options.map(opt => `
+        <div class="cf-choice-row">
+          <input type="radio" name="cf-radio-${f.id}" value="${opt.replace(/"/g,'&quot;')}"
+            ${f.answer===opt?'checked':''}
+            onchange="saveCfAnswer(${f.id},this.value)">
+          <span class="cf-choice-label">${opt}</span>
+        </div>`).join('') +
+      `</div>`;
+  } else if (f.type === 'checkbox') {
+    const ans = Array.isArray(f.answer) ? f.answer : [];
+    answerHTML = `<div class="cf-choices">` +
+      f.options.map(opt => `
+        <div class="cf-choice-row">
+          <input type="checkbox" value="${opt.replace(/"/g,'&quot;')}"
+            ${ans.includes(opt)?'checked':''}
+            onchange="saveCfCheckbox(${f.id},this.value,this.checked)">
+          <span class="cf-choice-label">${opt}</span>
+        </div>`).join('') +
+      `</div>`;
+  } else if (f.type === 'dropdown') {
+    answerHTML = `<select class="cf-input-dropdown" onchange="saveCfAnswer(${f.id},this.value)">
+      <option value="">Seçin...</option>` +
+      f.options.map(opt => `<option value="${opt.replace(/"/g,'&quot;')}" ${f.answer===opt?'selected':''}>${opt}</option>`).join('') +
+      `</select>`;
+  }
+
   return `
   <div class="cf-card" id="cf-card-${f.id}">
-    <div class="cf-card-top">
-      <div class="cf-card-top-left">
+    <!-- EDIT BAR -->
+    <div class="cf-card-edit">
+      <div class="cf-card-edit-left">
         <input class="cf-question-input" id="cf-q-${f.id}" type="text"
           value="${(f.question||'').replace(/"/g,'&quot;')}"
-          placeholder="Soru başlığı..."
+          placeholder="Soru başlığını girin..."
           oninput="updateCfQuestion(${f.id},this.value)">
-        <select class="cf-type-select" onchange="updateCfType(${f.id},this.value)">${typeOpts}</select>
+        <div class="cf-type-row">
+          <select class="cf-type-select" onchange="updateCfType(${f.id},this.value)">${typeOpts}</select>
+          <button class="cf-req-toggle ${f.required?'required':''}" onclick="toggleCfRequired(${f.id})">
+            ${f.required ? '✱ Zorunlu' : 'Opsiyonel'}
+          </button>
+        </div>
       </div>
       <div class="cf-card-actions">
-        <button class="cf-req-toggle ${f.required?'required':''}" onclick="toggleCfRequired(${f.id})">
-          ${f.required ? '✱ Zorunlu' : 'Opsiyonel'}
-        </button>
-        <button class="cf-del-btn" onclick="removeCustomField('${f.sec}',${f.id})">×</button>
+        <button class="cf-del-btn" title="Sil" onclick="removeCustomField('${f.sec}',${f.id})">×</button>
       </div>
     </div>
-    ${bodyHTML}
+    ${optionsEditor}
+    <!-- ANSWER AREA -->
+    <div class="cf-answer-area">
+      ${qLabel}
+      ${answerHTML}
+    </div>
   </div>`;
 }
 
